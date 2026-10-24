@@ -1,84 +1,260 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080808"><title>Quadro Leve — Meus projetos</title><style>
-:root{color-scheme:dark;--bg:#080808;--border:#272727;--text:#f7f7f7;--muted:#a8a8a8;--idea:#e9ac44;--organ:#6fa8e8;--impl:#b58be8;--done:#40a978}*{box-sizing:border-box}[hidden]{display:none!important}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}button,input,textarea{font:inherit}button{cursor:pointer}button:disabled{cursor:default;opacity:.65}.shell{max-width:1240px;margin:22px auto;padding:0 16px}.board{border:1px solid var(--border);border-radius:25px;padding:20px 15px 26px}.head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}.head h1{font-size:clamp(24px,5vw,34px);line-height:1.25;margin:0 0 9px}.subtitle{color:var(--muted);font-size:15px}.archive-counter{border:1px solid #444;border-radius:30px;background:none;color:#ccc;padding:9px 13px;white-space:nowrap;display:flex;align-items:center;gap:9px}.summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-bottom:15px}.summary-tile{min-width:0;border-radius:15px;color:#17212b;text-align:center;padding:17px 2px 14px;min-height:102px}.summary-tile strong{display:block;font-size:27px;margin-bottom:8px}.summary-tile span{display:block;font-size:clamp(10px,2.5vw,14px);overflow-wrap:anywhere}.new-btn{width:100%;background:#424242;color:#fff;border:0;border-radius:30px;padding:13px;font-size:17px;font-weight:650;margin:0 0 20px}.new-btn:hover{background:#555}.form{border:1px solid #555;border-radius:15px;padding:14px;margin-bottom:20px;display:grid;gap:10px}.form input,.form textarea{width:100%;background:#1c1c1c;color:#fff;border:1px solid #555;border-radius:9px;padding:12px}.form textarea{resize:vertical}.form-actions{display:flex;gap:10px}.form-actions button{flex:1;padding:10px;border-radius:9px;border:1px solid #777;background:#444;color:#fff}.form-actions .save{background:#d6d6d6;color:#111;font-weight:700}.stages{display:grid;grid-template-columns:1fr;gap:16px}.stage{border:1px solid var(--border);border-radius:23px;padding:14px;min-width:0}.stage-head{display:flex;justify-content:space-between;align-items:center;margin:2px 0 20px;font-size:23px;font-weight:750;gap:10px}.stage-name{display:flex;align-items:center;gap:11px;min-width:0}.dot{width:13px;height:13px;border-radius:50%;flex:none}.count{color:#a8a8a8;font-size:15px;font-weight:400}.cards{display:grid;gap:12px}.card{background:var(--tone);border-radius:18px;padding:16px 15px 14px;color:#17212b;min-width:0}.card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px}.icon-btn{width:55px;height:43px;border-radius:26px;border:1px solid #0002;background:#00000008;color:#564729;display:grid;place-items:center}.icon-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.card h3{font-size:20px;margin:0 0 11px;line-height:1.3;overflow-wrap:anywhere}.card p{font-size:17px;line-height:1.45;margin:0 0 20px;overflow-wrap:anywhere}.move-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.move-actions button{border:0;border-radius:11px;background:#d6d6d6;color:#111;font-weight:650;padding:13px 4px;min-height:48px}.move-actions button:disabled{background:#a4a4a4;color:#5a5a5a}.archive-confirm{margin-top:8px;border:1px solid #555;border-radius:13px;padding:12px;background:#161616}.archive-confirm p{margin:0 0 12px}.archive-confirm .form-actions button:last-child{background:#b84545;border:0}.empty{color:#888;font-size:14px}.archive-list{margin:18px 0 0;border:1px solid #444;border-radius:14px;padding:14px}.archive-list button{background:#d6d6d6;color:#111;border:0;border-radius:8px;padding:7px 10px;margin-left:8px}.archive-row{display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid #333;padding:10px 0}.archive-row:first-of-type{border-top:0}.hint{color:#888;font-size:12px;text-align:center;margin-top:18px}@media(min-width:850px){.shell{padding:0 22px}.board{padding:25px}.stages{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.stage{padding:12px}.stage-head{font-size:17px;min-height:48px;margin-bottom:12px}.card{padding:12px}.card h3{font-size:16px}.card p{font-size:14px}.card-top{margin-bottom:16px}.move-actions{gap:5px}.move-actions button{font-size:12px;padding:10px 2px}.summary-tile span{font-size:14px}.new-btn{max-width:none}}@media(min-width:1100px){.stage-head{font-size:20px}.card h3{font-size:18px}.card p{font-size:15px}.move-actions button{font-size:14px}}@media(max-width:355px){.board{padding:14px 9px}.summary{gap:4px}.summary-tile{padding:13px 1px}.summary-tile span{font-size:10px}.card h3{font-size:18px}}
-
-.project-tools{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin:0 0 20px}.project-tools select,.project-tools button,.backup-tools button{background:#242424;color:#fff;border:1px solid #505050;border-radius:10px;padding:11px 12px;min-height:44px}.project-tools select{flex:1;min-width:145px;max-width:100%}.project-tools button{white-space:nowrap}.backup-tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}.backup-tools button{font-size:13px}.notice{font-size:12px;color:#aaa;margin-top:9px;line-height:1.5}.dialog-overlay{position:fixed;inset:0;background:#000b;display:grid;place-items:center;padding:16px;z-index:20}.dialog{width:min(100%,440px);background:#191919;border:1px solid #555;border-radius:17px;padding:18px;display:grid;gap:12px}.dialog h2{font-size:19px;margin:0}.dialog input{width:100%;padding:12px;background:#292929;color:#fff;border:1px solid #666;border-radius:9px}.dialog .form-actions button{min-height:44px}.toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:#e4e4e4;color:#111;padding:10px 16px;border-radius:10px;z-index:30;box-shadow:0 3px 20px #0008;font-size:14px}.stage .card p{white-space:pre-wrap}.project-title{font-size:15px;color:#a8a8a8}.card-top .icon-btn{flex-shrink:0}.archive-counter{cursor:pointer}
-</style></head><body><main class="shell"><section class="board"><header class="head"><div><h1>Quadro de<br>Desenvolvimento</h1><div class="subtitle" id="projectSubtitle">Projeto Roteirista</div></div><button class="archive-counter" id="archiveToggle" aria-label="Ver arquivados" title="Ver arquivados">▣ <span id="archiveCount">0</span></button></header><div class="project-tools"><select id="projectSelect" aria-label="Selecionar projeto"></select><button id="addProject">＋ Projeto</button><button id="renameProject" title="Renomear projeto">Renomear</button></div><div class="summary" id="summary"></div><button class="new-btn" id="newToggle" aria-expanded="false">＋ Nova ideia</button><form class="form" id="newForm" hidden><strong>Criar nova ideia</strong><input id="title" placeholder="Título da ideia" required maxlength="120"><textarea id="description" rows="2" placeholder="Descrição (opcional)"></textarea><div class="form-actions"><button type="button" id="cancel">Cancelar</button><button class="save" type="submit">Adicionar</button></div></form><div class="stages" id="stages"></div><div class="archive-list" id="archiveList" hidden></div><div class="backup-tools"><button id="exportBackup">↓ Exportar backup</button><button id="importBackup">↑ Importar backup</button><input type="file" id="importFile" accept="application/json,.json" hidden></div><div class="notice">Os projetos são independentes. Alterações são salvas neste navegador. A sincronização com Google é explícita no painel abaixo. Antes de importar ou receber dados, exporte e verifique um backup JSON atual.</div><div class="hint">Quadro Leve · Um quadro, vários projetos</div></section></main><div class="dialog-overlay" id="dialogOverlay" hidden><form class="dialog" id="dialogForm"><h2 id="dialogTitle">Novo projeto</h2><input id="dialogInput" placeholder="Nome do projeto" maxlength="70" required><div class="form-actions"><button type="button" id="dialogCancel">Cancelar</button><button class="save" type="submit">Salvar</button></div></form></div><div class="toast" id="toast" hidden></div><script>
-(()=>{'use strict';
-const steps=[{name:'Ideia',color:'#e9ac44'},{name:'Organização',color:'#6fa8e8'},{name:'Implantação',color:'#b58be8'},{name:'Concluído',color:'#40a978'}];
-const KEY='quadro-leve-multiplos-projetos-v1',OLD='quadro-leve-roteirista-v1';
-const $=id=>document.getElementById(id), esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const fresh=()=>({cards:[],archived:[],nextId:1});
-// Preserve original bytes before any startup normalization.
-const originalRaw=localStorage.getItem(KEY), legacyRaw=localStorage.getItem(OLD);
-let protectionError=false;
-try{for(const [k,v] of [[KEY,originalRaw],[OLD,legacyRaw]])if(v!==null&&!localStorage.getItem(k+'-original-preservado'))localStorage.setItem(k+'-original-preservado',v)}catch(e){protectionError=true}
-let db=null;
-try{db=JSON.parse(localStorage.getItem(KEY))}catch(e){}
-if(!db||!Array.isArray(db.projects)||!db.projects.length){
- let old=null;try{old=JSON.parse(localStorage.getItem(OLD))}catch(e){}
- const first=fresh();if(old&&Array.isArray(old.cards)&&Array.isArray(old.archived)){first.cards=old.cards;first.archived=old.archived;first.nextId=Math.max(0,...[...first.cards,...first.archived].map(c=>Number(c.id)||0))+1}
- db={version:1,active:'roteirista',projects:[{id:'roteirista',name:'Roteirista',...first}]};
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080808"><title>Quadro Dev · HML simples · 24/10/2026</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}[hidden]{display:none!important}body{margin:0;background:#080808;color:#f7f7f7;font:15px system-ui,-apple-system,Segoe UI,sans-serif}button,textarea{font:inherit}button{cursor:pointer;min-height:44px}button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offset:3px}.shell{max-width:1280px;margin:22px auto;padding:0 16px}.board{border:1px solid #272727;border-radius:25px;padding:24px}header{display:flex;justify-content:space-between;align-items:center;gap:12px}h1{font-size:30px;margin:0 0 6px}.muted{color:#aaa;font-size:13px}button{border:1px solid #505050;border-radius:12px;background:#242424;color:#fff;padding:9px 13px}.capture{margin:24px 0}.capture label{display:block;font-weight:650;margin-bottom:10px}textarea{width:100%;resize:vertical;min-height:90px;background:#191919;color:#fff;border:1px solid #555;border-radius:14px;padding:14px}.project-buttons,.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.project-buttons button{background:#dedede;color:#111;font-weight:650}.tabs{margin:20px 0 14px}.tabs button[aria-pressed=true]{border-color:#fff;background:#424242}.summary,.stages{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.summary{margin-bottom:16px}.tile{background:var(--tone);border-radius:15px;padding:12px 2px;text-align:center;color:#17212b}.tile strong{display:block;font-size:25px;margin-bottom:4px}.tile span{font-size:13px}.stage{border:1px solid #272727;border-radius:22px;padding:12px;min-width:0}.stage h2{font-size:18px;margin:4px 0 18px;display:flex;align-items:center;gap:9px}.dot{width:12px;height:12px;border-radius:50%;background:var(--tone)}.count{margin-left:auto;color:#aaa;font-size:14px;font-weight:400}.cards{display:grid;gap:12px}.card{background:var(--tone);color:#17212b;border-radius:17px;padding:13px;min-width:0}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.number{font-size:12px;font-weight:650}.icons{display:flex;gap:6px}.icon{display:grid;place-items:center;min-width:44px;padding:8px;background:#00000008;border:1px solid #0002;color:#17212b;border-radius:24px}.icon svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.text{margin:0 0 16px;font-size:16px;font-weight:650;line-height:1.4;overflow-wrap:anywhere;white-space:pre-wrap;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.actions{display:flex;gap:6px}.actions button{flex:1;background:#d6d6d6;color:#111;border:0;font-size:13px;padding:9px 4px}.actions button:disabled{opacity:.4;cursor:default}.empty{color:#888;font-size:13px}.confirm{background:#191919;border:1px solid #666;border-radius:12px;padding:12px;margin-top:7px}.confirm p{font-size:13px;margin:0 0 10px}.confirm .actions button:last-child{background:#b84545;color:#fff}.archive{border:1px solid #444;border-radius:16px;padding:15px;margin-top:18px}.archive-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid #333;padding:10px 0}.archive-row span{overflow-wrap:anywhere}.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#eee;color:#111;border-radius:12px;padding:12px 18px;z-index:10;max-width:90vw;width:max-content;box-shadow:0 4px 25px #0008}footer{margin-top:22px;color:#888;font-size:12px;line-height:1.6}dialog{background:#191919;color:white;border:1px solid #666;border-radius:16px;width:min(90vw,600px)}dialog::backdrop{background:#000b}dialog textarea{height:220px}dialog button{margin-top:10px}@media(max-width:849px){.shell{margin:14px auto}.board{padding:16px 12px}h1{font-size:25px}.stages{grid-template-columns:1fr}.summary{gap:6px}.tile span{font-size:11px}.stage h2{font-size:22px}.text{font-size:18px}.capture{margin:20px 0}.actions button{font-size:14px}}
+/* Only new controls and requested mobile visibility. */
+.capture-heading{position:relative}.capture-heading>button{position:absolute;right:0;top:-10px;min-width:44px}.capture-heading label{padding-right:52px}.project-buttons #newProject{min-width:44px;padding:9px 13px}.mobile-only{display:none}
+@media(max-width:849px){.desktop-only{display:none!important}.capture-heading label{padding-right:0}.mobile-only{display:inline-block}body:not(.ideas-open) #tabs,body:not(.ideas-open) #stages{display:none}#summary,.stage:not(:first-child){display:none}#stages{margin-top:14px}}
+/* Existing approved controls: opposite card actions, four desktop stages. */
+.top .icons{display:contents}.top .number{order:2}.top [data-action="ask"]{order:1}.top [data-action="copy"]{order:3}
+#syncPanel button:disabled{opacity:.5;cursor:default}
+@media(min-width:850px){#desktopTools{display:flex}}
+</style></head><body><main class="shell"><section class="board"><header><div><h1>Quadro Dev</h1><div class="muted">HML · somente dados fictícios</div></div><button id="archiveToggle" aria-expanded="false">▣ <span id="archiveCount">0</span><span class="muted"> arquivados</span></button></header>
+<section class="capture"><div class="capture-heading"><label for="idea">Qual é a ideia?</label><button id="captureToggle" class="desktop-only" aria-expanded="true" aria-controls="captureBody" title="Recolher captura rápida">⌃</button></div><div id="captureBody"><textarea id="idea" placeholder="Digite a ideia completa e toque no projeto abaixo…" rows="3"></textarea><div class="project-buttons" id="captureButtons"></div><div id="newProjectForm" hidden style="margin-top:10px"><label for="projectName">Nome do projeto</label><textarea id="projectName" rows="1" style="min-height:44px" maxlength="60"></textarea><button id="createProject">Criar projeto</button> <button id="cancelProject">Cancelar</button></div><div class="muted" style="margin-top:8px">Toque no projeto para registrar em Ideia.</div></div></section>
+<button id="ideasToggle" class="mobile-only" aria-expanded="false" aria-controls="tabs stages">Ver ideias ↓</button><nav class="tabs" id="tabs" aria-label="Ver projeto"></nav><div class="summary" id="summary"></div><div class="stages" id="stages"></div><section class="archive" id="archive" hidden></section><div class="tabs desktop-only" id="desktopTools"><button id="renameProject">Renomear projeto</button><button id="exportBackup">↓ Exportar backup</button><button id="importBackup">↑ Importar backup</button><input id="importFile" type="file" accept=".json,application/json" hidden></div><details id="syncPanel"><summary>Sincronização Google</summary><p id="syncStatus" role="status" aria-live="polite">Modo local. Nenhuma conexão Firebase ativa.</p><p id="syncAccount" hidden></p><div class="tabs"><button id="syncPrepare">Preparar conexão</button><button id="syncLogin" disabled>Entrar com Google</button><button id="syncLogout" disabled>Sair</button><button id="syncRecovery">Exportar recuperação</button></div><section id="syncConflict" hidden><p>Existem duas versões. Exporte a recuperação e verifique o arquivo salvo antes de escolher.</p><button id="syncVerify">Verificar arquivo salvo</button><input id="syncRecoveryFile" type="file" accept=".json,application/json" hidden><div class="tabs"><button id="syncUseLocal" disabled>Manter versão deste dispositivo</button><button id="syncUseRemote" disabled>Usar versão da conta Google</button></div></section></details><footer id="storageNote">Versão local · alterações salvas neste navegador. Firebase ainda desconectado.</footer></section></main><div class="toast" id="toast" role="status" hidden></div><dialog id="copyDialog"><h2>Texto completo para copiar</h2><p>A cópia automática não ficou disponível. Selecione e copie o texto abaixo.</p><textarea id="copyText" readonly aria-label="Texto completo do cartão"></textarea><button id="closeCopy">Fechar</button></dialog>
+<script>
+/* Stage 1: transport-independent engine. No Firebase connection or production activation. */
+(function(root){'use strict';
+const copy=v=>JSON.parse(JSON.stringify(v)), equal=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+function validate(board){
+ if(!board||board.version!==1||!Array.isArray(board.projects))throw Error('Quadro incompatível');
+ if(!board.projects.length){if(board.active!==null)throw Error('Projeto ativo inválido');return board}
+ const projects=new Set();
+ for(const p of board.projects){
+  if(typeof p.id!=='string'||!p.id||projects.has(p.id)||typeof p.name!=='string'||!Array.isArray(p.cards)||!Array.isArray(p.archived))throw Error('Projeto inválido');
+  projects.add(p.id);const ids=new Set();
+  for(const c of [...p.cards,...p.archived]){if(!Number.isSafeInteger(c.id)||c.id<1||ids.has(c.id)||typeof c.title!=='string'||typeof c.desc!=='string'||!Number.isInteger(c.stage)||c.stage<0||c.stage>3)throw Error('Cartão inválido');ids.add(c.id)}
+  if(!Number.isSafeInteger(p.nextId)||p.nextId<=Math.max(0,...ids))throw Error('Sequência de cartões inválida');
+ }
+ if(!projects.has(board.active))throw Error('Projeto ativo inválido');return board;
 }
-let confirmId=null, dialogMode=null, timer=null;
-let lastStored=localStorage.getItem(KEY);
-const active=()=>db.projects.find(p=>p.id===db.active)||db.projects[0];
-const save=()=>{try{if(protectionError)throw Error('Proteção indisponível'); const previous=localStorage.getItem(KEY);if(previous!==lastStored)throw Error('Outra aba alterou os dados; recarregue após exportar backup');if(previous!==null&&previous!==JSON.stringify(db))localStorage.setItem(KEY+'-anterior',previous);localStorage.setItem(KEY,JSON.stringify(db));lastStored=JSON.stringify(db);window.dispatchEvent(new Event('quadro-local-change'));return true}catch(e){notify('Não foi possível salvar. Exporte um backup.');return false}};
-function notify(message){const t=$('toast');t.textContent=message;t.hidden=false;clearTimeout(timer);timer=setTimeout(()=>t.hidden=true,2800)}
-const icon=type=>type==='archive'?'<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v12h14V8M10 12h4"/></svg>':'<svg viewBox="0 0 24 24"><rect x="8" y="3" width="12" height="13" rx="2"/><rect x="4" y="8" width="12" height="13" rx="2"/></svg>';
-function render(){const p=active();db.active=p.id;$('projectSubtitle').textContent='Projeto '+p.name;$('projectSelect').innerHTML=db.projects.map(x=>`<option value="${esc(x.id)}" ${x.id===p.id?'selected':''}>${esc(x.name)}</option>`).join('');$('archiveCount').textContent=p.archived.length;
-$('summary').innerHTML=steps.map((s,i)=>`<div class="summary-tile" style="background:${s.color}"><strong>${p.cards.filter(c=>c.stage===i).length}</strong><span>${s.name}</span></div>`).join('');
-$('stages').innerHTML=steps.map((s,i)=>`<section class="stage"><header class="stage-head"><div class="stage-name"><span class="dot" style="background:${s.color}"></span><span>${s.name}</span></div><span class="count">${p.cards.filter(c=>c.stage===i).length}</span></header><div class="cards">${p.cards.filter(c=>c.stage===i).map(c=>`<div class="card-wrap"><article class="card" style="--tone:${s.color}"><div class="card-top"><button class="icon-btn" data-action="archive-ask" data-id="${c.id}" aria-label="Arquivar melhoria ${c.id}">${icon('archive')}</button><button class="icon-btn" data-action="copy" data-id="${c.id}" aria-label="Copiar melhoria ${c.id}">${icon('copy')}</button></div><h3>Nº ${String(c.id).padStart(3,'0')} — ${esc(c.title)}</h3><p>${esc(c.desc)}</p><div class="move-actions"><button data-action="move" data-id="${c.id}" data-delta="-1" ${i===0?'disabled':''}>← Voltar</button><button data-action="move" data-id="${c.id}" data-delta="1" ${i===3?'disabled':''}>Avançar →</button></div></article>${confirmId===c.id?`<div class="archive-confirm"><p>Arquivar a melhoria Nº ${String(c.id).padStart(3,'0')}?</p><div class="form-actions"><button data-action="archive-cancel">Cancelar</button><button data-action="archive-confirm" data-id="${c.id}">Confirmar arquivamento</button></div></div>`:''}</div>`).join('')||'<div class="empty">Nenhuma melhoria nesta etapa.</div>'}</div></section>`).join('');
-$('archiveList').innerHTML='<strong>Melhorias arquivadas</strong>'+(p.archived.map(c=>`<div class="archive-row"><span>Nº ${String(c.id).padStart(3,'0')} — ${esc(c.title)}</span><button data-action="restore" data-id="${c.id}">Restaurar</button></div>`).join('')||'<p class="empty">Nenhuma melhoria arquivada.</p>');}
-function closeNew(){$('newForm').hidden=true;$('newToggle').setAttribute('aria-expanded','false');$('newForm').reset()}
-$('newToggle').onclick=()=>{const show=$('newForm').hidden;$('newForm').hidden=!show;$('newToggle').setAttribute('aria-expanded',String(show));if(show)$('title').focus()};$('cancel').onclick=closeNew;
-$('newForm').onsubmit=e=>{e.preventDefault();const title=$('title').value.trim();if(!title)return;const p=active();const id=p.nextId||Math.max(0,...[...p.cards,...p.archived].map(c=>c.id))+1;p.nextId=id+1;p.cards.push({id,title,desc:$('description').value.trim(),stage:0});closeNew();save();render()};
-$('archiveToggle').onclick=()=>{$('archiveList').hidden=!$('archiveList').hidden};
-$('projectSelect').onchange=e=>{db.active=e.target.value;confirmId=null;closeNew();$('archiveList').hidden=true;save();render()};
-function dialog(mode){dialogMode=mode;$('dialogTitle').textContent=mode==='new'?'Novo projeto':'Renomear projeto';$('dialogInput').value=mode==='rename'?active().name:'';$('dialogOverlay').hidden=false;$('dialogInput').focus();$('dialogInput').select()}
-$('addProject').onclick=()=>dialog('new');$('renameProject').onclick=()=>dialog('rename');$('dialogCancel').onclick=()=>{$('dialogOverlay').hidden=true};
-$('dialogForm').onsubmit=e=>{e.preventDefault();const name=$('dialogInput').value.trim();if(!name)return;if(dialogMode==='new'){const id='p'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);db.projects.push({id,name,...fresh()});db.active=id;confirmId=null;closeNew();$('archiveList').hidden=true}else active().name=name;$('dialogOverlay').hidden=true;save();render()};
-document.addEventListener('click',async e=>{const b=e.target.closest('button[data-action]');if(!b)return;const p=active(),action=b.dataset.action,id=Number(b.dataset.id),c=p.cards.find(x=>x.id===id);
-if(action==='move'&&c){c.stage=Math.max(0,Math.min(3,c.stage+Number(b.dataset.delta)));confirmId=null;save();render()}
-if(action==='archive-ask'){confirmId=confirmId===id?null:id;render()}
-if(action==='archive-cancel'){confirmId=null;render()}
-if(action==='archive-confirm'&&c){p.cards=p.cards.filter(x=>x.id!==id);p.archived.push(c);confirmId=null;save();render()}
-if(action==='restore'){const x=p.archived.find(x=>x.id===id);if(x){p.archived=p.archived.filter(c=>c.id!==id);p.cards.push(x);save();render()}}
-if(action==='copy'&&c){const txt=`Nº ${String(c.id).padStart(3,'0')} — ${c.title}\n${c.desc}`;try{await navigator.clipboard.writeText(txt)}catch(e){const ta=document.createElement('textarea');ta.value=txt;document.body.append(ta);ta.select();document.execCommand('copy');ta.remove()}notify('Cartão copiado')}
+function create({storage,key,transport,read,replace,onStatus=()=>{},onDiagnostic=()=>{}}){
+ if(!key||!transport)throw Error('Contexto de teste obrigatório');
+ let state,stop=null,running=false,online=true,tail=Promise.resolve(),epoch=0,retry=null,delay=1000,listenerFailed=false;
+ const transient=e=>['unavailable','deadline-exceeded','aborted','auth/network-request-failed'].includes(e?.code);
+ function clearRetry(){if(retry!==null)clearTimeout(retry);retry=null}
+ function schedule(){if(retry!==null||!running||!online)return;const session=epoch;retry=setTimeout(()=>{retry=null;if(running&&online&&session===epoch)queue(cycle).catch(()=>{})},delay);delay=Math.min(delay*2,30000)}
+ function listen(){
+  stop?.();stop=null;listenerFailed=false;const session=epoch;
+  stop=transport.subscribe(()=>{if(running&&session===epoch)queue(cycle).catch(()=>{})},e=>{if(running&&session===epoch){listenerFailed=transient(e);diagnostic(e,'listener');report('blocked');if(transient(e))schedule()}});
+ }
+ const raw=storage.getItem(key);
+ state=raw===null?{schema:1,base:null,pending:null,conflict:null}:JSON.parse(raw);
+ function snapshot(s){if(!s||!Number.isSafeInteger(s.revision)||s.revision<0)throw Error('Revisão inválida');validate(s.board);return s}
+ if(state.schema!==1)throw Error('Diário incompatível');
+ if(state.base)snapshot(state.base);if(state.pending)validate(state.pending);if(state.conflict)snapshot(state.conflict);
+ const persist=next=>{storage.setItem(key,JSON.stringify(next));state=next};
+ const report=s=>onStatus(s,copy(state));
+ const diagnostic=(e,operation)=>onDiagnostic({at:new Date().toISOString(),operation,code:String(e?.code||'local-error'),message:String(e?.message||e),online,running,epoch,baseRevision:state.base?.revision??null,pending:!!state.pending,conflictRevision:state.conflict?.revision??null});
+ const queue=fn=>{const result=tail.then(fn);tail=result.catch(()=>{});return result};
+ async function receive(remote,session){
+  snapshot(remote);remote=copy(remote);
+  if(state.conflict){
+   if(remote.revision<state.conflict.revision)throw Error('Revisão remota regrediu');
+   if(remote.revision===state.conflict.revision&&!equal(remote.board,state.conflict.board))throw Error('Revisão inconsistente');
+   if(remote.revision>state.conflict.revision){
+    storage.setItem(key+':conflict-history:'+Date.now(),JSON.stringify({schema:1,journal:copy(state),local:validate(copy(read()))}));
+    persist({...state,conflict:remote});
+   }
+   report('conflict');return;
+  }
+  if(!state.base){
+   if(!equal(read(),remote.board)){persist({...state,pending:validate(copy(read())),conflict:remote});report('conflict');return}
+   persist({...state,base:remote,pending:null});report('synced');return;
+  }
+  if(remote.revision<state.base.revision)throw Error('Revisão remota regrediu');
+  if(remote.revision===state.base.revision&&!equal(remote.board,state.base.board))throw Error('Revisão inconsistente');
+  const local=validate(copy(read()));
+  if(equal(local,remote.board)){persist({...state,base:remote,pending:null});report('synced');return}
+  if(remote.revision!==state.base.revision){
+   if(state.pending||!equal(local,state.base.board)){persist({...state,pending:local,conflict:remote});report('conflict');return}
+   // Persist recovery information before applying a remote board.
+   persist({...state,pending:local,conflict:remote});
+   replace(copy(remote.board));
+   persist({...state,base:remote,pending:null,conflict:null});report('synced');return;
+  }
+  // A crash can occur after the board write but before changed() journals it.
+  // Recover that local edit before any network write, including after reload.
+  if(!state.pending&&!equal(local,state.base.board))persist({...state,pending:local});
+  if(state.pending&&online&&running){
+   const sent=copy(state.pending);
+   const result=await transport.compareAndSet(remote.revision,sent);
+   if(!running||session!==epoch)return;
+   snapshot(result);
+   if(!equal(result.board,sent)||result.revision!==remote.revision+1)throw Error('Confirmação inválida');
+   const current=validate(copy(read()));
+   persist({...state,base:copy(result),pending:equal(current,sent)?null:current});report(state.pending?'pending':'synced');
+  }
+ }
+ async function cycle(){if(!running||!online)return;const session=epoch;try{if(listenerFailed)listen();const remote=await transport.get();if(!running||!online||session!==epoch)return;await receive(remote,session);if(!running||session!==epoch)return;clearRetry();delay=1000;if(listenerFailed||state.pending&&!state.conflict)schedule()}catch(e){if(!running||session!==epoch)return;diagnostic(e,'cycle');
+  // A rejected stale CAS is a conflict only after a fresh server read proves
+  // an advanced revision. Permission denial alone never proves concurrency.
+  if(online&&state.pending&&['permission-denied','aborted','revision-conflict'].includes(e.code)){
+   try{const fresh=await transport.get();if(!running||session!==epoch)return;if(state.base&&fresh.revision>state.base.revision){await receive(fresh,session);return}}catch(probe){diagnostic(probe,'conflict-confirmation')}
+  }
+  report(online?'blocked':'offline');if(transient(e))schedule();throw e}}
+ return {
+  start(){if(running)return Promise.resolve();running=true;++epoch;try{listen()}catch(e){listenerFailed=true;if(transient(e))schedule();else{running=false;throw e}}return queue(cycle)},
+  stop(){running=false;++epoch;clearRetry();stop?.();stop=null;return tail},
+  changed(){if(!running)throw Error('session-ended');const board=validate(copy(read()));try{persist({...state,pending:board})}catch(e){diagnostic(e,'journal');report('blocked');throw e}report(online?'pending':'offline');return queue(cycle)},
+  setOnline(value){online=!!value;clearRetry();delay=1000;if(!online){report('offline');return Promise.resolve()}return queue(cycle)},
+  flush(){return queue(cycle)},
+  exportRecovery(){return copy({schema:1,at:new Date().toISOString(),journal:state,local:validate(copy(read()))})},
+  resolve(choice){return queue(async()=>{if(!running||!online||!state.conflict)throw Error('no-active-conflict');const session=epoch;const archive=this.exportRecovery();storage.setItem(key+':recovery:'+Date.now(),JSON.stringify(archive));const remote=snapshot(await transport.get());if(!running||!online||session!==epoch)throw Error('session-ended');if(remote.revision!==state.conflict.revision||!equal(remote.board,state.conflict.board))throw Error('remote-changed-export-again');if(choice==='remote'){replace(copy(remote.board));persist({schema:1,base:copy(remote),pending:null,conflict:null})}else if(choice==='local'){const local=validate(copy(read()));persist({schema:1,base:copy(remote),pending:local,conflict:null})}else throw Error('invalid-choice');report(choice==='local'?'pending':'synced');return archive})},
+  inspect(){return copy(state)}
+ 
+ };
+}
+const api=Object.freeze({create,validate});if(typeof module==='object'&&module.exports)module.exports=api;else root.QuadroAutoSync=api;
+})(typeof window==='object'?window:globalThis);
+
+</script>
+<script>
+(function(root){'use strict';
+const clone=x=>JSON.parse(JSON.stringify(x));
+const EMPTY=()=>({version:1,active:null,projects:[]});
+function create({storage,key,transport=null,onStatus=()=>{},onReplace=()=>{}}){
+ const motor=typeof module==='object'&&module.exports?require('./auto-sync.js'):root.QuadroAutoSync;
+ const raw=storage.getItem(key);let record=raw===null?{schema:1,board:EMPTY(),journal:{schema:1,base:{revision:0,board:EMPTY()},pending:null,conflict:null}}:JSON.parse(raw);
+ if(record.schema!==1)throw Error('Registro local incompatível; preserve o arquivo');
+ motor.validate(record.board);let board=clone(record.board),engine,stopped=false,status='offline';
+ const durable={getItem:k=>k==='journal'?JSON.stringify(record.journal):storage.getItem(k),setItem:(k,v)=>{
+  if(k!=='journal'){storage.setItem(key+':'+k,v);return}
+  const next={schema:1,board:clone(board),journal:JSON.parse(v)};
+  storage.setItem(key,JSON.stringify(next));record=next;
+ }};
+ engine=motor.create({storage:durable,key:'journal',transport:transport||{get:async()=>{throw Error('Prévia local')},subscribe:()=>()=>{}},read:()=>board,
+  replace:value=>{board=clone(value);onReplace(clone(board))},onStatus:(s,j)=>{status=s;onStatus(s,j)}});
+ // Preview cannot read or write any remote service. Its pending journal survives reload.
+ if(!transport)engine.setOnline(false);
+ return {
+  get key(){return key},
+  read:()=>clone(board),inspect:()=>engine.inspect(),get status(){return status},
+  async start(){await engine.start()},
+  edit(value){if(stopped||engine.inspect().conflict)throw Error('Edição bloqueada; preserve as versões');motor.validate(value);const previous=board;board=clone(value);
+   // changed() persists synchronously before it queues any network work.
+   try{const task=engine.changed();task.catch(()=>{});return task}catch(e){board=previous;throw e}},
+  setOnline:value=>engine.setOnline(!!transport&&value),flush:()=>engine.flush(),
+  recovery:()=>engine.exportRecovery(),resolve:choice=>engine.resolve(choice),
+  async stop(){stopped=true;await engine.stop()}
+ };
+}
+const api={create,empty:EMPTY};if(typeof module==='object'&&module.exports)module.exports=api;else root.QuadroSession=api;
+})(typeof window==='object'?window:globalThis);
+
+</script>
+<script>
+/* Local UI-to-engine bridge. No Firebase imports, authentication or network. */
+(function(){'use strict';
+const key='quadro-dev-local:production-v2';
+const toBoard=value=>({version:1,active:value.active,projects:value.projects.map(p=>({id:p.id,name:p.name,nextId:p.next,cards:p.cards.filter(c=>!c.archived).map(c=>({id:c.id,title:c.text,desc:'',stage:c.stage})),archived:p.cards.filter(c=>c.archived).map(c=>({id:c.id,title:c.text,desc:'',stage:c.stage}))}))});
+const toView=value=>({version:2,active:value.active,projects:value.projects.map(p=>({id:p.id,name:p.name,next:p.nextId,cards:[...p.cards.map(c=>({id:c.id,text:c.title+(c.desc?'\n'+c.desc:''),stage:c.stage})),...p.archived.map(c=>({id:c.id,text:c.title+(c.desc?'\n'+c.desc:''),stage:c.stage,archived:true}))].sort((a,b)=>a.id-b.id)}))});
+let session,error=null,activeKey=key,preview,remote=false;
+try{session=QuadroSession.create({storage:localStorage,key});session.start().catch(e=>{error=e})}catch(e){error=e}
+preview=session;
+const refresh=()=>{window.quadro?.refresh();window.dispatchEvent(new Event('quadro-session-change'))};
+window.QuadroPersistence=Object.freeze({
+ get key(){return activeKey},get remote(){return remote},
+ read(){if(error)throw error;return toView(session.read())},
+ write(value){if(error)throw error;session.edit(toBoard(value)).catch(()=>{})},
+ recovery(){if(error)throw error;return session.recovery()},
+ inspect(){if(error)throw error;return session.inspect()},
+ get session(){return session},
+ adopt(value){session=value;activeKey=value.key;remote=true;error=null;refresh()},
+ local(){session=preview;activeKey=key;remote=false;refresh()},
+ refresh
 });
-$('exportBackup').onclick=()=>{const blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Quadro_Leve_Backup_'+new Date().toISOString().slice(0,10)+'.json';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)};
-$('importBackup').onclick=()=>{if(!window.quadroBackupReady?.()){alert('Antes de importar, exporte e verifique o backup atual no painel de sincronização.');return}$('importFile').click()};
-$('importFile').onchange=async e=>{const file=e.target.files?.[0];e.target.value='';if(!file)return;try{const parsed=JSON.parse(await file.text());if(!parsed||!Array.isArray(parsed.projects)||!parsed.projects.length||parsed.projects.some(p=>!p.id||typeof p.name!=='string'||!Array.isArray(p.cards)||!Array.isArray(p.archived)||[...p.cards,...p.archived].some(c=>!Number.isInteger(c.id)||typeof c.title!=='string'||typeof c.desc!=='string'||!Number.isInteger(c.stage)||c.stage<0||c.stage>3)))throw Error('Formato inválido');if(!window.quadroBackupReady?.())throw Error('Exporte e verifique novamente o backup atual');if(!confirm('Importar este backup? Isso substituirá todos os projetos atuais deste navegador.'))return;db={version:1,active:parsed.projects.some(p=>p.id===parsed.active)?parsed.active:parsed.projects[0].id,projects:parsed.projects.map(p=>({...p,nextId:Math.max(Number(p.nextId)||1,0,...[...p.cards,...p.archived].map(c=>c.id+1))}))};confirmId=null;closeNew();$('archiveList').hidden=true;save();render();notify('Backup importado')}catch(err){alert('Não foi possível importar: arquivo inválido.')}};
-window.quadro={read:()=>JSON.parse(JSON.stringify(db)),replace:value=>{const previous=db;db=value;if(!save()){db=previous;throw Error('Não foi possível preservar os dados locais')}confirmId=null;closeNew();render()}};
-if(originalRaw===null)save();render();})();
-</script><script>
-(()=>{'use strict';
-const KEY='quadro-leve-multiplos-projetos-v1', $=id=>document.getElementById(id), encode=JSON.stringify;
-const FIREBASE_CONFIG={"apiKey":"AIzaSyB5B32emgZx4HUu8X4nJrr3hIGGMBpMC8k","authDomain":"quadro-dev-ebb4b.firebaseapp.com","projectId":"quadro-dev-ebb4b","storageBucket":"quadro-dev-ebb4b.firebasestorage.app","messagingSenderId":"681611907751","appId":"1:681611907751:web:3ed8a747093795d2ef0182","measurementId":"G-PTHGPH32SE"};
-const panel=document.createElement('details');panel.className='archive-list';panel.innerHTML=`<summary>☁ Sincronização Google · backup e migração</summary><p id="syncStatus" role="status" aria-live="polite">Modo local. Nenhum dado enviado.</p><div class="backup-tools"><button id="verifyBackup">Verificar backup JSON atual</button><input id="verifyFile" type="file" accept=".json,application/json" hidden><button id="googleLogin">Entrar com Google</button><button id="googleLogout" disabled>Sair</button><button id="cloudRead" disabled>Consultar nuvem</button><button id="cloudBackup" disabled>Exportar versão da nuvem</button><button id="cloudSend" disabled>Enviar quadro local</button><button id="cloudReceive" disabled>Receber quadro da nuvem</button></div><p class="notice">1. Exporte o backup acima e verifique o arquivo salvo. 2. Ative a conexão Firebase, entre com Google e consulte a nuvem. 3. Escolha enviar ou receber. Alterações locais e offline ficam no navegador até novo envio. Conflitos bloqueiam o envio; exporte ambas as versões antes de decidir. Nenhuma combinação automática de projetos.</p><button id="configureFirebase">Ativar conexão Firebase</button><p class="notice">Use HTTPS ou localhost autorizado no Firebase Authentication. Não utilize file:// para login. Nenhuma mudança de plano ou serviço pago é feita por este HTML.</p>`;
-document.querySelector('.hint').before(panel);
-let backup=null, user=null, sdk=null, auth=null, store=null, ref=null, remote=null, revision=null, busy=false, generation=0, unsubscribe=null, fresh=false, cachePending=false;
-const status=t=>$('syncStatus').textContent=t;
-const local=()=>encode(window.quadro.read());
-window.quadroBackupReady=()=>backup===local();
-function buttons(){const ready=!!user&&!!ref&&!busy&&navigator.onLine;$('googleLogout').disabled=!user||busy;$('googleLogin').disabled=busy||!!user;$('cloudRead').disabled=!ready;$('cloudSend').disabled=!ready||!fresh;$('cloudReceive').disabled=!ready||!fresh||!remote;$('cloudBackup').disabled=!remote||busy}
-function invalidate(){backup=null;buttons()}
-window.addEventListener('quadro-local-change',()=>{invalidate();status(user?'Alterações locais pendentes. Exporte/verifique backup e envie quando desejar.':'Modo local. Alterações preservadas neste navegador.')});
-window.addEventListener('storage',e=>{if(e.key===KEY){fresh=false;cachePending=false;backup=null;status('Outra aba alterou o quadro. Exporte a versão desta aba antes de recarregar. Sincronização bloqueada.');buttons()}});
-window.addEventListener('offline',()=>{fresh=false;cachePending=false;status('Offline. Continue no quadro local; consulte a nuvem após reconectar.');buttons()});window.addEventListener('online',()=>{status('Conexão restabelecida. Consulte a nuvem antes de sincronizar.');buttons()});
-$('verifyBackup').onclick=()=>$('verifyFile').click();
-$('verifyFile').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;try{const data=JSON.parse(await f.text());if(encode(data)!==local())throw Error('O arquivo não corresponde ao quadro atual');backup=local();status('Backup JSON verificado. Guardado no arquivo escolhido; qualquer alteração exige novo backup.')}catch(err){backup=null;status('Backup não verificado: '+err.message)}};
-function validate(value){if(!value||value.version!==1||!Array.isArray(value.projects)||!value.projects.length)throw Error('Quadro inválido');const ids=new Set();for(const p of value.projects){if(typeof p.id!=='string'||!p.id||ids.has(p.id)||typeof p.name!=='string'||!Array.isArray(p.cards)||!Array.isArray(p.archived))throw Error('Projeto inválido');ids.add(p.id);const cards=new Set();for(const c of [...p.cards,...p.archived]){if(!Number.isSafeInteger(c.id)||c.id<1||cards.has(c.id)||typeof c.title!=='string'||typeof c.desc!=='string'||!Number.isInteger(c.stage)||c.stage<0||c.stage>3)throw Error('Cartão inválido');cards.add(c.id)}p.nextId=Math.max(1,...[...cards].map(id=>id+1),Number.isSafeInteger(p.nextId)?p.nextId:1)}if(!ids.has(value.active))value.active=value.projects[0].id;return value}
-function unpack(snap){if(!snap.exists())return {revision:0,board:null};const d=snap.data();if(d.schema!==1||!Number.isSafeInteger(d.revision)||d.revision<1||typeof d.payload!=='string')throw Error('Documento remoto incompatível; não será sobrescrito');return {revision:d.revision,board:validate(JSON.parse(d.payload))}}
-async function action(fn){if(busy)return;busy=true;buttons();try{await fn()}catch(e){status('Operação interrompida: '+(e.code||e.message)+'. Dados locais mantidos.');fresh=false}finally{busy=false;buttons()}}
-async function configure(config){if(config.projectId!=='quadro-dev-ebb4b'||!config.apiKey||!config.appId||!config.authDomain)throw Error('Configuração incompleta ou projeto diferente');if(auth)throw Error('Recarregue para alterar a configuração');const version='12.4.0',base='https://www.gstatic.com/firebasejs/'+version+'/';const [app,A,F]=await Promise.all([import(base+'firebase-app.js'),import(base+'firebase-auth.js'),import(base+'firebase-firestore.js')]);sdk={...A,...F};const instance=app.initializeApp(config);auth=A.getAuth(instance);store=F.getFirestore(instance);A.onAuthStateChanged(auth,u=>{generation++;unsubscribe?.();unsubscribe=null;user=u;ref=u?F.doc(store,'users',u.uid,'quadro','principal'):null;remote=null;revision=null;fresh=false;cachePending=false;status(u?'Conectado como '+(u.email||u.uid)+'. Consulte a nuvem; nenhum dado foi enviado.':'Modo local. Nenhum dado enviado.');buttons()});status('Firebase pronto. Entre com Google.');}
-$('configureFirebase').onclick=()=>action(async()=>{await configure(FIREBASE_CONFIG);$('configureFirebase').disabled=true});
-$('googleLogin').onclick=()=>action(async()=>{if(!auth)throw Error('Clique primeiro em Ativar conexão Firebase');if(location.protocol==='file:')throw Error('Abra via HTTPS ou localhost autorizado');await sdk.signInWithPopup(auth,new sdk.GoogleAuthProvider())});
-$('googleLogout').onclick=()=>action(async()=>{await sdk.signOut(auth)});
-$('cloudRead').onclick=()=>action(async()=>{const token=generation, target=ref;fresh=false;cachePending=false;const snap=await sdk.getDocFromServer(target);if(token!==generation)throw Error('Conta alterada');const result=unpack(snap);revision=result.revision;remote=result.board;fresh=true;unsubscribe?.();unsubscribe=sdk.onSnapshot(target,{includeMetadataChanges:true},s=>{if(token!==generation)return;if(s.metadata.fromCache){cachePending=fresh||cachePending;fresh=false;status('Conexão com servidor não confirmada. Consulte novamente antes de sincronizar.');buttons();return}try{const latest=unpack(s);if(latest.revision!==revision){fresh=false;cachePending=false;status('Nuvem mudou em outro dispositivo. Consulte novamente; dados locais preservados.');buttons()}else if(cachePending){fresh=true;cachePending=false;status(remote?'Nuvem consultada · versão '+revision+' · '+remote.projects.length+' projeto(s). Enviar substitui a nuvem; receber substitui somente este navegador.':'Nuvem vazia. Envio inicial requer backup verificado e confirmação.');buttons()}}catch(e){fresh=false;cachePending=false;status(e.message);buttons()}},e=>{fresh=false;cachePending=false;status('Escuta interrompida: '+e.code);buttons()});status(remote?'Nuvem consultada · versão '+revision+' · '+remote.projects.length+' projeto(s). Enviar substitui a nuvem; receber substitui somente este navegador.':'Nuvem vazia. Envio inicial requer backup verificado e confirmação.');});
-$('cloudBackup').onclick=()=>{if(!remote)return;const url=URL.createObjectURL(new Blob([JSON.stringify(remote,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='Quadro_Nuvem_v'+revision+'_'+new Date().toISOString().slice(0,10)+'.json';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)};
-$('cloudSend').onclick=()=>action(async()=>{if(!fresh||revision===null||!window.quadroBackupReady())throw Error('Consulte a nuvem e exporte/verifique o backup atual');const payload=local();validate(JSON.parse(payload));if(new TextEncoder().encode(payload).length>800000)throw Error('Quadro acima do limite seguro de 800 KB; não enviado');const target=ref,token=generation,expected=revision;if(!confirm('Enviar para '+user.email+'? '+(remote?'SUBSTITUIR o quadro da nuvem (versão '+revision+').':'Criar o primeiro quadro na nuvem.')+' O backup local já foi verificado.'))return;await sdk.runTransaction(store,async tx=>{if(token!==generation||local()!==payload||!navigator.onLine)throw Error('Conta, conexão ou quadro local mudou');const current=unpack(await tx.get(target));if(current.revision!==expected)throw Error('Conflito: outro dispositivo alterou a nuvem. Consulte novamente');tx.set(target,{schema:1,revision:expected+1,payload,updatedAt:sdk.serverTimestamp()})});fresh=false;cachePending=false;status('Envio confirmado pelo servidor. Consulte novamente para continuar.');});
-$('cloudReceive').onclick=()=>action(async()=>{if(!fresh||!remote||!window.quadroBackupReady())throw Error('Consulte a nuvem e exporte/verifique o backup atual');const token=generation,target=ref,expected=revision,before=local();const result=unpack(await sdk.getDocFromServer(target));if(token!==generation||result.revision!==expected||local()!==before)throw Error('Nuvem, conta ou quadro local mudou; consulte novamente');if(!confirm('Substituir o quadro DESTE navegador pela versão '+expected+' da conta '+user.email+'? Seu backup JSON foi verificado. Nada será enviado.'))return;window.quadro.replace(result.board);fresh=false;cachePending=false;status('Quadro recebido e salvo localmente. Backup anterior preservado.');});
-buttons();
 })();
 
+</script>
+
+<script>
+(function(root){'use strict';
+function mount({persistence,makeConnection,network=window,online=()=>navigator.onLine,confirmChoice=message=>confirm(message)}){
+ const $=id=>document.getElementById(id);let connection=null,busy=false,verified=null,disposed=false;
+ const status=message=>$('syncStatus').textContent=message;
+ const signature=()=>JSON.stringify({scope:persistence.key,journal:persistence.recovery().journal,local:persistence.recovery().local});
+ function editing(value){window.quadro?.setEditing(value)}
+ function update(){if(disposed)return;const conflict=!!persistence.inspect().conflict;const authenticated=!!connection&&persistence.remote;
+  $('syncConflict').hidden=!conflict;$('syncLogin').disabled=!connection||busy||authenticated;$('syncLogout').disabled=!connection||busy;
+  $('syncPrepare').disabled=!!connection||busy;$('syncUseLocal').disabled=!conflict||busy||verified!==signature();$('syncUseRemote').disabled=$('syncUseLocal').disabled;
+  $('syncVerify').disabled=!conflict||busy;editing(!busy&&!conflict);
+ }
+ function changed(){verified=null;update()}
+ async function action(fn){if(busy||disposed)return;busy=true;update();try{await fn()}catch(e){status(e.code==='remote-disabled-pending-authorization'?'A conexão remota ainda não foi habilitada nesta versão local.':e.code==='auth/popup-closed-by-user'?'Login cancelado. Seus dados foram preservados.':'Operação interrompida. Exporte a recuperação; seus dados foram preservados.')}finally{busy=false;update()}}
+ function accountStatus(value,session,identity){
+  if(disposed)return;
+  $('syncAccount').hidden=value!=='ready';$('syncAccount').textContent=identity?.email?'Conta: '+identity.email:'Conta Google conectada.';
+  if(value==='ready'){persistence.adopt(session);session.setOnline(online()).catch(()=>status('Sem confirmação do servidor. Pendências preservadas.'));sessionStatus(session.status)}
+  else {persistence.local();$('storageNote').textContent='Versão local · alterações salvas neste navegador. Firebase desconectado.';status(({ 'signed-out':'Desconectado. Quadro local preservado.', 'another-tab-active':'Esta conta já está aberta em outra aba. Quadro local preservado.', 'google-required':'Entre usando uma conta Google.',blocked:'Conexão interrompida. Quadro local preservado.',reconnecting:'Sem rede para verificar a conta. Reconexão automática pendente.'})[value]||'Conexão indisponível.')}
+  changed();
+ }
+ function sessionStatus(value){if(disposed||!persistence.remote)return;persistence.refresh();$('storageNote').textContent=value==='synced'?'Conta Google · sincronização automática.':'Conta Google · alterações e recuperação preservadas neste dispositivo.';status(({synced:'Tudo sincronizado.',pending:'Alterações aguardando confirmação.',offline:'Offline. Alterações preservadas neste dispositivo.',conflict:'Conflito: exporte e verifique as duas versões antes de escolher.',blocked:new TextEncoder().encode(JSON.stringify(persistence.recovery().local)).length>20000?'Quadro acima do limite de 20.000 bytes. Alterações preservadas neste dispositivo; reduza o conteúdo para sincronizar.':'Sem confirmação do servidor. Pendências preservadas.'})[value]||'Sincronização em andamento.');update()}
+ $('syncPrepare').onclick=()=>action(async()=>{connection=await makeConnection({onStatus:accountStatus,onSessionStatus:sessionStatus,onReplace:()=>persistence.refresh()});status('Conexão preparada. Entre com Google.');update()});
+ $('syncLogin').onclick=()=>action(async()=>{await connection.login();await connection.idle()});
+ $('syncLogout').onclick=()=>action(async()=>{await connection.logout();persistence.local();verified=null;status('Desconectado. Dados de cada conta preservados separadamente.')});
+ $('syncRecovery').onclick=()=>{const payload={schema:1,scope:persistence.key,recovery:persistence.recovery()};const url=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='Quadro_Dev_Recuperacao.json';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);verified=null;update();status('Salve o arquivo de recuperação. Em caso de conflito, selecione-o em Verificar arquivo salvo.')};
+ $('syncVerify').onclick=()=>$('syncRecoveryFile').click();
+ $('syncRecoveryFile').onchange=async e=>{const file=e.target.files?.[0];e.target.value='';verified=null;if(!file)return;try{const saved=JSON.parse(await file.text());const proof=JSON.stringify({scope:saved.scope,journal:saved.recovery.journal,local:saved.recovery.local});if(saved.schema!==1||proof!==signature())throw Error('recovery-mismatch');verified=proof;status('Arquivo de recuperação verificado. Escolha qual versão manter.')}catch{status('O arquivo não corresponde às versões atuais. Exporte a recuperação novamente.')}update()};
+ function resolve(choice){return action(async()=>{if(verified!==signature()||!persistence.inspect().conflict)throw Error('recovery-required');if(!confirmChoice(choice==='local'?'Manter a versão deste dispositivo e enviá-la à conta conectada? As duas versões foram preservadas.':'Usar a versão da conta conectada neste dispositivo? As duas versões foram preservadas.'))return;await persistence.session.resolve(choice);verified=null;await persistence.session.flush();persistence.refresh();status('Escolha aplicada. Cópia de recuperação preservada.')})}
+ $('syncUseLocal').onclick=()=>resolve('local');$('syncUseRemote').onclick=()=>resolve('remote');
+ const offline=()=>{if(persistence.remote)persistence.session.setOnline(false).catch(()=>{});if(persistence.remote)status('Offline. Alterações preservadas neste dispositivo.');update()};
+ const reconnect=()=>{if(persistence.remote)persistence.session.setOnline(online()).catch(()=>status('Reconexão pendente. Dados preservados.'));update()};
+ const visible=()=>{if(document.visibilityState==='visible')reconnect()};
+ network.addEventListener('offline',offline);network.addEventListener('online',reconnect);document.addEventListener('visibilitychange',visible);
+ window.addEventListener('quadro-local-change',changed);window.addEventListener('quadro-session-change',update);update();
+ return {async dispose(){disposed=true;network.removeEventListener('offline',offline);network.removeEventListener('online',reconnect);document.removeEventListener('visibilitychange',visible);window.removeEventListener('quadro-local-change',changed);window.removeEventListener('quadro-session-change',update);await connection?.dispose()},accountStatus,sessionStatus};
+}
+root.QuadroSyncControls=Object.freeze({mount});
+})(window);
+
+</script>
+<script>
+(()=>{'use strict';
+const KEY='quadro-dev-local:production-v2';
+const steps=[['Ideia','#e9ac44'],['Organização','#6fa8e8'],['Implantação','#b58be8'],['Concluído','#40a978']];
+const initial=()=>({version:2,active:null,projects:[]});
+function validate(value){
+ if(!value||value.version!==2||!Array.isArray(value.projects))throw Error('Quadro inválido');
+ const ids=new Set();for(const p of value.projects){if(!p||typeof p.id!=='string'||!p.id||ids.has(p.id)||typeof p.name!=='string'||!p.name.trim()||!Array.isArray(p.cards)||!Number.isSafeInteger(p.next)||p.next<1)throw Error('Projeto inválido');ids.add(p.id);const cards=new Set();
+  for(const c of p.cards){if(!c||!Number.isSafeInteger(c.id)||c.id<1||cards.has(c.id)||typeof c.text!=='string'||!Number.isInteger(c.stage)||c.stage<0||c.stage>3||('archived' in c&&typeof c.archived!=='boolean'))throw Error('Cartão inválido');cards.add(c.id);if(p.next<=c.id)throw Error('Sequência inválida')}
+ }
+ if(value.projects.length?!ids.has(value.active):value.active!==null)throw Error('Projeto ativo inválido');return value;
+}
+let db=initial(),pending=null,timer,blocked=false,lastStored=null;
+try{lastStored=localStorage.getItem(KEY);db=validate(window.QuadroPersistence.read())}catch{blocked=true}
+let committed=JSON.stringify(db),editingEnabled=true,displayedKey=window.QuadroPersistence.key;const drafts=new Map();
+
+const $=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),active=()=>db.projects.find(p=>p.id===db.active)||db.projects[0],num=id=>String(id).padStart(3,'0');
+function save(){try{if(!editingEnabled||blocked||localStorage.getItem(window.QuadroPersistence.key)!==lastStored)throw Error('Armazenamento indisponível ou outra aba alterou o quadro');validate(db);const value=JSON.stringify(db);if(value===committed)return true;window.QuadroPersistence.write(db);lastStored=localStorage.getItem(window.QuadroPersistence.key);committed=value;window.dispatchEvent(new Event('quadro-local-change'));return true}catch{db=JSON.parse(committed);notify('Não foi possível salvar. A alteração foi cancelada; preserve um backup.');return false}}
+window.addEventListener('storage',e=>{if(e.key===window.QuadroPersistence.key){blocked=true;$('storageNote').textContent='Outra aba alterou este quadro. Exporte sua versão antes de recarregar.'}});
+
+function notify(t){$('toast').textContent=t;$('toast').hidden=false;clearTimeout(timer);timer=setTimeout(()=>$('toast').hidden=true,3000)}
+const copyIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="3" width="12" height="13" rx="2"/><path d="M5 8H4v13h12v-2"/></svg>',archiveIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v12h14V8M10 12h4"/></svg>';
+function render(){$('captureButtons').innerHTML=db.projects.map(p=>`<button data-capture="${esc(p.id)}">${esc(p.name)}</button>`).join('')+'<button id="newProject" title="Novo projeto" aria-label="Criar novo projeto">+</button>';const p=active()||{name:'Nenhum projeto',cards:[]};$('tabs').innerHTML=db.projects.map(x=>`<button data-view="${esc(x.id)}" aria-pressed="${x.id===p.id}">${esc(x.name)}</button>`).join('');$('archiveCount').textContent=p.cards.filter(c=>c.archived).length;$('renameProject').disabled=!active();
+$('summary').innerHTML=steps.map(([name,color],i)=>`<div class="tile" style="--tone:${color}"><strong>${p.cards.filter(c=>!c.archived&&c.stage===i).length}</strong><span>${name}</span></div>`).join('');
+$('stages').innerHTML=steps.map(([name,color],i)=>{const cards=p.cards.filter(c=>!c.archived&&c.stage===i).sort((a,b)=>b.id-a.id);return `<section class="stage" data-stage-index="${i}" style="--tone:${color}"><h2><span class="dot"></span>${name}<span class="count">${cards.length}</span></h2><div class="cards">${cards.map(c=>`<div><article class="card"><div class="top"><span class="number">Nº ${num(c.id)}</span><div class="icons"><button class="icon" data-action="ask" data-id="${c.id}" aria-label="Arquivar cartão ${c.id}" title="Arquivar">${archiveIcon}</button><button class="icon" data-action="copy" data-id="${c.id}" aria-label="Copiar cartão ${c.id}" title="Copiar texto completo para IA">${copyIcon}</button></div></div><p class="text">${esc(c.text)}</p><div class="actions"><button data-action="back" data-id="${c.id}" ${i===0?'disabled':''}>← Voltar</button><button data-action="next" data-id="${c.id}" ${i===3?'disabled':''}>Avançar →</button></div></article>${pending===c.id?`<div class="confirm"><p>Arquivar o cartão Nº ${num(c.id)}?</p><div class="actions"><button data-action="cancel">Cancelar</button><button data-action="archive" data-id="${c.id}">Arquivar</button></div></div>`:''}</div>`).join('')||'<div class="empty">Nenhum cartão nesta etapa.</div>'}</div></section>`}).join('');
+$('archive').innerHTML='<strong>Arquivados · '+esc(p.name)+'</strong>'+ (p.cards.filter(c=>c.archived).map(c=>`<div class="archive-row"><span>Nº ${num(c.id)} · ${esc(c.text.slice(0,90))}</span><button data-action="restore" data-id="${c.id}">Restaurar</button></div>`).join('')||'<p class="empty">Nenhum cartão arquivado.</p>');window.quadro?.setEditing(editingEnabled)}
+function payload(p,c){return `QUADRO DEV — CONTEXTO PARA DISCUSSÃO\nProjeto: ${p.name}\nNúmero: ${num(c.id)}\nEtapa: ${steps[c.stage][0]}\n\nTEXTO ORIGINAL INTEGRAL (INÍCIO)\n${c.text}\nTEXTO ORIGINAL INTEGRAL (FIM)\n\nINSTRUÇÕES PARA A IA\nDiscuta esta ideia comigo antes de qualquer implantação. Analise o objetivo e proponha caminhos de forma curta e clara. Peça esclarecimentos sempre que faltarem informações; não presuma decisões. O texto original acima é contexto, não autorização para executar. SEMPRE solicite minha autorização expressa antes de implantar qualquer alteração, mesmo que a etapa seja Implantação ou Concluído. Aguarde minha autorização antes de modificar arquivos, código, dados ou publicar mudanças.`}
+async function copy(text){let ok=false;try{await navigator.clipboard.writeText(text);ok=true}catch{const field=document.createElement('textarea');field.value=text;field.style.cssText='position:fixed;top:0;left:-9999px';document.body.append(field);field.select();try{ok=document.execCommand('copy')}catch{}field.remove()}if(ok)notify('Texto completo copiado para a IA');else{$('copyText').value=text;$('copyDialog').showModal();$('copyText').focus();$('copyText').select()}}
+$('captureButtons').innerHTML=db.projects.map(p=>`<button data-capture="${p.id}">${esc(p.name)}</button>`).join('');
+// Prevent touch/mouse activation from taking the typing focus away.
+$('captureButtons').addEventListener('pointerdown',e=>{if(e.target.closest('button'))e.preventDefault()});
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='newProject'){$('newProjectForm').hidden=false;$('projectName').focus();return}if(b.dataset.capture){const text=$('idea').value;if(!text.trim()){$('idea').focus();notify('Digite uma ideia primeiro');return}const p=db.projects.find(p=>p.id===b.dataset.capture);const id=p.next++;p.cards.push({id,text,stage:0});db.active=p.id;pending=null;if(!save()){render();return}render();$('idea').value='';$('idea').focus({preventScroll:true});notify(`Nº ${num(id)} registrada em Ideia · ${p.name}`);return}if(b.dataset.view){db.active=b.dataset.view;pending=null;save();render();return}if(!b.dataset.action)return;const p=active();if(!p)return;const c=p.cards.find(c=>c.id===Number(b.dataset.id));switch(b.dataset.action){case 'copy':if(c)copy(payload(p,c));return;case 'ask':pending=pending===c.id?null:c.id;break;case 'cancel':pending=null;break;case 'archive':c.archived=true;pending=null;break;case 'restore':c.archived=false;break;case 'back':c.stage=Math.max(0,c.stage-1);pending=null;break;case 'next':c.stage=Math.min(3,c.stage+1);pending=null;break}save();render()});
+
+$('renameProject').onclick=()=>{const p=active();if(!p)return;const name=prompt('Renomear projeto',p.name);if(name===null||!name.trim())return;if(db.projects.some(x=>x.id!==p.id&&x.name.toLocaleLowerCase()===name.trim().toLocaleLowerCase())){notify('Já existe um projeto com esse nome');return}p.name=name.trim().slice(0,60);save();render()};
+function download(value,name){const url=URL.createObjectURL(new Blob([JSON.stringify(value,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+$('exportBackup').onclick=()=>download(db,'Quadro_Dev_Backup_'+new Date().toISOString().slice(0,10)+'.json');
+$('importBackup').onclick=()=>notify('HML: use apenas os dados fictícios do roteiro. Importação bloqueada.');
+$('importFile').onchange=async e=>{e.target.value='';return;const file=e.target.files?.[0];e.target.value='';if(!file)return;try{const value=validate(JSON.parse(await file.text()));if(blocked)throw Error('Armazenamento bloqueado');if(!confirm('Substituir os projetos desta cópia local pelo backup escolhido? Uma cópia de recuperação será preservada neste navegador.'))return;localStorage.setItem(window.QuadroPersistence.key+':recovery:'+Date.now(),JSON.stringify(db));db=value;pending=null;save();render()}catch{notify('Backup inválido ou armazenamento indisponível. Nada foi importado.')}};
+window.quadro={setEditing:value=>{editingEnabled=!!value;document.querySelectorAll('#captureButtons button,#tabs button,#createProject,#renameProject,#importBackup,button[data-action]:not([data-action="copy"])').forEach(button=>button.disabled=!editingEnabled||button.dataset.action==='back'&&Number(button.closest('.stage')?.dataset.stageIndex)===0||button.dataset.action==='next'&&Number(button.closest('.stage')?.dataset.stageIndex)===3);if(!active())$('renameProject').disabled=true},refresh:()=>{try{const nextKey=window.QuadroPersistence.key;if(displayedKey!==nextKey){drafts.set(displayedKey,$('idea').value);$('idea').value=drafts.get(nextKey)||'';$('projectName').value='';$('newProjectForm').hidden=true;displayedKey=nextKey}db=validate(window.QuadroPersistence.read());committed=JSON.stringify(db);lastStored=localStorage.getItem(nextKey);blocked=false;pending=null;render()}catch{blocked=true}},read:()=>JSON.parse(JSON.stringify(db)),replace:value=>{db=validate(JSON.parse(JSON.stringify(value)));if(!save())throw Error('Falha ao salvar');pending=null;render()}};
+$('cancelProject').onclick=()=>{$('newProjectForm').hidden=true;$('projectName').value=''};
+$('createProject').onclick=()=>{const name=$('projectName').value.trim();if(!name){$('projectName').focus();return}if(db.projects.some(p=>p.name.toLocaleLowerCase()===name.toLocaleLowerCase())){notify('Já existe um projeto com esse nome');return}const id='projeto-'+Date.now()+'-'+Math.random().toString(36).slice(2);db.projects.push({id,name,next:1,cards:[]});db.active=id;pending=null;if(!save()){render();return}render();$('newProjectForm').hidden=true;$('projectName').value='';$('idea').focus();notify('Projeto criado')};
+const mobileQuery=matchMedia('(max-width:849px)');
+function captureExpanded(expanded){$('captureBody').hidden=!expanded;$('captureToggle').setAttribute('aria-expanded',String(expanded));$('captureToggle').textContent=expanded?'⌃':'⌄';$('captureToggle').title=expanded?'Recolher captura rápida':'Expandir captura rápida'}
+$('captureToggle').onclick=()=>captureExpanded($('captureBody').hidden);
+$('ideasToggle').onclick=()=>{const open=document.body.classList.toggle('ideas-open');$('ideasToggle').setAttribute('aria-expanded',String(open));$('ideasToggle').textContent=open?'Ocultar ideias ↑':'Ver ideias ↓'};
+mobileQuery.addEventListener('change',e=>{if(e.matches)captureExpanded(true)});
+$('archiveToggle').onclick=()=>{$('archive').hidden=!$('archive').hidden;$('archiveToggle').setAttribute('aria-expanded',String(!$('archive').hidden))};$('closeCopy').onclick=()=>$('copyDialog').close();render();window.QuadroSyncPanel=QuadroSyncControls.mount({persistence:window.QuadroPersistence,makeConnection:async options=>import('./production-entry.mjs').then(m=>m.prepare(options))});if(blocked)$('storageNote').textContent='Dados locais indisponíveis ou inválidos. Arquivo original preservado; edições bloqueadas.';
+})();
 </script></body></html>
