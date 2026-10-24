@@ -181,7 +181,21 @@ function mount({persistence,makeConnection,network=window,online=()=>navigator.o
   $('syncVerify').disabled=!conflict||busy;editing(!busy&&!conflict);
  }
  function changed(){verified=null;update()}
- async function action(fn){if(busy||disposed)return;busy=true;update();try{await fn()}catch(e){status(e.code==='remote-disabled-pending-authorization'?'A conexão remota ainda não foi habilitada nesta versão local.':e.code==='auth/popup-closed-by-user'?'Login cancelado. Seus dados foram preservados.':'Operação interrompida. Exporte a recuperação; seus dados foram preservados.')}finally{busy=false;update()}}
+ function connectionError(e){
+ const messages={
+  'auth/popup-blocked':'O navegador bloqueou a janela de login. Permita pop-ups para este site.',
+  'auth/unauthorized-domain':'O endereço deste site não está autorizado no Firebase.',
+  'auth/operation-not-allowed':'O login Google não está habilitado no Firebase.',
+  'auth/network-request-failed':'Não foi possível conectar ao Google. Verifique a conexão.',
+  'auth/cancelled-popup-request':'Outra janela de login já está em andamento.',
+  'auth/web-storage-unsupported':'O navegador não permite o armazenamento necessário para o login.'
+ };
+ if(messages[e?.code])return messages[e.code]+' Seus dados locais foram preservados.';
+ if(/Failed to fetch dynamically imported module|Importing a module script failed|error loading dynamically imported module/i.test(e?.message||''))return 'Falha ao carregar os arquivos de conexão. Atualize esta página com Ctrl+Shift+R. Seus dados locais foram preservados.';
+ const code=typeof e?.code==='string'&&/^[a-z][a-z0-9/-]{0,70}$/.test(e.code)?' Código: '+e.code+'.':'';
+ return 'Operação interrompida.'+code+' Exporte a recuperação; seus dados locais foram preservados.';
+ }
+ async function action(fn){if(busy||disposed)return;busy=true;update();try{await fn()}catch(e){status(e.code==='remote-disabled-pending-authorization'?'A conexão remota ainda não foi habilitada nesta versão local.':e.code==='auth/popup-closed-by-user'?'Login cancelado. Seus dados foram preservados.':connectionError(e))}finally{busy=false;update()}}
  function accountStatus(value,session,identity){
   if(disposed)return;
   $('syncAccount').hidden=value!=='ready';$('syncAccount').textContent=identity?.email?'Conta: '+identity.email:'Conta Google conectada.';
