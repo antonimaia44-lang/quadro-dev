@@ -170,7 +170,7 @@ window.QuadroPersistence=Object.freeze({
 
 <script>
 (function(root){'use strict';
-function mount({persistence,makeConnection,network=window,online=()=>navigator.onLine,confirmChoice=message=>confirm(message)}){
+function mount({persistence,makeConnection,autoConnect=false,network=window,online=()=>navigator.onLine,confirmChoice=message=>confirm(message)}){
  const $=id=>document.getElementById(id);let connection=null,busy=false,verified=null,disposed=false;
  const status=message=>$('syncStatus').textContent=message;
  const signature=()=>JSON.stringify({scope:persistence.key,journal:persistence.recovery().journal,local:persistence.recovery().local});
@@ -204,7 +204,8 @@ function mount({persistence,makeConnection,network=window,online=()=>navigator.o
   changed();
  }
  function sessionStatus(value){if(disposed||!persistence.remote)return;persistence.refresh();$('storageNote').textContent=value==='synced'?'Conta Google · sincronização automática.':'Conta Google · alterações e recuperação preservadas neste dispositivo.';status(({synced:'Tudo sincronizado.',pending:'Alterações aguardando confirmação.',offline:'Offline. Alterações preservadas neste dispositivo.',conflict:'Conflito: exporte e verifique as duas versões antes de escolher.',blocked:new TextEncoder().encode(JSON.stringify(persistence.recovery().local)).length>20000?'Quadro acima do limite de 20.000 bytes. Alterações preservadas neste dispositivo; reduza o conteúdo para sincronizar.':'Sem confirmação do servidor. Pendências preservadas.'})[value]||'Sincronização em andamento.');update()}
- $('syncPrepare').onclick=()=>action(async()=>{connection=await makeConnection({onStatus:accountStatus,onSessionStatus:sessionStatus,onReplace:()=>persistence.refresh()});status('Conexão preparada. Entre com Google.');update()});
+ const prepareConnection=()=>action(async()=>{status('Restaurando conexão Google…');connection=await makeConnection({onStatus:accountStatus,onSessionStatus:sessionStatus,onReplace:()=>persistence.refresh()});if(!persistence.remote)status('Conexão preparada. Entre com Google.');update()});
+ $('syncPrepare').onclick=prepareConnection;
  $('syncLogin').onclick=()=>action(async()=>{await connection.login();await connection.idle()});
  $('syncLogout').onclick=()=>action(async()=>{await connection.logout();persistence.local();verified=null;status('Desconectado. Dados de cada conta preservados separadamente.')});
  $('syncRecovery').onclick=()=>{const payload={schema:1,scope:persistence.key,recovery:persistence.recovery()};const url=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='Quadro_Dev_Recuperacao.json';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);verified=null;update();status('Salve o arquivo de recuperação. Em caso de conflito, selecione-o em Verificar arquivo salvo.')};
@@ -217,6 +218,7 @@ function mount({persistence,makeConnection,network=window,online=()=>navigator.o
  const visible=()=>{if(document.visibilityState==='visible')reconnect()};
  network.addEventListener('offline',offline);network.addEventListener('online',reconnect);document.addEventListener('visibilitychange',visible);
  window.addEventListener('quadro-local-change',changed);window.addEventListener('quadro-session-change',update);update();
+ if(autoConnect)prepareConnection();
  return {async dispose(){disposed=true;network.removeEventListener('offline',offline);network.removeEventListener('online',reconnect);document.removeEventListener('visibilitychange',visible);window.removeEventListener('quadro-local-change',changed);window.removeEventListener('quadro-session-change',update);await connection?.dispose()},accountStatus,sessionStatus};
 }
 root.QuadroSyncControls=Object.freeze({mount});
@@ -269,6 +271,6 @@ function captureExpanded(expanded){$('captureBody').hidden=!expanded;$('captureT
 $('captureToggle').onclick=()=>captureExpanded($('captureBody').hidden);
 $('ideasToggle').onclick=()=>{const open=document.body.classList.toggle('ideas-open');$('ideasToggle').setAttribute('aria-expanded',String(open));$('ideasToggle').textContent=open?'Ocultar ideias ↑':'Ver ideias ↓'};
 mobileQuery.addEventListener('change',e=>{if(e.matches)captureExpanded(true)});
-$('archiveToggle').onclick=()=>{$('archive').hidden=!$('archive').hidden;$('archiveToggle').setAttribute('aria-expanded',String(!$('archive').hidden))};$('closeCopy').onclick=()=>$('copyDialog').close();render();window.QuadroSyncPanel=QuadroSyncControls.mount({persistence:window.QuadroPersistence,makeConnection:async options=>import('./production-entry.mjs').then(m=>m.prepare(options))});if(blocked)$('storageNote').textContent='Dados locais indisponíveis ou inválidos. Arquivo original preservado; edições bloqueadas.';
+$('archiveToggle').onclick=()=>{$('archive').hidden=!$('archive').hidden;$('archiveToggle').setAttribute('aria-expanded',String(!$('archive').hidden))};$('closeCopy').onclick=()=>$('copyDialog').close();render();window.QuadroSyncPanel=QuadroSyncControls.mount({persistence:window.QuadroPersistence,autoConnect:true,makeConnection:async options=>import('./production-entry.mjs').then(m=>m.prepare(options))});if(blocked)$('storageNote').textContent='Dados locais indisponíveis ou inválidos. Arquivo original preservado; edições bloqueadas.';
 })();
 </script></body></html>
