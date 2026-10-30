@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'none'; img-src data:; object-src 'none'; base-uri 'none'"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080808"><title>Quadro Dev · Prévia isolada · Ideia 023</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}[hidden]{display:none!important}body{margin:0;background:#080808;color:#f7f7f7;font:15px system-ui,-apple-system,Segoe UI,sans-serif}button,textarea{font:inherit}button{cursor:pointer;min-height:44px}button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offset:3px}.shell{max-width:1280px;margin:22px auto;padding:0 16px}.board{border:1px solid #272727;border-radius:25px;padding:24px}header{display:flex;justify-content:space-between;align-items:center;gap:12px}h1{font-size:30px;margin:0 0 6px}.muted{color:#aaa;font-size:13px}button{border:1px solid #505050;border-radius:12px;background:#242424;color:#fff;padding:9px 13px}.capture{margin:24px 0}.capture label{display:block;font-weight:650;margin-bottom:10px}textarea{width:100%;resize:vertical;min-height:90px;background:#191919;color:#fff;border:1px solid #555;border-radius:14px;padding:14px}.project-buttons,.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.project-buttons button{background:#dedede;color:#111;font-weight:650}.tabs{margin:20px 0 14px}.tabs button[aria-pressed=true]{border-color:#fff;background:#424242}.summary,.stages{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.summary{margin-bottom:16px}.tile{background:var(--tone);border-radius:15px;padding:12px 18px;text-align:center;color:#17212b;display:flex;flex-direction:row-reverse;align-items:center;justify-content:space-between;gap:12px}.tile strong{display:block;font-size:36px;margin:0;flex-shrink:0}.tile span{font-size:18px;text-align:left}.stage{border:1px solid #272727;border-radius:22px;padding:12px;min-width:0}.stage h2{font-size:18px;margin:4px 0 18px;display:flex;align-items:center;gap:9px}.dot{width:12px;height:12px;border-radius:50%;background:var(--tone)}.count{margin-left:auto;color:#aaa;font-size:14px;font-weight:400}.cards{display:grid;gap:12px}.card{background:var(--tone);color:#17212b;border-radius:17px;padding:13px;min-width:0}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.number{font-size:12px;font-weight:650}.icons{display:flex;gap:6px}.icon{display:grid;place-items:center;min-width:44px;padding:8px;background:#00000008;border:1px solid #0002;color:#17212b;border-radius:24px}.icon svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.text{margin:0 0 16px;font-size:16px;font-weight:650;line-height:1.4;overflow-wrap:anywhere;white-space:pre-wrap;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.actions{display:flex;gap:6px}.actions button{flex:1;background:#d6d6d6;color:#111;border:0;font-size:13px;padding:9px 4px}.actions button:disabled{opacity:.4;cursor:default}.empty{color:#888;font-size:13px}.confirm{background:#191919;border:1px solid #666;border-radius:12px;padding:12px;margin-top:7px}.confirm p{font-size:13px;margin:0 0 10px}.confirm .actions button:last-child{background:#b84545;color:#fff}.archive{border:1px solid #444;border-radius:16px;padding:15px;margin-top:18px}.archive-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid #333;padding:10px 0}.archive-row span{overflow-wrap:anywhere}.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#eee;color:#111;border-radius:12px;padding:12px 18px;z-index:10;max-width:90vw;width:max-content;box-shadow:0 4px 25px #0008}footer{margin-top:22px;color:#888;font-size:12px;line-height:1.6}dialog{background:#191919;color:white;border:1px solid #666;border-radius:16px;width:min(90vw,600px)}dialog::backdrop{background:#000b}dialog textarea{height:220px}dialog button{margin-top:10px}@media(max-width:849px){.shell{margin:14px auto}.board{padding:16px 12px}h1{font-size:25px}.stages{grid-template-columns:1fr}.summary{gap:6px}.tile span{font-size:11px}.stage h2{font-size:22px}.text{font-size:18px}.capture{margin:20px 0}.actions button{font-size:14px}}
+/* Only new controls and requested mobile visibility. */
+.capture-heading{position:relative}.capture-heading>button{position:absolute;right:0;top:-10px;min-width:44px}.capture-heading label{padding-right:52px}.project-buttons #newProject{min-width:44px;padding:9px 13px}.mobile-only{display:none}
+@media(max-width:849px){.desktop-only{display:none!important}.capture-heading label{padding-right:0}.mobile-only{display:inline-block}body:not(.ideas-open) #tabs,body:not(.ideas-open) #stages{display:none}#summary,.stage:not(:first-child){display:none}#stages{margin-top:14px}}
+/* Existing approved controls: opposite card actions, four desktop stages. */
+.top .icons{display:contents}.top .number{order:2}.top [data-action="ask"]{order:1}.top [data-action="copy"]{order:3}
+#syncPanel button:disabled{opacity:.5;cursor:default}
+@media(min-width:850px){#desktopTools{display:flex}}
+.implementation-history{border-top:1px solid #444;border-bottom:1px solid #444;margin:0 0 16px;padding:12px 0;max-height:360px;overflow:auto}.implementation-history>strong{font-size:13px;color:#aaa}.implementation-history .archive-row{flex-wrap:wrap}.implementation-history .archive-read{font-size:13px}.implementation-history [data-action="restore"]{font-size:12px;padding:6px 8px}
+.history-title{background:none;border:0;border-radius:4px;padding:0;color:inherit;font:inherit;font-weight:inherit;text-align:left;min-height:44px}.wait-days{font-size:12px;opacity:.75;margin:-6px 0 10px}.archive-read{background:none;border:0;text-align:left;flex:1;min-width:0;overflow-wrap:anywhere}#historyText{white-space:pre-wrap;overflow-wrap:anywhere;max-height:65vh;overflow:auto}#historyDialog h2{font-size:20px}
+
+#cardDetail{width:min(92vw,680px);max-height:90dvh;overflow:auto;padding:22px}#cardDetail h2{font-size:20px;margin-top:0}#cardDescription{white-space:pre-wrap;overflow-wrap:anywhere;max-height:60dvh;overflow:auto;line-height:1.5}#cardEditor{height:31.5dvh;min-height:105px}#cardDetail .detail-buttons{display:flex;gap:8px;flex-wrap:wrap}#detailStatus:empty{display:none}.text[data-description]{cursor:pointer}.text[data-description]:focus-visible{outline:3px solid #17212b;outline-offset:3px}@media(max-width:849px){#cardDetail{padding:16px;width:94vw;max-height:92dvh}}
+.project-choice{display:inline-flex;align-items:stretch;position:relative;max-width:100%}.project-choice>button{min-width:0;overflow-wrap:anywhere;border-radius:12px 0 0 12px}.project-choice details>summary{cursor:pointer;list-style:none;min-width:36px;min-height:44px;display:grid;place-items:center;border-radius:0 12px 12px 0;background:#dedede;color:#333;border-left:1px solid #aaa}.project-choice details[open]>div{position:absolute;z-index:4;top:100%;right:0;background:#242424;padding:6px;border:1px solid #666;border-radius:12px;min-width:170px}.project-buttons .project-choice details button{font-size:13px;background:#242424;color:white;width:100%}.project-read-card{border-bottom:1px solid #444;padding:12px 0}.project-read-card p{white-space:pre-wrap;overflow-wrap:anywhere}#projectReadCards{max-height:60dvh;overflow:auto}#projectConfirmText{overflow-wrap:anywhere}.archive-row{flex-wrap:wrap}</style></head><body><main class="shell"><section class="board"><header><div><h1>Quadro Dev</h1><div class="muted">Prévia isolada · dados fictícios · sem Firebase</div></div><button id="archiveToggle" aria-expanded="false">▣ <span id="archiveCount">0</span><span class="muted"> arquivados</span></button></header>
+<section class="capture"><div class="capture-heading"><label for="idea">Qual é a ideia?</label><button id="captureToggle" class="desktop-only" aria-expanded="true" aria-controls="captureBody" title="Recolher captura rápida">⌃</button></div><div id="captureBody"><textarea id="idea" placeholder="Digite a ideia completa e toque no projeto abaixo…" rows="3"></textarea><div class="project-buttons" id="captureButtons"></div><div id="newProjectForm" hidden style="margin-top:10px"><label for="projectName">Nome do projeto</label><textarea id="projectName" rows="1" style="min-height:44px" maxlength="60"></textarea><button id="createProject">Criar projeto</button> <button id="cancelProject">Cancelar</button></div><div class="muted" style="margin-top:8px">Toque no projeto para registrar em Ideia.</div></div></section>
+<button id="ideasToggle" class="mobile-only" aria-expanded="false" aria-controls="tabs stages">Ver ideias ↓</button><nav class="tabs" id="tabs" aria-label="Ver projeto"></nav><div class="summary" id="summary"></div><div class="stages" id="stages"></div><section class="archive" id="archive" hidden></section><div class="tabs desktop-only" id="desktopTools"><button id="renameProject">Renomear projeto</button><button id="exportBackup">↓ Exportar backup</button><button id="importBackup">↑ Importar backup</button><input id="importFile" type="file" accept=".json,application/json" hidden></div><details id="syncPanel"><summary>Sincronização Google</summary><p id="syncStatus" role="status" aria-live="polite">Modo local. Nenhuma conexão Firebase ativa.</p><p id="syncAccount" hidden></p><div class="tabs"><button id="syncPrepare">Preparar conexão</button><button id="syncLogin" disabled>Entrar com Google</button><button id="syncLogout" disabled>Sair</button><button id="syncRecovery">Exportar recuperação</button></div><section id="syncConflict" hidden><p>Existem duas versões. Exporte a recuperação e verifique o arquivo salvo antes de escolher.</p><button id="syncVerify">Verificar arquivo salvo</button><input id="syncRecoveryFile" type="file" accept=".json,application/json" hidden><div class="tabs"><button id="syncUseLocal" disabled>Manter versão deste dispositivo</button><button id="syncUseRemote" disabled>Usar versão da conta Google</button></div></section></details><footer id="storageNote">Versão local · alterações salvas neste navegador. Firebase ainda desconectado.</footer></section></main><div class="toast" id="toast" role="status" hidden></div><dialog id="projectConfirm" aria-labelledby="projectConfirmTitle"><h2 id="projectConfirmTitle"></h2><p id="projectConfirmText"></p><p id="projectConfirmStatus" role="status"></p><div class="tabs"><button id="cancelProjectAction" autofocus>Cancelar</button><button id="confirmProject"></button></div></dialog><dialog id="projectRead" aria-labelledby="projectReadTitle"><h2 id="projectReadTitle"></h2><div id="projectReadCards"></div><button id="closeProjectRead">Fechar</button></dialog><dialog id="copyDialog"><h2>Texto completo para copiar</h2><p>A cópia automática não ficou disponível. Selecione e copie o texto abaixo.</p><textarea id="copyText" readonly aria-label="Texto completo do cartão"></textarea><button id="closeCopy">Fechar</button></dialog>
+<dialog id="cardDetail" aria-labelledby="cardDetailTitle"><h2 id="cardDetailTitle"></h2><div id="cardDescription"></div><textarea id="cardEditor" aria-label="Descrição integral do cartão" hidden></textarea><p id="detailStatus" role="status" aria-live="polite"></p><div class="detail-buttons"><button id="editDescription">Editar</button><button id="saveDescription" hidden>Salvar</button><button id="cancelDescription" hidden>Cancelar</button><button id="closeDescription">Fechar</button></div></dialog>
+<dialog id="historyDialog"><h2>Histórico de implementações</h2><div id="historyText"></div><button id="closeHistory">Fechar</button></dialog>
+<script>if(!localStorage.getItem('quadro-dev-local:previa-ideia-023')){const b={"version":1,"active":"demo","projects":[{"id":"demo","name":"Quadro Dev · demonstração","nextId":6,"cards":[{"id":1,"title":"Ideia para discutir","desc":"Exemplo fictício","stage":0},{"id":2,"title":"Solução em desenvolvimento com IA","desc":"Exemplo fictício","stage":1},{"id":3,"title":"Solução pronta aguardando implantação","desc":"Exemplo fictício","stage":2,"readyEnteredAt":1792942404024},{"id":4,"title":"Publicada e validada","desc":"Exemplo fictício. Arquivamento após 48 horas.","stage":3,"implementedAt":1793201604024}],"archived":[{"id":5,"title":"Implementação anterior para consulta integral","desc":"Todo o conteúdo permanece aqui. Restaurar leva este cartão para Em análise com IA.","stage":3,"implementedAt":1792856004024,"implementationHistory":true,"implementationArchivedAt":1793028804024}]}]};b.projects[0].cards.find(c=>c.stage===3).implementedAt=Date.now();b.projects[0].cards.find(c=>c.stage===2).readyEnteredAt=Date.now()-86400000;b.projects.push({id:'demo-outro',name:'Outro projeto fictício',nextId:2,cards:[{id:1,title:'Planejar próximo exemplo',desc:'Dados fictícios para arquivar e restaurar.',stage:0}],archived:[]});localStorage.setItem('quadro-dev-local:previa-ideia-023',JSON.stringify({schema:1,board:b,journal:{schema:1,base:{revision:0,board:b},pending:null,conflict:null}}))}</script><script>/* Ideia 021: deterministic lifecycle; no network or storage. */
+(function(root){'use strict';
+const DAY=86400000, HOURS48=2*DAY, fields=['readyEnteredAt','implementedAt','implementationArchivedAt'];
+const validTime=v=>Number.isSafeInteger(v)&&v>=0;
+function validate(c){for(const k of fields)if(k in c&&!validTime(c[k]))throw Error('Data de etapa inválida');if('implementationHistory' in c&&typeof c.implementationHistory!=='boolean')throw Error('Histórico inválido');return c}
+function metadata(c){const m={};for(const k of [...fields,'implementationHistory'])if(k in c)m[k]=c[k];return m}
+function move(c,stage,now=Date.now()){if(c.stage===stage)return;c.stage=stage;delete c.readyEnteredAt;delete c.implementedAt;if(stage===2)c.readyEnteredAt=now;if(stage===3)c.implementedAt=now}
+function days(c,now=Date.now()){return c.stage===2&&validTime(c.readyEnteredAt)?Math.max(0,Math.floor((now-c.readyEnteredAt)/DAY)):null}
+function sweep(board,now=Date.now()){let changed=false;for(const p of board.projects.filter(p=>!p.projectArchived))for(const c of p.cards){if(c.archived||c.stage!==3)continue;if(!validTime(c.implementedAt)){c.implementedAt=now;changed=true}if(now-c.implementedAt>=HOURS48){c.archived=true;c.implementationHistory=true;c.implementationArchivedAt=now;changed=true}}return changed}
+function archive(c,now=Date.now()){c.archived=true;if(c.stage===3){c.implementationHistory=true;c.implementationArchivedAt=now}}
+function restore(c,now=Date.now()){c.archived=false;if(c.implementationHistory||c.stage===3){move(c,1,now);delete c.implementationHistory;delete c.implementationArchivedAt}}
+const api=Object.freeze({validate,metadata,move,days,sweep,archive,restore});if(typeof module==='object'&&module.exports)module.exports=api;else root.QuadroLifecycle=api;
+})(typeof window==='object'?window:globalThis);
+</script>
+<script>
+/* Stage 1: transport-independent engine. No Firebase connection or production activation. */
+(function(root){'use strict';
+const copy=v=>JSON.parse(JSON.stringify(v)), equal=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+function validate(board){
+ if(!board||board.version!==1||!Array.isArray(board.projects))throw Error('Quadro incompatível');
+ if(!board.projects.length){if(board.active!==null)throw Error('Projeto ativo inválido');return board}
+ const projects=new Set();
+ for(const p of board.projects){
+  if(typeof p.id!=='string'||!p.id||projects.has(p.id)||typeof p.name!=='string'||!Array.isArray(p.cards)||!Array.isArray(p.archived))throw Error('Projeto inválido');
+  projects.add(p.id);const ids=new Set();
+  for(const c of [...p.cards,...p.archived]){if(!Number.isSafeInteger(c.id)||c.id<1||ids.has(c.id)||typeof c.title!=='string'||typeof c.desc!=='string'||!Number.isInteger(c.stage)||c.stage<0||c.stage>3)throw Error('Cartão inválido');QuadroLifecycle.validate(c);ids.add(c.id)}
+  if(!Number.isSafeInteger(p.nextId)||p.nextId<=Math.max(0,...ids))throw Error('Sequência de cartões inválida');
+ }
+ if(!projects.has(board.active))throw Error('Projeto ativo inválido');return board;
+}
+function create({storage,key,transport,read,replace,onStatus=()=>{},onDiagnostic=()=>{}}){
+ if(!key||!transport)throw Error('Contexto de teste obrigatório');
+ let state,stop=null,running=false,online=true,tail=Promise.resolve(),epoch=0,retry=null,delay=1000,listenerFailed=false;
+ const transient=e=>['unavailable','deadline-exceeded','aborted','auth/network-request-failed'].includes(e?.code);
+ function clearRetry(){if(retry!==null)clearTimeout(retry);retry=null}
+ function schedule(){if(retry!==null||!running||!online)return;const session=epoch;retry=setTimeout(()=>{retry=null;if(running&&online&&session===epoch)queue(cycle).catch(()=>{})},delay);delay=Math.min(delay*2,30000)}
+ function listen(){
+  stop?.();stop=null;listenerFailed=false;const session=epoch;
+  stop=transport.subscribe(()=>{if(running&&session===epoch)queue(cycle).catch(()=>{})},e=>{if(running&&session===epoch){listenerFailed=transient(e);diagnostic(e,'listener');report('blocked');if(transient(e))schedule()}});
+ }
+ const raw=storage.getItem(key);
+ state=raw===null?{schema:1,base:null,pending:null,conflict:null}:JSON.parse(raw);
+ function snapshot(s){if(!s||!Number.isSafeInteger(s.revision)||s.revision<0)throw Error('Revisão inválida');validate(s.board);return s}
+ if(state.schema!==1)throw Error('Diário incompatível');
+ if(state.base)snapshot(state.base);if(state.pending)validate(state.pending);if(state.conflict)snapshot(state.conflict);
+ const persist=next=>{storage.setItem(key,JSON.stringify(next));state=next};
+ const report=s=>onStatus(s,copy(state));
+ const diagnostic=(e,operation)=>onDiagnostic({at:new Date().toISOString(),operation,code:String(e?.code||'local-error'),message:String(e?.message||e),online,running,epoch,baseRevision:state.base?.revision??null,pending:!!state.pending,conflictRevision:state.conflict?.revision??null});
+ const queue=fn=>{const result=tail.then(fn);tail=result.catch(()=>{});return result};
+ async function receive(remote,session){
+  snapshot(remote);remote=copy(remote);
+  if(state.conflict){
+   if(remote.revision<state.conflict.revision)throw Error('Revisão remota regrediu');
+   if(remote.revision===state.conflict.revision&&!equal(remote.board,state.conflict.board))throw Error('Revisão inconsistente');
+   if(remote.revision>state.conflict.revision){
+    storage.setItem(key+':conflict-history:'+Date.now(),JSON.stringify({schema:1,journal:copy(state),local:validate(copy(read()))}));
+    persist({...state,conflict:remote});
+   }
+   report('conflict');return;
+  }
+  if(!state.base){
+   if(!equal(read(),remote.board)){persist({...state,pending:validate(copy(read())),conflict:remote});report('conflict');return}
+   persist({...state,base:remote,pending:null});report('synced');return;
+  }
+  if(remote.revision<state.base.revision)throw Error('Revisão remota regrediu');
+  if(remote.revision===state.base.revision&&!equal(remote.board,state.base.board))throw Error('Revisão inconsistente');
+  const local=validate(copy(read()));
+  if(equal(local,remote.board)){persist({...state,base:remote,pending:null});report('synced');return}
+  if(remote.revision!==state.base.revision){
+   if(state.pending||!equal(local,state.base.board)){persist({...state,pending:local,conflict:remote});report('conflict');return}
+   // Persist recovery information before applying a remote board.
+   persist({...state,pending:local,conflict:remote});
+   replace(copy(remote.board));
+   persist({...state,base:remote,pending:null,conflict:null});report('synced');return;
+  }
+  // A crash can occur after the board write but before changed() journals it.
+  // Recover that local edit before any network write, including after reload.
+  if(!state.pending&&!equal(local,state.base.board))persist({...state,pending:local});
+  if(state.pending&&online&&running){
+   const sent=copy(state.pending);
+   const result=await transport.compareAndSet(remote.revision,sent);
+   if(!running||session!==epoch)return;
+   snapshot(result);
+   if(!equal(result.board,sent)||result.revision!==remote.revision+1)throw Error('Confirmação inválida');
+   const current=validate(copy(read()));
+   persist({...state,base:copy(result),pending:equal(current,sent)?null:current});report(state.pending?'pending':'synced');
+  }
+ }
+ async function cycle(){if(!running||!online)return;const session=epoch;try{if(listenerFailed)listen();const remote=await transport.get();if(!running||!online||session!==epoch)return;await receive(remote,session);if(!running||session!==epoch)return;clearRetry();delay=1000;if(listenerFailed||state.pending&&!state.conflict)schedule()}catch(e){if(!running||session!==epoch)return;diagnostic(e,'cycle');
+  // A rejected stale CAS is a conflict only after a fresh server read proves
+  // an advanced revision. Permission denial alone never proves concurrency.
+  if(online&&state.pending&&['permission-denied','aborted','revision-conflict'].includes(e.code)){
+   try{const fresh=await transport.get();if(!running||session!==epoch)return;if(state.base&&fresh.revision>state.base.revision){await receive(fresh,session);return}}catch(probe){diagnostic(probe,'conflict-confirmation')}
+  }
+  report(online?'blocked':'offline');if(transient(e))schedule();throw e}}
+ return {
+  start(){if(running)return Promise.resolve();running=true;++epoch;try{listen()}catch(e){listenerFailed=true;if(transient(e))schedule();else{running=false;throw e}}return queue(cycle)},
+  stop(){running=false;++epoch;clearRetry();stop?.();stop=null;return tail},
+  changed(){if(!running)throw Error('session-ended');const board=validate(copy(read()));try{persist({...state,pending:board})}catch(e){diagnostic(e,'journal');report('blocked');throw e}report(online?'pending':'offline');return queue(cycle)},
+  setOnline(value){online=!!value;clearRetry();delay=1000;if(!online){report('offline');return Promise.resolve()}return queue(cycle)},
+  flush(){return queue(cycle)},
+  exportRecovery(){return copy({schema:1,at:new Date().toISOString(),journal:state,local:validate(copy(read()))})},
+  resolve(choice){return queue(async()=>{if(!running||!online||!state.conflict)throw Error('no-active-conflict');const session=epoch;const archive=this.exportRecovery();storage.setItem(key+':recovery:'+Date.now(),JSON.stringify(archive));const remote=snapshot(await transport.get());if(!running||!online||session!==epoch)throw Error('session-ended');if(remote.revision!==state.conflict.revision||!equal(remote.board,state.conflict.board))throw Error('remote-changed-export-again');if(choice==='remote'){replace(copy(remote.board));persist({schema:1,base:copy(remote),pending:null,conflict:null})}else if(choice==='local'){const local=validate(copy(read()));persist({schema:1,base:copy(remote),pending:local,conflict:null})}else throw Error('invalid-choice');report(choice==='local'?'pending':'synced');return archive})},
+  inspect(){return copy(state)}
+ 
+ };
+}
+const api=Object.freeze({create,validate});if(typeof module==='object'&&module.exports)module.exports=api;else root.QuadroAutoSync=api;
+})(typeof window==='object'?window:globalThis);
+
+</script>
+<script>
+(function(root){'use strict';
+const clone=x=>JSON.parse(JSON.stringify(x));
+const EMPTY=()=>({version:1,active:null,projects:[]});
+function create({storage,key,transport=null,onStatus=()=>{},onReplace=()=>{}}){
+ const motor=typeof module==='object'&&module.exports?require('./auto-sync.js'):root.QuadroAutoSync;
+ const raw=storage.getItem(key);let record=raw===null?{schema:1,board:EMPTY(),journal:{schema:1,base:{revision:0,board:EMPTY()},pending:null,conflict:null}}:JSON.parse(raw);
+ if(record.schema!==1)throw Error('Registro local incompatível; preserve o arquivo');
+ motor.validate(record.board);let board=clone(record.board),engine,stopped=false,status='offline';
+ const durable={getItem:k=>k==='journal'?JSON.stringify(record.journal):storage.getItem(k),setItem:(k,v)=>{
+  if(k!=='journal'){storage.setItem(key+':'+k,v);return}
+  const next={schema:1,board:clone(board),journal:JSON.parse(v)};
+  storage.setItem(key,JSON.stringify(next));record=next;
+ }};
+ engine=motor.create({storage:durable,key:'journal',transport:transport||{get:async()=>{throw Error('Prévia local')},subscribe:()=>()=>{}},read:()=>board,
+  replace:value=>{board=clone(value);onReplace(clone(board))},onStatus:(s,j)=>{status=s;onStatus(s,j)}});
+ // Preview cannot read or write any remote service. Its pending journal survives reload.
+ if(!transport)engine.setOnline(false);
+ return {
+  get key(){return key},
+  read:()=>clone(board),inspect:()=>engine.inspect(),get status(){return status},
+  async start(){await engine.start()},
+  edit(value){if(stopped||engine.inspect().conflict)throw Error('Edição bloqueada; preserve as versões');motor.validate(value);const previous=board;board=clone(value);
+   // changed() persists synchronously before it queues any network work.
+   try{const task=engine.changed();task.catch(()=>{});return task}catch(e){board=previous;throw e}},
+  setOnline:value=>engine.setOnline(!!transport&&value),flush:()=>engine.flush(),
+  recovery:()=>engine.exportRecovery(),resolve:choice=>engine.resolve(choice),
+  async stop(){stopped=true;await engine.stop()}
+ };
+}
+const api={create,empty:EMPTY};if(typeof module==='object'&&module.exports)module.exports=api;else root.QuadroSession=api;
+})(typeof window==='object'?window:globalThis);
+
+</script>
+<script>
+/* Local UI-to-engine bridge. No Firebase imports, authentication or network. */
+(function(){'use strict';
+const key='quadro-dev-local:previa-ideia-023';
+const toBoard=value=>({version:1,active:value.active,projects:value.projects.map(p=>({id:p.id,name:p.name,...Object.fromEntries(Object.entries(p).filter(([k])=>!["id","name","next","nextId","cards","archived"].includes(k))),nextId:p.next,cards:p.cards.filter(c=>!c.archived).map(c=>({id:c.id,title:c.text,desc:'',stage:c.stage,...Object.fromEntries(Object.entries(c).filter(([k])=>!["id","text","title","desc","stage","archived"].includes(k)))})),archived:p.cards.filter(c=>c.archived).map(c=>({id:c.id,title:c.text,desc:'',stage:c.stage,...Object.fromEntries(Object.entries(c).filter(([k])=>!["id","text","title","desc","stage","archived"].includes(k)))}))}))});
+const toView=value=>({version:2,active:value.active,projects:value.projects.map(p=>({id:p.id,name:p.name,...Object.fromEntries(Object.entries(p).filter(([k])=>!["id","name","next","nextId","cards","archived"].includes(k))),next:p.nextId,cards:[...p.cards.map(c=>({id:c.id,text:c.title+(c.desc?'\n'+c.desc:''),stage:c.stage,...Object.fromEntries(Object.entries(c).filter(([k])=>!["id","text","title","desc","stage","archived"].includes(k)))})),...p.archived.map(c=>({id:c.id,text:c.title+(c.desc?'\n'+c.desc:''),stage:c.stage,archived:true,...Object.fromEntries(Object.entries(c).filter(([k])=>!["id","text","title","desc","stage","archived"].includes(k)))}))].sort((a,b)=>a.id-b.id)}))});
+let session,error=null,activeKey=key,preview,remote=false;
+try{session=QuadroSession.create({storage:localStorage,key});session.start().catch(e=>{error=e})}catch(e){error=e}
+preview=session;
+const refresh=()=>{window.quadro?.refresh();window.dispatchEvent(new Event('quadro-session-change'))};
+window.QuadroPersistence=Object.freeze({
+ get key(){return activeKey},get remote(){return remote},
+ read(){if(error)throw error;return toView(session.read())},
+ write(value){if(error)throw error;session.edit(toBoard(value)).catch(()=>{})},
+ recovery(){if(error)throw error;return session.recovery()},
+ inspect(){if(error)throw error;return session.inspect()},
+ get session(){return session},
+ adopt(value){session=value;activeKey=value.key;remote=true;error=null;refresh()},
+ local(){session=preview;activeKey=key;remote=false;refresh()},
+ refresh
+});
+})();
+
+</script>
+
+<script>
+(function(root){'use strict';
+function mount({persistence,makeConnection,autoConnect=false,network=window,online=()=>navigator.onLine,confirmChoice=message=>confirm(message)}){
+ const $=id=>document.getElementById(id);let connection=null,busy=false,verified=null,disposed=false;
+ const status=message=>$('syncStatus').textContent=message;
+ const signature=()=>JSON.stringify({scope:persistence.key,journal:persistence.recovery().journal,local:persistence.recovery().local});
+ function editing(value){window.quadro?.setEditing(value)}
+ function update(){if(disposed)return;const conflict=!!persistence.inspect().conflict;const authenticated=!!connection&&persistence.remote;
+  $('syncConflict').hidden=!conflict;$('syncLogin').disabled=!connection||busy||authenticated;$('syncLogout').disabled=!connection||busy;
+  $('syncPrepare').disabled=!!connection||busy;$('syncUseLocal').disabled=!conflict||busy||verified!==signature();$('syncUseRemote').disabled=$('syncUseLocal').disabled;
+  $('syncVerify').disabled=!conflict||busy;editing(!busy&&!conflict);
+ }
+ function changed(){verified=null;update()}
+ function connectionError(e){
+ const messages={
+  'auth/popup-blocked':'O navegador bloqueou a janela de login. Permita pop-ups para este site.',
+  'auth/unauthorized-domain':'O endereço deste site não está autorizado no Firebase.',
+  'auth/operation-not-allowed':'O login Google não está habilitado no Firebase.',
+  'auth/network-request-failed':'Não foi possível conectar ao Google. Verifique a conexão.',
+  'auth/cancelled-popup-request':'Outra janela de login já está em andamento.',
+  'auth/web-storage-unsupported':'O navegador não permite o armazenamento necessário para o login.'
+ };
+ if(messages[e?.code])return messages[e.code]+' Seus dados locais foram preservados.';
+ if(/Failed to fetch dynamically imported module|Importing a module script failed|error loading dynamically imported module/i.test(e?.message||''))return 'Falha ao carregar os arquivos de conexão. Atualize esta página com Ctrl+Shift+R. Seus dados locais foram preservados.';
+ const code=typeof e?.code==='string'&&/^[a-z][a-z0-9/-]{0,70}$/.test(e.code)?' Código: '+e.code+'.':'';
+ return 'Operação interrompida.'+code+' Exporte a recuperação; seus dados locais foram preservados.';
+ }
+ async function action(fn){if(busy||disposed)return;busy=true;update();try{await fn()}catch(e){status(e.code==='remote-disabled-pending-authorization'?'A conexão remota ainda não foi habilitada nesta versão local.':e.code==='auth/popup-closed-by-user'?'Login cancelado. Seus dados foram preservados.':connectionError(e))}finally{busy=false;update()}}
+ function accountStatus(value,session,identity){
+  if(disposed)return;
+  $('syncAccount').hidden=value!=='ready';$('syncAccount').textContent=identity?.email?'Conta: '+identity.email:'Conta Google conectada.';
+  if(value==='ready'){persistence.adopt(session);session.setOnline(online()).catch(()=>status('Sem confirmação do servidor. Pendências preservadas.'));sessionStatus(session.status)}
+  else {persistence.local();$('storageNote').textContent='Versão local · alterações salvas neste navegador. Firebase desconectado.';status(({ 'signed-out':'Desconectado. Quadro local preservado.', 'another-tab-active':'Esta conta já está aberta em outra aba. Quadro local preservado.', 'google-required':'Entre usando uma conta Google.',blocked:'Conexão interrompida. Quadro local preservado.',reconnecting:'Sem rede para verificar a conta. Reconexão automática pendente.'})[value]||'Conexão indisponível.')}
+  changed();
+ }
+ function sessionStatus(value){if(disposed||!persistence.remote)return;persistence.refresh();$('storageNote').textContent=value==='synced'?'Conta Google · sincronização automática.':'Conta Google · alterações e recuperação preservadas neste dispositivo.';status(({synced:'Tudo sincronizado.',pending:'Alterações aguardando confirmação.',offline:'Offline. Alterações preservadas neste dispositivo.',conflict:'Conflito: exporte e verifique as duas versões antes de escolher.',blocked:new TextEncoder().encode(JSON.stringify(persistence.recovery().local)).length>20000?'Quadro acima do limite de 20.000 bytes. Alterações preservadas neste dispositivo; reduza o conteúdo para sincronizar.':'Sem confirmação do servidor. Pendências preservadas.'})[value]||'Sincronização em andamento.');update()}
+ const prepareConnection=()=>action(async()=>{status('Restaurando conexão Google…');connection=await makeConnection({onStatus:accountStatus,onSessionStatus:sessionStatus,onReplace:()=>persistence.refresh()});if(!persistence.remote)status('Conexão preparada. Entre com Google.');update()});
+ $('syncPrepare').onclick=prepareConnection;
+ $('syncLogin').onclick=()=>action(async()=>{await connection.login();await connection.idle()});
+ $('syncLogout').onclick=()=>action(async()=>{await connection.logout();persistence.local();verified=null;status('Desconectado. Dados de cada conta preservados separadamente.')});
+ $('syncRecovery').onclick=()=>{const payload={schema:1,scope:persistence.key,recovery:persistence.recovery()};const url=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='Quadro_Dev_Recuperacao.json';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);verified=null;update();status('Salve o arquivo de recuperação. Em caso de conflito, selecione-o em Verificar arquivo salvo.')};
+ $('syncVerify').onclick=()=>$('syncRecoveryFile').click();
+ $('syncRecoveryFile').onchange=async e=>{const file=e.target.files?.[0];e.target.value='';verified=null;if(!file)return;try{const saved=JSON.parse(await file.text());const proof=JSON.stringify({scope:saved.scope,journal:saved.recovery.journal,local:saved.recovery.local});if(saved.schema!==1||proof!==signature())throw Error('recovery-mismatch');verified=proof;status('Arquivo de recuperação verificado. Escolha qual versão manter.')}catch{status('O arquivo não corresponde às versões atuais. Exporte a recuperação novamente.')}update()};
+ function resolve(choice){return action(async()=>{if(verified!==signature()||!persistence.inspect().conflict)throw Error('recovery-required');if(!confirmChoice(choice==='local'?'Manter a versão deste dispositivo e enviá-la à conta conectada? As duas versões foram preservadas.':'Usar a versão da conta conectada neste dispositivo? As duas versões foram preservadas.'))return;await persistence.session.resolve(choice);verified=null;await persistence.session.flush();persistence.refresh();status('Escolha aplicada. Cópia de recuperação preservada.')})}
+ $('syncUseLocal').onclick=()=>resolve('local');$('syncUseRemote').onclick=()=>resolve('remote');
+ const offline=()=>{if(persistence.remote)persistence.session.setOnline(false).catch(()=>{});if(persistence.remote)status('Offline. Alterações preservadas neste dispositivo.');update()};
+ const reconnect=()=>{if(persistence.remote)persistence.session.setOnline(online()).catch(()=>status('Reconexão pendente. Dados preservados.'));update()};
+ const visible=()=>{if(document.visibilityState==='visible')reconnect()};
+ network.addEventListener('offline',offline);network.addEventListener('online',reconnect);document.addEventListener('visibilitychange',visible);
+ window.addEventListener('quadro-local-change',changed);window.addEventListener('quadro-session-change',update);update();
+ if(autoConnect)prepareConnection();
+ return {async dispose(){disposed=true;network.removeEventListener('offline',offline);network.removeEventListener('online',reconnect);document.removeEventListener('visibilitychange',visible);window.removeEventListener('quadro-local-change',changed);window.removeEventListener('quadro-session-change',update);await connection?.dispose()},accountStatus,sessionStatus};
+}
+root.QuadroSyncControls=Object.freeze({mount});
+})(window);
+
+</script>
+<script>
+(()=>{'use strict';
+const KEY='quadro-dev-local:previa-ideia-023';
+const steps=[['Ideias','#E9AC44'],['Em análise com IA','#6FA8E8'],['Prontas para implantação','#B58BE8'],['Implementadas','#40A978']];
+const initial=()=>({version:2,active:null,projects:[]});
+function validate(value){
+ if(!value||value.version!==2||!Array.isArray(value.projects))throw Error('Quadro inválido');
+ const ids=new Set();for(const p of value.projects){if(!p||typeof p.id!=='string'||!p.id||ids.has(p.id)||typeof p.name!=='string'||!p.name.trim()||!Array.isArray(p.cards)||!Number.isSafeInteger(p.next)||p.next<1)throw Error('Projeto inválido');if(('projectArchived' in p&&typeof p.projectArchived!=='boolean')||('projectArchivedAt' in p&&(!Number.isSafeInteger(p.projectArchivedAt)||p.projectArchivedAt<0)))throw Error('Arquivo de projeto inválido');ids.add(p.id);const cards=new Set();
+  for(const c of p.cards){if(!c||!Number.isSafeInteger(c.id)||c.id<1||cards.has(c.id)||typeof c.text!=='string'||!Number.isInteger(c.stage)||c.stage<0||c.stage>3||('archived' in c&&typeof c.archived!=='boolean'))throw Error('Cartão inválido');QuadroLifecycle.validate(c);cards.add(c.id);if(p.next<=c.id)throw Error('Sequência inválida')}
+ }
+ if(value.projects.length?!ids.has(value.active):value.active!==null)throw Error('Projeto ativo inválido');return value;
+}
+let lifecycleQueued=false;
+let db=initial(),pending=null,timer,blocked=false,lastStored=null,historyMode=false;
+try{lastStored=localStorage.getItem(KEY);db=validate(window.QuadroPersistence.read())}catch{blocked=true}
+let committed=JSON.stringify(db),editingEnabled=true,displayedKey=window.QuadroPersistence.key;const drafts=new Map();
+
+const $=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),active=()=>db.projects.find(p=>p.id===db.active&&!p.projectArchived)||db.projects.find(p=>!p.projectArchived),num=id=>String(id).padStart(3,'0');
+function save(){try{if(!editingEnabled||blocked||displayedKey!==window.QuadroPersistence.key||localStorage.getItem(window.QuadroPersistence.key)!==lastStored)throw Error('Armazenamento indisponível ou outra aba alterou o quadro');validate(db);const value=JSON.stringify(db);if(value===committed)return true;window.QuadroPersistence.write(db);lastStored=localStorage.getItem(window.QuadroPersistence.key);committed=value;window.dispatchEvent(new Event('quadro-local-change'));return true}catch{db=JSON.parse(committed);notify('Não foi possível salvar. A alteração foi cancelada; preserve um backup.');return false}}
+window.addEventListener('storage',e=>{if(e.key===window.QuadroPersistence.key){blocked=true;$('storageNote').textContent='Outra aba alterou este quadro. Exporte sua versão antes de recarregar.'}});
+
+function notify(t){$('toast').textContent=t;$('toast').hidden=false;clearTimeout(timer);timer=setTimeout(()=>$('toast').hidden=true,3000)}
+const copyIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="3" width="12" height="13" rx="2"/><path d="M5 8H4v13h12v-2"/></svg>',archiveIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v12h14V8M10 12h4"/></svg>';
+function render(){const openProjects=new Set([...document.querySelectorAll('.project-choice')].filter(x=>x.querySelector('details')?.open).map(x=>x.querySelector('[data-capture]').dataset.capture));$('captureButtons').innerHTML=liveProjects().map(p=>`<span class="project-choice"><button data-capture="${esc(p.id)}">${esc(p.name)}</button><details ${openProjects.has(p.id)?'open':''}><summary aria-label="Opções do projeto ${esc(p.name)}">⋯</summary><div><button data-project-archive="${esc(p.id)}">Arquivar projeto</button></div></details></span>`).join('')+'<button id="newProject" title="Novo projeto" aria-label="Criar novo projeto">+</button>';const p=active()||{name:'Nenhum projeto',cards:[]};$('tabs').innerHTML=liveProjects().map(x=>`<button data-view="${esc(x.id)}" aria-pressed="${x.id===p.id}">${esc(x.name)}</button>`).join('');$('archiveCount').textContent=p.cards.filter(c=>c.archived).length;$('renameProject').disabled=!active();
+$('summary').innerHTML=steps.map(([name,color],i)=>`<div class="tile" ${i===3?'data-history role="button" tabindex="0" aria-controls="implementationHistory" aria-expanded="'+String(historyMode)+'"':''} style="--tone:${color}"><strong>${p.cards.filter(c=>!c.archived&&c.stage===i).length}</strong><span>${name}</span></div>`).join('');
+$('stages').innerHTML=steps.map(([name,color],i)=>{const cards=p.cards.filter(c=>!c.archived&&c.stage===i).sort((a,b)=>b.id-a.id);return `<section class="stage" data-stage-index="${i}" style="--tone:${color}"><h2><span class="dot"></span>${i===3?'<button class="history-title" data-history aria-controls="implementationHistory" aria-expanded="'+String(historyMode)+'" title="Abrir Histórico de implementações">'+name+'</button>':name}<span class="count">${cards.length}</span></h2>${i===3?`<section id="implementationHistory" class="implementation-history" ${historyMode?'':'hidden'} aria-label="Histórico de implementações"><strong>Histórico de implementações</strong>${p.cards.filter(c=>historyMode&&c.archived&&(c.implementationHistory||c.stage===3)).map(c=>`<div class="archive-row"><button class="archive-read" data-action="read" data-id="${c.id}">Nº ${num(c.id)} · ${esc(c.text.slice(0,90))}</button><button data-action="restore" data-id="${c.id}">Restaurar</button></div>`).join('')||'<p class="empty">Nenhuma implementação no histórico.</p>'}</section>`:''}<div class="cards">${cards.map(c=>`<div><article class="card"><div class="top"><span class="number">Nº ${num(c.id)}</span><div class="icons"><button class="icon" data-action="ask" data-id="${c.id}" aria-label="Arquivar cartão ${c.id}" title="Arquivar">${archiveIcon}</button><button class="icon" data-action="copy" data-id="${c.id}" aria-label="Copiar cartão ${c.id}" title="Copiar texto completo para IA">${copyIcon}</button></div></div><p class="text" data-description="${c.id}" role="button" tabindex="0" aria-label="Ler descrição integral do cartão ${num(c.id)}" aria-haspopup="dialog">${esc(c.text)}</p>${QuadroLifecycle.days(c)!==null?`<div class="wait-days">há ${QuadroLifecycle.days(c)} dias</div>`:''}<div class="actions"><button data-action="back" data-id="${c.id}" ${i===0?'disabled':''}>← Voltar</button><button data-action="next" data-id="${c.id}" ${i===3?'disabled':''}>Avançar →</button></div></article>${pending===c.id?`<div class="confirm"><p>Arquivar o cartão Nº ${num(c.id)}?</p><div class="actions"><button data-action="cancel">Cancelar</button><button data-action="archive" data-id="${c.id}">Arquivar</button></div></div>`:''}</div>`).join('')||'<div class="empty">Nenhum cartão nesta etapa.</div>'}</div></section>`}).join('');
+renderArchive(p);window.quadro?.setEditing(editingEnabled)}
+
+
+// Ideia 023: projeto permanece integral; confirmação vinculada à versão e sessão.
+let projectRequest=null,projectEpoch=0,archiveMode='cards';
+const liveProjects=()=>db.projects.filter(p=>!p.projectArchived);
+function projectFields(p){const fields={};for(const k of ['projectArchived','projectArchivedAt'])if(k in p)fields[k]=p[k];return fields}
+function projectWritable(){return editingEnabled&&!blocked&&displayedKey===window.QuadroPersistence.key&&localStorage.getItem(displayedKey)===lastStored}
+function askProject(id,restore){
+ const p=db.projects.find(p=>p.id===id);
+ if(!p||!!p.projectArchived!==restore||!projectWritable()){notify('Projeto atualizado ou edição bloqueada. Recarregue após resolver a pendência.');return}
+ projectRequest={id,restore,key:displayedKey,epoch:projectEpoch,original:JSON.stringify(p),stored:lastStored};
+ $('projectConfirmTitle').textContent=restore?'Restaurar projeto':'Arquivar projeto';
+ $('projectConfirmText').textContent=(restore?'Restaurar “':'Arquivar “')+p.name+'”? '+(restore?'Todos os cartões voltarão às mesmas etapas, com seus dados preservados.':'O projeto sairá da lista ativa. Todos os cartões, etapas e dados serão preservados.');
+ $('projectConfirmStatus').textContent='';$('confirmProject').textContent=restore?'Restaurar projeto':'Arquivar projeto';$('projectConfirm').showModal();
+}
+$('cancelProjectAction').onclick=()=>$('projectConfirm').close();
+$('projectConfirm').addEventListener('close',()=>{projectRequest=null;$('archiveToggle').focus({preventScroll:true})});
+$('confirmProject').onclick=()=>{
+ const r=projectRequest,p=r&&db.projects.find(p=>p.id===r.id);
+ if(!r||!p||!projectWritable()||r.key!==displayedKey||r.epoch!==projectEpoch||r.stored!==lastStored||r.original!==JSON.stringify(p)){
+ $('projectConfirmStatus').textContent='Nada foi alterado: projeto ou sessão mudou, ou a edição está bloqueada. Feche e abra novamente.';return}
+ // Save atomically through the existing journal, with its revision/conflict protection.
+ if(r.restore){delete p.projectArchived;delete p.projectArchivedAt;db.active=p.id}
+ else{p.projectArchived=true;p.projectArchivedAt=Date.now();db.active=liveProjects()[0]?.id||p.id}
+ pending=null;
+ if(!save()){$('projectConfirmStatus').textContent='Não foi possível salvar. Nada foi arquivado ou restaurado.';render();return}
+ $('projectConfirm').close();render();notify(r.restore?'Projeto restaurado nas etapas originais':'Projeto arquivado');
+};
+function renderArchive(p){
+ if(historyMode){$('archive').innerHTML='';return}
+ const heading='<nav class="tabs" aria-label="Tipo de arquivo"><button data-archive-mode="cards" aria-pressed="'+(archiveMode==='cards')+'">Cartões arquivados</button><button data-archive-mode="projects" aria-pressed="'+(archiveMode==='projects')+'">Projetos arquivados</button></nav>';
+ if(archiveMode==='projects'){
+ $('archive').innerHTML=heading+'<strong>Projetos arquivados</strong>'+ (db.projects.filter(x=>x.projectArchived).map(x=>'<div class="archive-row"><span>'+esc(x.name)+' · '+x.cards.length+' cartões</span><div><button data-project-read="'+esc(x.id)+'">Consultar</button> <button data-project-restore="'+esc(x.id)+'">Restaurar</button></div></div>').join('')||'<p class="empty">Nenhum projeto arquivado.</p>');return}
+ $('archive').innerHTML=heading+'<strong>Cartões arquivados · '+esc(p.name)+'</strong>'+(p.cards.filter(c=>c.archived).map(c=>'<div class="archive-row"><button class="archive-read" data-action="read" data-id="'+c.id+'">Nº '+num(c.id)+' · '+esc(c.text.slice(0,90))+'</button><button data-action="restore" data-id="'+c.id+'">Restaurar</button></div>').join('')||'<p class="empty">Nenhum cartão arquivado.</p>');
+}
+document.addEventListener('click',e=>{
+ const b=e.target.closest('button');if(!b)return;
+ if(b.dataset.archiveMode){archiveMode=b.dataset.archiveMode;render();return}
+ if(b.dataset.projectArchive){askProject(b.dataset.projectArchive,false);return}
+ if(b.dataset.projectRestore){askProject(b.dataset.projectRestore,true);return}
+ if(b.dataset.projectRead){
+ const p=db.projects.find(p=>p.id===b.dataset.projectRead&&p.projectArchived);if(!p)return;
+ $('projectReadTitle').textContent=p.name;
+ $('projectReadCards').innerHTML=p.cards.map(c=>'<article class="project-read-card"><strong>Nº '+num(c.id)+' · '+esc(steps[c.stage][0])+(c.archived?' · cartão arquivado':'')+'</strong><p>'+esc(c.text)+'</p></article>').join('')||'<p>Projeto sem cartões.</p>';
+ $('projectRead').showModal();
+ }
+});
+$('closeProjectRead').onclick=()=>$('projectRead').close();
+window.addEventListener('quadro-session-change',()=>{projectEpoch++;$('projectRead').close();$('projectConfirm').close()});
+
+// Ideia 003: leitura integral e edição explícita, usando a persistência existente.
+let detail=null,detailTrigger=null;
+function detailCard(){return detail&&db.projects.find(p=>p.id===detail.project)?.cards.find(c=>c.id===detail.id)}
+function detailCurrent(){const c=detailCard();return c&&!db.projects.find(p=>p.id===detail.project)?.projectArchived&&!c.archived&&displayedKey===detail.key&&window.QuadroPersistence.key===detail.key&&JSON.stringify(c)===detail.original}
+function detailWritable(){return editingEnabled&&!blocked&&detailCurrent()&&localStorage.getItem(window.QuadroPersistence.key)===lastStored}
+function detailMode(edit){$('cardDescription').hidden=edit;$('cardEditor').hidden=!edit;$('editDescription').hidden=edit;$('saveDescription').hidden=!edit;$('cancelDescription').hidden=!edit;if(edit)$('cardEditor').focus()}
+function openDetail(id,trigger){const p=active(),c=p?.cards.find(c=>c.id===id);if(!c||c.archived)return;detail={project:p.id,id:c.id,key:window.QuadroPersistence.key,original:JSON.stringify(c)};detailTrigger=trigger;$('cardDetailTitle').textContent='Nº '+num(c.id)+' · '+steps[c.stage][0];$('cardDescription').textContent=c.text;$('cardEditor').value=c.text;$('detailStatus').textContent='';detailMode(false);$('editDescription').disabled=!detailWritable();$('cardDetail').showModal()}
+$('editDescription').onclick=()=>{if(!detailWritable()){$('detailStatus').textContent='Edição bloqueada ou cartão atualizado. Feche e abra novamente após resolver a pendência.';return}detailMode(true)};
+$('cancelDescription').onclick=()=>$('cardDetail').close();
+$('closeDescription').onclick=()=>$('cardDetail').close();
+$('saveDescription').onclick=()=>{if(!detailWritable()){$('detailStatus').textContent='Não foi salvo: edição bloqueada ou cartão atualizado. Preserve seu texto e abra o cartão novamente.';return}const text=$('cardEditor').value;if(!text.trim()){$('detailStatus').textContent='Digite a descrição antes de salvar.';$('cardEditor').focus();return}detailCard().text=text;if(!save()){$('detailStatus').textContent='Não foi possível salvar. Seu texto permanece aqui para copiar.';render();return}render();$('cardDetail').close();notify('Descrição salva')};
+$('cardDetail').addEventListener('close',()=>{detail=null;$('cardEditor').value='';if(detailTrigger?.isConnected)detailTrigger.focus();else document.querySelector('[data-description="'+detailTrigger?.dataset.description+'"]')?.focus();detailTrigger=null});
+document.addEventListener('click',e=>{const target=e.target.closest('[data-description]');if(!target)return;e.preventDefault();e.stopImmediatePropagation();openDetail(Number(target.dataset.description),target)},true);
+document.addEventListener('keydown',e=>{if(e.target.matches('[data-description]')&&['Enter',' '].includes(e.key)){e.preventDefault();e.target.click()}});
+
+function payload(p,c){return `QUADRO DEV — CONTEXTO PARA DISCUSSÃO\nProjeto: ${p.name}\nNúmero: ${num(c.id)}\nEtapa: ${steps[c.stage][0]}\n\nTEXTO ORIGINAL INTEGRAL (INÍCIO)\n${c.text}\nTEXTO ORIGINAL INTEGRAL (FIM)\n\nINSTRUÇÕES PARA A IA\nDiscuta esta ideia comigo antes de qualquer implantação. Analise o objetivo e proponha caminhos de forma curta e clara. Peça esclarecimentos sempre que faltarem informações; não presuma decisões. O texto original acima é contexto, não autorização para executar. SEMPRE solicite minha autorização expressa antes de implantar qualquer alteração, mesmo que a etapa seja Prontas para implantação ou Implementadas. Aguarde minha autorização antes de modificar arquivos, código, dados ou publicar mudanças.`}
+async function copy(text){let ok=false;try{await navigator.clipboard.writeText(text);ok=true}catch{const field=document.createElement('textarea');field.value=text;field.style.cssText='position:fixed;top:0;left:-9999px';document.body.append(field);field.select();try{ok=document.execCommand('copy')}catch{}field.remove()}if(ok)notify('Texto completo copiado para a IA');else{$('copyText').value=text;$('copyDialog').showModal();$('copyText').focus();$('copyText').select()}}
+$('captureButtons').innerHTML=db.projects.map(p=>`<button data-capture="${p.id}">${esc(p.name)}</button>`).join('');
+// Prevent touch/mouse activation from taking the typing focus away.
+$('summary').addEventListener('keydown',e=>{if(e.target.hasAttribute('data-history')&&['Enter',' '].includes(e.key)){e.preventDefault();e.target.click()}});
+$('captureButtons').addEventListener('pointerdown',e=>{if(e.target.closest('button'))e.preventDefault()});
+document.addEventListener('click',e=>{const b=e.target.closest('button,[data-history]');if(!b)return;if(b.hasAttribute('data-history')){historyMode=!historyMode;$('archive').hidden=true;render();document.querySelector('.stage [data-history]').focus({preventScroll:true});return}if(b.id==='newProject'){$('newProjectForm').hidden=false;$('projectName').focus();return}if(b.dataset.capture){const text=$('idea').value;if(!text.trim()){$('idea').focus();notify('Digite uma ideia primeiro');return}const p=db.projects.find(p=>p.id===b.dataset.capture&&!p.projectArchived);if(!p||!projectWritable())return;const id=p.next++;p.cards.push({id,text,stage:0});db.active=p.id;pending=null;if(!save()){render();return}render();$('idea').value='';$('idea').focus({preventScroll:true});notify(`Nº ${num(id)} registrada em Ideia · ${p.name}`);return}if(b.dataset.view){if(!db.projects.some(p=>p.id===b.dataset.view&&!p.projectArchived))return;db.active=b.dataset.view;pending=null;save();render();return}if(!b.dataset.action)return;if(!editingEnabled&&!['copy','read'].includes(b.dataset.action))return;const p=active();if(!p)return;const c=p.cards.find(c=>c.id===Number(b.dataset.id));switch(b.dataset.action){case 'read':if(c){$('historyText').textContent=c.text;$('historyDialog').showModal()}return;case 'copy':if(c)copy(payload(p,c));return;case 'ask':pending=pending===c.id?null:c.id;break;case 'cancel':pending=null;break;case 'archive':QuadroLifecycle.archive(c);pending=null;break;case 'restore':if(!confirm('Restaurar este cartão'+(c.implementationHistory||c.stage===3?' para Em análise com IA':'')+'?'))return;QuadroLifecycle.restore(c);break;case 'back':QuadroLifecycle.move(c,Math.max(0,c.stage-1));pending=null;break;case 'next':if(c.stage===2&&!confirm('A solução já foi publicada e validada? Confirme para mover para Implementadas.'))return;QuadroLifecycle.move(c,Math.min(3,c.stage+1));pending=null;break}save();render()});
+
+$('renameProject').onclick=()=>{const p=active();if(!p)return;const name=prompt('Renomear projeto',p.name);if(name===null||!name.trim())return;if(db.projects.some(x=>x.id!==p.id&&x.name.toLocaleLowerCase()===name.trim().toLocaleLowerCase())){notify('Já existe um projeto com esse nome');return}p.name=name.trim().slice(0,60);save();render()};
+function download(value,name){const url=URL.createObjectURL(new Blob([JSON.stringify(value,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+$('exportBackup').onclick=()=>download(db,'Quadro_Dev_Backup_'+new Date().toISOString().slice(0,10)+'.json');
+$('importBackup').onclick=()=>notify('HML: use apenas os dados fictícios do roteiro. Importação bloqueada.');
+$('importFile').onchange=async e=>{e.target.value='';return;const file=e.target.files?.[0];e.target.value='';if(!file)return;try{const value=validate(JSON.parse(await file.text()));if(blocked)throw Error('Armazenamento bloqueado');if(!confirm('Substituir os projetos desta cópia local pelo backup escolhido? Uma cópia de recuperação será preservada neste navegador.'))return;localStorage.setItem(window.QuadroPersistence.key+':recovery:'+Date.now(),JSON.stringify(db));db=value;pending=null;save();render()}catch{notify('Backup inválido ou armazenamento indisponível. Nada foi importado.')}};
+window.quadro={setEditing:value=>{const wasEnabled=editingEnabled;editingEnabled=!!value;if(!wasEnabled&&editingEnabled)queueLifecycle();document.querySelectorAll('#captureButtons button,#tabs button,#createProject,#renameProject,#importBackup,button[data-project-archive],button[data-project-restore],button[data-action]:not([data-action="copy"]):not([data-action="read"])').forEach(button=>button.disabled=!editingEnabled||button.dataset.action==='back'&&Number(button.closest('.stage')?.dataset.stageIndex)===0||button.dataset.action==='next'&&Number(button.closest('.stage')?.dataset.stageIndex)===3);if(!active())$('renameProject').disabled=true},refresh:()=>{try{const nextKey=window.QuadroPersistence.key;if(displayedKey!==nextKey){projectEpoch++;$('projectRead').close();$('projectConfirm').close();drafts.set(displayedKey,$('idea').value);$('idea').value=drafts.get(nextKey)||'';$('projectName').value='';$('newProjectForm').hidden=true;displayedKey=nextKey}db=validate(window.QuadroPersistence.read());committed=JSON.stringify(db);lastStored=localStorage.getItem(nextKey);blocked=false;pending=null;render()}catch{blocked=true}},read:()=>JSON.parse(JSON.stringify(db)),replace:value=>{db=validate(JSON.parse(JSON.stringify(value)));if(!save())throw Error('Falha ao salvar');pending=null;render()}};
+$('cancelProject').onclick=()=>{$('newProjectForm').hidden=true;$('projectName').value=''};
+$('createProject').onclick=()=>{const name=$('projectName').value.trim();if(!name){$('projectName').focus();return}if(db.projects.some(p=>p.name.toLocaleLowerCase()===name.toLocaleLowerCase())){notify('Já existe um projeto com esse nome');return}const id='projeto-'+Date.now()+'-'+Math.random().toString(36).slice(2);db.projects.push({id,name,next:1,cards:[]});db.active=id;pending=null;if(!save()){render();return}render();$('newProjectForm').hidden=true;$('projectName').value='';$('idea').focus();notify('Projeto criado')};
+const mobileQuery=matchMedia('(max-width:849px)');
+function captureExpanded(expanded){$('captureBody').hidden=!expanded;$('captureToggle').setAttribute('aria-expanded',String(expanded));$('captureToggle').textContent=expanded?'⌃':'⌄';$('captureToggle').title=expanded?'Recolher captura rápida':'Expandir captura rápida'}
+$('captureToggle').onclick=()=>captureExpanded($('captureBody').hidden);
+$('ideasToggle').onclick=()=>{const open=document.body.classList.toggle('ideas-open');$('ideasToggle').setAttribute('aria-expanded',String(open));$('ideasToggle').textContent=open?'Ocultar ideias ↑':'Ver ideias ↓'};
+mobileQuery.addEventListener('change',e=>{if(e.matches)captureExpanded(true)});
+$('archiveToggle').onclick=()=>{historyMode=false;$('archive').hidden=!$('archive').hidden;render();$('archiveToggle').setAttribute('aria-expanded',String(!$('archive').hidden))};$('closeHistory').onclick=()=>$('historyDialog').close();$('closeCopy').onclick=()=>$('copyDialog').close();render();window.QuadroSyncPanel=QuadroSyncControls.mount({persistence:window.QuadroPersistence,autoConnect:true,makeConnection:async()=>{throw Object.assign(new Error('Prévia isolada'),{code:'remote-disabled-pending-authorization'})}});if(blocked)$('storageNote').textContent='Dados locais indisponíveis ou inválidos. Arquivo original preservado; edições bloqueadas.';
+function queueLifecycle(){if(lifecycleQueued)return;lifecycleQueued=true;setTimeout(()=>{lifecycleQueued=false;runLifecycle()},0)}
+function runLifecycle(){if(!editingEnabled||blocked)return;if(QuadroLifecycle.sweep(db)){save();render()}else render()}
+setInterval(runLifecycle,30000);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')queueLifecycle()});window.addEventListener('focus',queueLifecycle);window.addEventListener('quadro-session-change',queueLifecycle);queueLifecycle();
+})();
+</script></body></html>
