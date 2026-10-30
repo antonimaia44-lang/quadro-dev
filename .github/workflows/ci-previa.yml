@@ -44,3 +44,50 @@ jobs:
           if-no-files-found: error
           retention-days: 7
           include-hidden-files: false
+
+  publicar:
+    needs: verificar
+    if: github.repository == 'antonimaia44-lang/quadro-dev' && github.ref == 'refs/heads/ci/previas-offline' && vars.PREVIEWS_ENABLED == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment: quadro-dev-previas
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22.22.0'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: previa-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: preview
+      - name: Conferir pacote autorizado
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs=require('node:fs'),assert=require('node:assert/strict'),crypto=require('node:crypto');
+          assert.deepEqual(fs.readdirSync('preview').sort(),['index.html','manifest.json']);
+          for(const f of fs.readdirSync('preview')) assert(fs.lstatSync('preview/'+f).isFile());
+          const m=JSON.parse(fs.readFileSync('preview/manifest.json'));
+          const h=fs.readFileSync('preview/index.html'),s=h.toString();
+          const hash=crypto.createHash('sha256').update(h).digest('hex');
+          assert.equal(m.environment,'offline-synthetic');
+          assert.equal(m.canonicalProductionCommit,null);
+          assert.equal(hash,m.files['index.html']);
+          assert.equal(hash,'8ee6434a14aaa79a8631ffceb508a882566e66744891be62fcfbec1d71852157');
+          assert(s.includes("connect-src 'none'"));
+          assert(!/https?:\/\/|firebaseio|googleapis|AIza|<iframe|<script[^>]+src\s*=/i.test(s));
+          NODE
+      - name: Instalar publicador com versão fixa
+        run: npm install --prefix "$RUNNER_TEMP/publisher" --ignore-scripts --no-audit --no-fund wrangler@4.156.0
+      - name: Publicar somente o pacote de prévia
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          WRANGLER_SEND_METRICS: 'false'
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          "$RUNNER_TEMP/publisher/node_modules/.bin/wrangler" pages deploy preview --project-name=quadro-dev-previas --branch=main
+      - name: Mostrar link
+        run: echo 'Prévia — https://quadro-dev-previas.pages.dev (confira o endereço atribuído ao criar o projeto)' >> "$GITHUB_STEP_SUMMARY"
