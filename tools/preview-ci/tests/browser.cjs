@@ -16,6 +16,25 @@ try {for(const width of [390,1280]) {
  assert.equal(await page.locator('#idea').inputValue(),'');await page.reload();await page.waitForFunction(()=>window.quadro);
  assert.equal(await page.evaluate(()=>window.quadro.read().projects[0].cards.at(-1).text),text);
  if(width<850)await page.locator('#ideasToggle').click();
+ // Editor: save stays open, cancel preserves the last save, save-and-close persists.
+ const description=page.locator('[data-description="'+added.id+'"]');
+ await description.click();await page.locator('#editDescription').click();
+ assert.equal(await page.locator('#closeDescription').isVisible(),false);
+ await page.locator('#cardEditor').fill('   ');await page.locator('#saveCloseDescription').click();
+ assert(await page.locator('#cardDetail').isVisible());assert.match(await page.locator('#detailStatus').innerText(),/Digite a descrição/);
+ await page.locator('#cardEditor').fill(text+' salvo');await page.locator('#saveDescription').click();
+ assert(await page.locator('#cardDetail').isVisible());assert.match(await page.locator('#detailStatus').innerText(),/Descrição salva/);
+ assert.equal(await page.evaluate(()=>window.quadro.read().projects[0].cards.at(-1).text),text+' salvo');
+ await page.locator('#cardEditor').fill('Descartar esta alteração');await page.locator('#cancelDescription').click();
+ assert.equal(await page.evaluate(()=>window.quadro.read().projects[0].cards.at(-1).text),text+' salvo');
+ await description.click();await page.locator('#editDescription').click();
+ for(const id of ['saveDescription','saveCloseDescription','cancelDescription']){const box=await page.locator('#'+id).boundingBox();assert(box.height>=44);assert(box.x>=0&&box.x+box.width<=width)}
+ await page.screenshot({path:path.join(root,'results',width<850?'editor-mobile.png':'editor-desktop.png'),fullPage:true});
+ await page.locator('#cardEditor').fill(text);await page.locator('#saveCloseDescription').click();
+ assert.equal(await page.locator('#cardDetail').isVisible(),false);await page.reload();await page.waitForFunction(()=>window.quadro);
+ assert.equal(await page.evaluate(()=>window.quadro.read().projects[0].cards.at(-1).text),text);
+ if(width<850)await page.locator('#ideasToggle').click();
+
  await page.locator('[data-action="next"][data-id="'+added.id+'"]').click();
  assert.equal(await page.evaluate(()=>window.quadro.read().projects[0].cards.at(-1).stage),1);
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
