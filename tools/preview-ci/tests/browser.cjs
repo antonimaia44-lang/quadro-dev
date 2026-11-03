@@ -9,13 +9,14 @@ try {for(const width of [390,1280]) {
  const page=await ctx.newPage();page.on('pageerror',e=>errors.push(e.message));await page.goto('http://127.0.0.1:40227/');await page.waitForFunction(()=>window.quadro);
  assert.equal(await page.locator('#syncLogin').isEnabled(),false);
  assert.match(await page.locator('body').innerText(),/dados fictícios/);
+ if(width<850){assert(await page.locator('#stages').isVisible());const capture=await page.locator('.capture').boundingBox(),ideas=await page.locator('#stages').boundingBox();assert(ideas.y>=capture.y+capture.height);await page.locator('#ideasToggle').click();assert.equal(await page.locator('#stages').isVisible(),false);await page.locator('#ideasToggle').click();}
  const initial=await page.evaluate(()=>window.quadro.read());assert.equal(initial.projects.length,2);
  const text='Teste sintético <script>não executar</script> 🧪 ação';
  await page.locator('#idea').fill(text);const project=initial.active;await page.locator('[data-capture="'+project+'"]').click();
  const added=await page.evaluate(()=>window.quadro.read().projects[0].cards.at(-1));assert.equal(added.text,text);
  assert.equal(await page.locator('#idea').inputValue(),'');await page.reload();await page.waitForFunction(()=>window.quadro);
  assert.equal(await page.evaluate(()=>window.quadro.read().projects[0].cards.at(-1).text),text);
- if(width<850)await page.locator('#ideasToggle').click();
+ if(width<850 && await page.locator('#ideasToggle').getAttribute('aria-expanded')==='false')await page.locator('#ideasToggle').click();
  // Editor: save stays open, cancel preserves the last save, save-and-close persists.
  const description=page.locator('[data-description="'+added.id+'"]');
  await description.click();await page.locator('#editDescription').click();
@@ -33,7 +34,7 @@ try {for(const width of [390,1280]) {
  await page.locator('#cardEditor').fill(text);await page.locator('#saveCloseDescription').click();
  assert.equal(await page.locator('#cardDetail').isVisible(),false);await page.reload();await page.waitForFunction(()=>window.quadro);
  assert.equal(await page.evaluate(()=>window.quadro.read().projects[0].cards.at(-1).text),text);
- if(width<850)await page.locator('#ideasToggle').click();
+ if(width<850 && await page.locator('#ideasToggle').getAttribute('aria-expanded')==='false')await page.locator('#ideasToggle').click();
 
  await page.locator('[data-action="next"][data-id="'+added.id+'"]').click();
  assert.equal(await page.evaluate(()=>window.quadro.read().projects[0].cards.at(-1).stage),1);
