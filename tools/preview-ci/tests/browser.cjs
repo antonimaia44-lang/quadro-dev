@@ -9,7 +9,7 @@ try {for(const width of [390,1280]) {
  const page=await ctx.newPage();page.on('pageerror',e=>errors.push(e.message));await page.goto('http://127.0.0.1:40227/');await page.waitForFunction(()=>window.quadro);
  assert.equal(await page.locator('#syncLogin').isEnabled(),false);
  assert.match(await page.locator('body').innerText(),/dados fictícios/);
- if(width<850){assert(await page.locator('#stages').isVisible());const capture=await page.locator('.capture').boundingBox(),ideas=await page.locator('#stages').boundingBox();assert(ideas.y>=capture.y+capture.height);await page.locator('#ideasToggle').click();assert.equal(await page.locator('#stages').isVisible(),false);await page.locator('#ideasToggle').click();}
+ if(width<850){assert.equal(await page.locator('#stages').isVisible(),false);await page.locator('#ideasToggle').click();assert(await page.locator('#stages').isVisible());const capture=await page.locator('.capture').boundingBox(),ideas=await page.locator('#stages').boundingBox();assert(ideas.y>=capture.y+capture.height);}
  const initial=await page.evaluate(()=>window.quadro.read());assert.equal(initial.projects.length,2);
  const text='Teste sintético <script>não executar</script> 🧪 ação';
  await page.locator('#idea').fill(text);const project=initial.active;await page.locator('[data-capture="'+project+'"]').click();
