@@ -74,7 +74,7 @@ jobs:
           assert.equal(m.environment,'offline-synthetic');
           assert.equal(m.canonicalProductionCommit,null);
           assert.equal(hash,m.files['index.html']);
-          assert.equal(hash,'2756920e33891118348bafb6961ac8e48a17da9cc541986d5f1746a688a6af8d');
+          assert.equal(hash,'e7f854906dfee2325a1013d32adb4220f28ea54a3266e392e00358fc1ccbcae8');
           assert(s.includes("connect-src 'none'"));
           assert(!/https?:\/\/|firebaseio|googleapis|AIza|<iframe|<script[^>]+src\s*=/i.test(s));
           NODE
