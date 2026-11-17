@@ -9,7 +9,7 @@ try {for(const width of [390,1280]) {
  const page=await ctx.newPage();page.on('pageerror',e=>errors.push(e.message));await page.goto('http://127.0.0.1:40227/');await page.waitForFunction(()=>window.quadro);
  assert.equal(await page.locator('#syncLogin').isEnabled(),false);
  assert.match(await page.locator('body').textContent(),/dados fictícios/);
- if(width<850){assert.equal(await page.locator('#stages').isVisible(),false);await page.locator('#ideasToggle').click();assert(await page.locator('#ideasDialog').isVisible());assert.equal(await page.locator('#stages').isVisible(),false);await page.locator('#ideasDialog [data-view]').first().click();assert(await page.locator('#stages').isVisible());await page.locator('#backFromIdeas').click();assert.equal(await page.locator('#stages').isVisible(),false);}
+ if(width<850){assert.equal(await page.locator('#stages').isVisible(),false);await page.locator('#ideasToggle').click();assert(await page.locator('#ideasDialog').isVisible());await page.locator('#ideasDialog [data-view]').first().click();assert(await page.locator('#stages').isVisible());await page.locator('#backFromIdeas').click();assert.equal(await page.locator('#stages').isVisible(),false);}
  const initial=await page.evaluate(()=>window.quadro.read());assert.equal(initial.projects.length,2);
  const text='Teste sintético <script>não executar</script> 🧪 ação';
  await page.locator('#idea').fill(text);const project=initial.active;await page.locator('[data-capture="'+project+'"]').click();
@@ -36,14 +36,26 @@ try {for(const width of [390,1280]) {
  assert.equal(await page.evaluate(()=>window.quadro.read().projects[0].cards.at(-1).text),text);
  if(width<850 && await page.locator('#ideasToggle').isVisible()){await page.locator('#ideasToggle').click();await page.locator('#ideasDialog [data-view]').first().click();}
 
- await page.locator('[data-action="next"][data-id="'+added.id+'"]').click();
- assert.equal(await page.evaluate(()=>window.quadro.read().projects[0].cards.at(-1).stage),1);
+ if(width<850){
+  assert.equal(await page.locator('[data-action="next"][data-id="'+added.id+'"]').isVisible(),false);
+  await page.locator('[data-description="'+added.id+'"]').click();
+  assert(await page.locator('#copyDetail').isVisible());
+  await page.locator('#archiveDetail').click();
+  assert(await page.locator('#detailArchiveConfirm').isVisible());
+  await page.locator('#cancelDetailArchive').click();
+  assert.equal(await page.locator('#detailArchiveConfirm').isVisible(),false);
+  await page.locator('#closeDescription').click();
+  assert.equal(await page.evaluate(()=>window.quadro.read().projects[0].cards.at(-1).stage),0);
+ }else{
+  await page.locator('[data-action="next"][data-id="'+added.id+'"]').click();
+  assert.equal(await page.evaluate(()=>window.quadro.read().projects[0].cards.at(-1).stage),1);
+ }
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
  await page.screenshot({path:path.join(root,'results',width<850?'mobile.png':'desktop.png'),fullPage:true});
  // Demonstrate that a deliberate external request cannot reach a remote server.
  const blocked=await page.evaluate(async()=>{try{await fetch('https://example.invalid/probe');return false}catch{return true}});assert(blocked);
  assert.deepEqual(external,[]);assert.deepEqual(errors,[]);
- results.push({width,passed:['seed fictício','login desativado','captura literal','persistência','movimentação','layout','requisição externa bloqueada'],externalRequests:0,pageErrors:0});await ctx.close();
+ results.push({width,passed:['seed fictício','login desativado','captura literal','persistência','ações por dispositivo','layout','requisição externa bloqueada'],externalRequests:0,pageErrors:0});await ctx.close();
 }}finally{await browser.close()}
 fs.writeFileSync(path.join(root,'results/browser.json'),JSON.stringify(results,null,2)+'\n');console.log(JSON.stringify(results));
 })().catch(e=>{console.error(e);process.exitCode=1});
