@@ -1,4 +1,4 @@
-name: Previa offline - artefato
+name: Previa Quadro Dev - artefato
 on:
   push:
     branches: [ci/previas-offline]
@@ -12,6 +12,8 @@ jobs:
     if: github.repository == 'antonimaia44-lang/quadro-dev' && github.ref == 'refs/heads/ci/previas-offline'
     runs-on: ubuntu-24.04
     timeout-minutes: 15
+    outputs:
+      manifest-sha256: ${{ steps.manifest.outputs.sha256 }}
     defaults:
       run:
         shell: bash
@@ -35,12 +37,13 @@ jobs:
       - run: npx --no-install playwright install --with-deps chromium
       - run: npm run ci
       - run: npm run test:browser
+      - name: Identificar manifesto do pacote testado
+        id: manifest
+        run: echo "sha256=$(sha256sum preview/manifest.json | cut -d ' ' -f1)" >> "$GITHUB_OUTPUT"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: previa-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
-          path: |
-            tools/preview-ci/preview/index.html
-            tools/preview-ci/preview/manifest.json
+          path: tools/preview-ci/preview/
           if-no-files-found: error
           retention-days: 7
           include-hidden-files: false
@@ -62,19 +65,31 @@ jobs:
           name: previa-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: preview
       - name: Conferir pacote autorizado
+        env:
+          MANIFEST_SHA256: ${{ needs.verificar.outputs.manifest-sha256 }}
         shell: bash
         run: |
           node <<'NODE'
           const fs=require('node:fs'),assert=require('node:assert/strict'),crypto=require('node:crypto');
-          assert.deepEqual(fs.readdirSync('preview').sort(),['index.html','manifest.json']);
-          for(const f of fs.readdirSync('preview')) assert(fs.lstatSync('preview/'+f).isFile());
-          const m=JSON.parse(fs.readFileSync('preview/manifest.json'));
-          const h=fs.readFileSync('preview/index.html'),s=h.toString();
-          const hash=crypto.createHash('sha256').update(h).digest('hex');
+          const sha=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
+          const manifest=fs.readFileSync('preview/manifest.json');
+          assert.match(process.env.MANIFEST_SHA256,/^[a-f0-9]{64}$/);
+          assert.equal(sha(manifest),process.env.MANIFEST_SHA256);
+          const m=JSON.parse(manifest);
+          const files=['_headers','anexos/attachments.css','anexos/attachments.js','anexos/drive-sync.js','anexos/drive.js','anexos/index.html','index.html'];
+          assert.deepEqual(fs.readdirSync('preview').sort(),['_headers','anexos','index.html','manifest.json']);
+          assert(fs.lstatSync('preview/anexos').isDirectory());
+          assert.deepEqual(fs.readdirSync('preview/anexos').sort(),files.filter(f=>f.startsWith('anexos/')).map(f=>f.slice(7)));
+          assert.deepEqual(Object.keys(m.files).sort(),files);
+          assert.equal(m.schema,2);
           assert.equal(m.environment,'offline-synthetic');
+          assert.equal(m.attachmentsEnvironment,'drive-homologation');
           assert.equal(m.canonicalProductionCommit,null);
-          assert.equal(hash,m.files['index.html']);
-          assert.equal(hash,'aee57dd9ace3552ec9a9e93b2e85db7433efb2e2addb3f46f0f26e5eeccb9254');
+          for(const name of [...files,'manifest.json']) {
+            assert(fs.lstatSync('preview/'+name).isFile());
+            if(name!=='manifest.json') assert.equal(sha(fs.readFileSync('preview/'+name)),m.files[name],name);
+          }
+          const s=fs.readFileSync('preview/index.html','utf8');
           assert(s.includes("connect-src 'none'"));
           assert(!/https?:\/\/|firebaseio|googleapis|AIza|<iframe|<script[^>]+src\s*=/i.test(s));
           NODE
@@ -90,4 +105,4 @@ jobs:
           test -n "$CLOUDFLARE_ACCOUNT_ID"
           "$RUNNER_TEMP/publisher/node_modules/.bin/wrangler" pages deploy preview --project-name=quadro-dev-previas --branch=main
       - name: Mostrar link
-        run: echo 'Prévia — https://quadro-dev-previas.pages.dev (confira o endereço atribuído ao criar o projeto)' >> "$GITHUB_STEP_SUMMARY"
+        run: echo 'https://quadro-dev-previas.pages.dev/anexos/' >> "$GITHUB_STEP_SUMMARY"

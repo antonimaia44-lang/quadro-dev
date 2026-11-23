@@ -1,0 +1,41 @@
+.drive-panel{margin:18px 0;color:#c2d4e0}
+.drive-panel p,.attachment-controls p,#attachmentStatus{margin:8px 0;font-size:14px;overflow-wrap:anywhere}
+.drive-panel p:empty,#attachmentStatus:empty{display:none}
+.drive-actions,.attachment-view-header{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.drive-actions button,.attachment-controls button,#attachmentViewer button{
+ min-height:44px;padding:8px 12px;border:1px solid #7a9aaf;border-radius:8px;background:#1c405a;color:#fff
+}
+.drive-panel #driveConnect,#attachmentViewer #attachmentZoom[aria-pressed=true]{
+ background:#feff9d;border-color:#feff9d;color:#004980
+}
+.drive-panel button:disabled,.attachment-controls button:disabled{opacity:.6;cursor:default}
+.drive-panel button:focus-visible,.attachment-controls button:focus-visible,#attachmentViewer button:focus-visible{
+ outline:3px solid #0092ff;outline-offset:3px
+}
+.attachment-controls{margin:12px 0}
+#captureImageList,#detailImageList ul{list-style:none;padding:0;margin:8px 0}
+.attachment-controls li{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px}
+.attachment-controls li span,.attachment-controls li button{overflow-wrap:anywhere;min-width:0}
+.attachment-controls li button:first-child{flex:1;text-align:left}
+.attachment-controls #detailImageList button{margin:0}
+#attachmentViewer{box-sizing:border-box;width:min(94vw,780px);max-height:92dvh;padding:16px;background:#123b58;color:#fff;border:1px solid #7a9aaf}
+.attachment-view-header{justify-content:space-between}
+.attachment-view-header h2{margin:0;min-width:0;overflow-wrap:anywhere;font-size:18px}
+.attachment-view-header button{margin:0}
+#attachmentViewport{margin-top:12px;overflow:auto;max-height:64dvh;overscroll-behavior:contain;background:#001c31}
+#attachmentImage{display:block;width:100%;height:auto}
+#attachmentViewport.is-zoomed img{width:max(200%,var(--image-width));max-width:none}
+@media(max-width:849px){
+ body.ideas-screen #drivePanel{display:none}
+ #captureBody .attachment-controls{order:1}
+ #detailAttachments button[aria-expanded]{width:100%}
+}
+
+
+.drive-actions button:not(:disabled):hover,.attachment-controls button:not(:disabled):hover,#attachmentViewer button:not(:disabled):hover{
+ background:#315b76;border-color:#a5c2d3;color:#fff
+}
+.drive-panel #driveConnect:not(:disabled):hover,#attachmentViewer #attachmentZoom[aria-pressed=true]:hover{
+ background:#f0f18b;border-color:#f0f18b;color:#004980
+}
+#historyAttachments li{justify-content:flex-start}

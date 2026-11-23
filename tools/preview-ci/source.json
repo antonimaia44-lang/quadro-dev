@@ -1,6 +1,17 @@
 {
   "environment": "offline-synthetic",
   "canonicalProductionCommit": null,
-  "source": "publicacao-testes-ideia-023-20261028/site/index.html",
-  "sourceSha256": "aee57dd9ace3552ec9a9e93b2e85db7433efb2e2addb3f46f0f26e5eeccb9254"
+  "source": "site/index.html",
+  "sourceSha256": "427fc269aab961f14473cacb48de19b9232af953fd7b6f3af3d75a899326809f",
+  "attachments": {
+    "environment": "drive-homologation",
+    "files": {
+      "_headers": "c2494ee29982424ae078147d5c9422cd577ecd965baec5c8011e6f4fe273e5e4",
+      "anexos/attachments.css": "bc8ec167196879e0e80924f0f50185fdd1c05f4e2df1093587112635b7b9ce6e",
+      "anexos/attachments.js": "52ddb383dc91bad6aed78376958517fe84ef2cba73c236b8c4abf3d6451e9665",
+      "anexos/drive-sync.js": "467d72da5280865bb12bc03a4cfb21952ad30a2b6bde90a84445050ad86e187c",
+      "anexos/drive.js": "676a7dbb9bce0951f3903ee38ba70da4d774d13dc8036d05f742f67970e22e95",
+      "anexos/index.html": "89be9b1be91214ebc2acbec8ba53c503b853cbdf9a6c4a38962d8211a5f36f1b"
+    }
+  }
 }
