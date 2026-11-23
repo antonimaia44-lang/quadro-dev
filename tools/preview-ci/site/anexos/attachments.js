@@ -95,6 +95,16 @@
       if (item.blob) attach(item.blob);
       else imageBlob(item).then(attach).catch(() => { li.classList.add('preview-unavailable'); });
     }
+    img.tabIndex = 0;
+    img.setAttribute('role', 'button');
+    img.setAttribute('aria-label', 'Visualizar ' + item.name);
+    const open = () => {
+      const items = which === 'capture' ? [...draft] : [...(editTarget?.attachments ?? []), ...editQueue];
+      const index = items.indexOf(item);
+      if (index >= 0) showImage(item, items, index);
+    };
+    img.onclick = open;
+    img.onkeydown = event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); open(); } };
     const label = document.createElement('span');
     label.textContent = shortName(item.name);
     label.title = item.name;
@@ -117,6 +127,7 @@
       }, 'capture'));
     });
     list.hidden = !draft.length;
+    $('captureAttachmentPanel').dataset.slots = Math.min(maxCount, draft.length + 1);
     resizeAttachments($('captureInputWrap'), list);
     $('captureAddImages').disabled = working;
     $('captureChooseImage').disabled = working || draft.length >= maxCount;
@@ -251,6 +262,7 @@
     $('detailRetryImages').disabled = working;
     $('detailAttachmentCount').textContent = String(refs.length + editQueue.length);
     $('detailAttachmentCount').hidden = !(refs.length + editQueue.length);
+    $('detailAttachmentPanel').dataset.slots = Math.min(maxCount, refs.length + editQueue.length + 1);
     const editList = $('detailEditList');
     clearPreviews('detail');
     editList.replaceChildren();
@@ -279,8 +291,8 @@
     count.className = 'attachment-count';
     count.textContent = 'Anexos';
     host.append(count);
-    for (const ref of refs) {
-      const open = button(shortName(ref.name), () => showImage(ref));
+    for (const [index, ref] of refs.entries()) {
+      const open = button(shortName(ref.name), () => showImage(ref, refs, index));
       open.title = ref.name;
       open.setAttribute('aria-label', 'Abrir ' + ref.name);
       host.append(open);
@@ -353,7 +365,7 @@
     report('attachmentStatus', 'Buscando imagem no Drive…');
     $('attachmentConnect').hidden = true;
     try {
-      const blob = await imageBlob(current.ref);
+      const blob = current.ref.blob || await imageBlob(current.ref);
       if (viewer !== current || !dialog.open) return;
       const img = $('attachmentImage');
       closeViewerImage();
@@ -373,13 +385,24 @@
     }
   }
 
-  function showImage(ref) {
-    viewer = { ref };
+  function selectViewerImage(items, index) {
+    const ref = items[index];
+    viewer = { ref, items, index };
     $('attachmentTitle').textContent = ref.name;
+    $('attachmentNavigation').hidden = items.length < 2;
+    $('attachmentPrevious').disabled = index === 0;
+    $('attachmentNext').disabled = index === items.length - 1;
+    $('attachmentPosition').textContent = (index + 1) + ' / ' + items.length;
     closeViewerImage();
-    $('attachmentViewer').showModal();
     void loadViewerImage(viewer);
   }
+
+  function showImage(ref, items = [ref], index = 0) {
+    if (!$('attachmentViewer').open) $('attachmentViewer').showModal();
+    selectViewerImage(items, index);
+  }
+  $('attachmentPrevious').onclick = () => { if (viewer && viewer.index > 0) selectViewerImage(viewer.items, viewer.index - 1); };
+  $('attachmentNext').onclick = () => { if (viewer && viewer.index < viewer.items.length - 1) selectViewerImage(viewer.items, viewer.index + 1); };
 
   $('attachmentConnect').onclick = async () => {
     const current = viewer;
@@ -548,3 +571,4 @@
     renderDetail(null, false);
   });
 })();
+

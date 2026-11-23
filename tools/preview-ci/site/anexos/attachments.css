@@ -262,3 +262,14 @@ body #drivePanel .drive-actions #driveConnect{padding:6px 0}
 #captureBody #captureInputWrap #idea,#cardDetail #detailEditorWrap #cardEditor{padding-right:74px;padding-bottom:14px}
 #captureInputWrap #captureAddImages,#cardDetail #detailEditorWrap #detailAddImages{right:20px;bottom:2px}
 @media(max-width:849px){#captureBody #captureInputWrap #idea{min-height:132px}}
+
+/* Painel cresce por espa?o ocupado; o clipe permanece junto ao canto. */
+#captureInputWrap #captureAddImages,#cardDetail #detailEditorWrap #detailAddImages{right:3px;bottom:2px}
+#captureInputWrap .attachment-panel,#detailEditorWrap .attachment-panel{width:min(calc(24px + var(--slots, 1) * 82px + (var(--slots, 1) - 1) * 8px),calc(100% - 8px));grid-template-columns:repeat(var(--slots, 1),minmax(0,1fr))}
+.attachment-panel[data-slots="2"]{--slots:2}
+.attachment-panel[data-slots="3"]{--slots:3}
+.attachment-preview img[role="button"]{cursor:pointer}
+.attachment-preview img[role="button"]:focus-visible{outline:2px solid #feff9d;outline-offset:-3px}
+.attachment-navigation{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:8px}
+.attachment-navigation button{min-width:44px;font-size:22px;line-height:1}
+.attachment-navigation span{font-size:13px;color:#c2d4e0}

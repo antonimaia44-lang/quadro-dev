@@ -53,7 +53,7 @@ function build() {
   assert(drivePage.includes("connect-src https://www.googleapis.com https://accounts.google.com/gsi/;"));
   assert.deepEqual(
     Array.from(drivePage.matchAll(/<script\b[^>]*\bsrc="([^"]+)"/gi), match => match[1]).sort(),
-    ['attachments.js', 'drive-sync.js', 'drive.js', 'https://accounts.google.com/gsi/client']
+    ['attachments.js?v=anexos-galeria-10', 'drive-sync.js', 'drive.js', 'https://accounts.google.com/gsi/client']
   );
   assert.match(payload.get('anexos/drive.js').toString(), /113837472975-[a-z0-9]+\.apps\.googleusercontent\.com/);
   assert(payload.get('anexos/drive.js').includes('quadro-dev-anexos-hml-v3'));
