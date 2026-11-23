@@ -35,22 +35,42 @@
     container.append(li);
   }
 
+  function shortName(name) {
+    return name.replace(/\.(?:png|jpe?g|webp)$/i, '') || name;
+  }
+
+  function resizeAttachments(wrapper, list) {
+    const field = wrapper.querySelector('textarea');
+    const height = list.hidden ? 0 : list.offsetHeight;
+    field.style.paddingBottom = Math.max(54, height + 18) + 'px';
+    wrapper.style.setProperty('--attachment-extra', Math.max(0, height - 32) + 'px');
+  }
+
+  function makeChip(item, removeAction) {
+    const li = document.createElement('li');
+    li.className = 'attachment-chip';
+    const label = document.createElement('span');
+    label.textContent = shortName(item.name);
+    label.title = item.name;
+    const remove = button('×', removeAction);
+    remove.setAttribute('aria-label', 'Remover ' + item.name);
+    li.append(label, remove);
+    return li;
+  }
+
   function renderDraft() {
     const list = $('captureImageList');
     list.replaceChildren();
     draft.forEach((item, index) => {
-      const label = document.createElement('span');
-      label.textContent = item.name;
-      const remove = button('Remover', () => {
+      list.append(makeChip(item, () => {
         if (working) return;
         draft.splice(index, 1);
         renderDraft();
         report('captureImageStatus');
-      });
-      remove.setAttribute('aria-label', 'Remover ' + item.name);
-      listItem(list, label, remove);
+      }));
     });
     list.hidden = !draft.length;
+    resizeAttachments($('captureInputWrap'), list);
     $('captureAddImages').disabled = working || draft.length >= maxCount;
   }
 
@@ -142,38 +162,42 @@
     const refs = card?.attachments ?? [];
     const host = $('detailImageList');
     host.replaceChildren();
-    $('detailAttachments').hidden = !card || (!refs.length && !edit);
+    $('detailAttachments').hidden = !card || !refs.length || edit;
     $('detailAddImages').hidden = !edit;
-    $('detailAddImages').disabled = refs.length >= maxCount || working;
-    $('detailAddImages').textContent = editQueue.length ? 'Tentar envio novamente' : 'Adicionar imagem';
-    if (!refs.length) return;
-    const list = document.createElement('ul');
-    list.id = 'detailAttachmentItems';
-    const control = button('Anexos (' + refs.length + ')', () => {
-      list.hidden = !list.hidden;
-      control.setAttribute('aria-expanded', String(!list.hidden));
-    });
-    control.setAttribute('aria-controls', list.id);
-    list.hidden = !edit;
-    control.setAttribute('aria-expanded', String(edit));
-    refs.forEach((ref, index) => {
-      const open = button(ref.name, () => showImage(ref));
-      if (!edit) {
-        listItem(list, open);
-        return;
-      }
-      const remove = button('Remover', () => {
-        if (working) return;
+    $('detailAddImages').disabled = refs.length + editQueue.length >= maxCount || working;
+    $('detailAddImages').setAttribute('aria-label', editQueue.length ? 'Tentar envio novamente' : 'Adicionar imagem');
+    const editList = $('detailEditList');
+    editList.replaceChildren();
+    editList.hidden = !edit || !(refs.length || editQueue.length);
+    if (edit) {
+      refs.forEach((ref, index) => editList.append(makeChip(ref, () => {
+        if (working || !confirm('Remover a imagem "' + ref.name + '" desta nota?')) return;
         try {
           board.saveAttachments(card, refs.filter((_, i) => i !== index));
           renderDetail(board.detailCard(), true);
           report('detailImageStatus', 'Anexo removido do cartão. A imagem continua no Drive.');
         } catch (error) { report('detailImageStatus', error.message); }
-      });
-      remove.setAttribute('aria-label', 'Remover ' + ref.name);
-      listItem(list, open, remove);
-    });
-    host.append(control, list);
+      })));
+      editQueue.forEach((item, index) => editList.append(makeChip(item, () => {
+        if (working || !confirm('Remover a imagem "' + item.name + '" desta nota?')) return;
+        editQueue.splice(index, 1);
+        renderDetail(board.detailCard(), true);
+      })));
+      requestAnimationFrame(() => resizeAttachments($('detailEditorWrap'), editList));
+      return;
+    }
+    if (!refs.length) return;
+    const count = document.createElement('span');
+    count.className = 'attachment-count';
+    count.textContent = '📎 ' + refs.length;
+    count.setAttribute('aria-label', refs.length + (refs.length === 1 ? ' anexo' : ' anexos'));
+    host.append(count);
+    for (const ref of refs) {
+      const open = button(shortName(ref.name), () => showImage(ref));
+      open.title = ref.name;
+      open.setAttribute('aria-label', 'Abrir ' + ref.name);
+      host.append(open);
+    }
   }
 
   async function uploadEdit() {
@@ -199,6 +223,7 @@
     if (!files.length || working || !editTarget) return;
     try {
       editQueue = fileItems(files, maxCount - (editTarget.attachments?.length ?? 0));
+      renderDetail(editTarget, true);
       void uploadEdit();
     } catch (error) { report('detailImageStatus', error.message); }
   };
@@ -403,6 +428,10 @@
     // Selected files stay in the draft, but a Drive file ID belongs to its account.
     for (const item of draft) delete item.id;
     restoring = null;
+  });
+  window.addEventListener('resize', () => {
+    resizeAttachments($('captureInputWrap'), $('captureImageList'));
+    if (editing) resizeAttachments($('detailEditorWrap'), $('detailEditList'));
   });
   $('cardDetail').addEventListener('close', () => renderDetail(null, false));
 })();

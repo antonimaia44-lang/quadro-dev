@@ -108,3 +108,27 @@ body #captureButtons .project-choice>button.project-archive{background:#ab423f;b
 
 body #captureButtons .project-choice>button.project-archive,body #manageProjectDialog #captureButtons .project-choice>button.project-archive{background:#512b32;border-color:#a45e65;color:#fff}
 @media(max-width:849px){body #manageDialogHeader #archiveToggle,body.ideas-screen #mobileArchivedCardsButton{background:#512b32;border-color:#a45e65;color:#fff}}
+
+/* Compact attachment controls in the capture and detail editors. */
+#captureBody > .attachment-controls:has(#captureImageStatus[hidden]){display:none}
+#captureInputWrap #captureImageList,#detailEditorWrap #detailEditList{position:absolute;left:10px;right:52px;bottom:8px;display:flex;flex-wrap:wrap;gap:4px;list-style:none;padding:0;margin:0}
+#captureInputWrap #captureImageList[hidden],#detailEditorWrap #detailEditList[hidden]{display:none}
+#captureInputWrap .attachment-chip,#detailEditorWrap .attachment-chip{display:flex;align-items:center;max-width:min(100%,150px);height:30px;padding-left:8px;border:1px solid #51718a;border-radius:6px;background:#123b58;color:#c2d4e0;font-size:12px}
+#captureInputWrap .attachment-chip span,#detailEditorWrap .attachment-chip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+#captureInputWrap .attachment-chip button,#detailEditorWrap .attachment-chip button{flex:none;min-width:30px;width:30px;min-height:30px;height:30px;margin:0;padding:0;border:0;background:transparent;color:#fff;font-size:18px}
+#captureBody #captureInputWrap #idea{min-height:calc(90px + var(--attachment-extra, 0px))}
+@media(max-width:849px){#captureBody #captureInputWrap #idea{min-height:calc(132px + var(--attachment-extra, 0px))}}
+#detailEditorWrap:has(#cardEditor[hidden]){display:none}
+#cardDetail #detailEditorWrap #cardEditor{display:block;box-sizing:border-box;min-height:calc(105px + var(--attachment-extra, 0px))}
+#cardDetail #detailEditorWrap #detailAddImages{position:absolute;right:4px;bottom:4px;display:grid;place-items:center;width:44px;min-width:44px;height:44px;min-height:44px;margin:0;padding:10px;border:0;background:transparent;box-shadow:none;color:#64899f}
+#cardDetail #detailEditorWrap #detailAddImages[hidden]{display:none}
+#detailEditorWrap #detailAddImages svg{width:20px;height:20px;transform:rotate(-45deg);fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+#cardDetail #detailImageList{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+#cardDetail #detailImageList .attachment-count{flex:none;font-size:13px;color:#c2d4e0}
+#cardDetail #detailImageList button{flex:0 1 auto;min-width:0;max-width:calc((100% - 50px)/2);min-height:36px;margin:0;padding:6px 9px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:1px solid #51718a;background:#1c405a;color:#fff;font-size:13px}
+.card-attachment-count{margin-top:8px;color:inherit;font-size:13px}
+#drivePanel>summary{display:flex;align-items:center;gap:8px;min-height:44px;padding:8px 0;cursor:pointer}
+#drivePanel>summary::before{content:"\25B6";font-size:10px}
+#drivePanel[open]>summary::before{content:"\25BC"}
+body #drivePanel .drive-actions button{min-height:36px;padding:6px 10px;font-size:13px}
+body #drivePanel .drive-actions #driveConnect{padding:6px 0}

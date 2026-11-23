@@ -60,6 +60,7 @@ async function status(p, label) { await p.waitForFunction(label => document.quer
 async function connect(p) {
   await p.goto('http://localhost:5118/');
   await p.waitForFunction(()=>window.google && window.QuadroDriveSync);
+  await p.locator('#drivePanel summary').click();
   await p.locator('#driveConnect').click();
   await status(p,'Quadro sincronizado');
 }
@@ -85,6 +86,10 @@ function cardsOn(p) { return p.evaluate(()=>window.quadro.read().projects.flatMa
     await d.locator('#captureImages').setInputFiles([image('a.png'),image('b.png'),image('c.png'),image('d.png')]);
     await d.waitForFunction(()=>document.querySelector('#captureImageStatus').textContent.includes('até três'));
     await d.locator('#captureImages').setInputFiles([image('a.png'),image('b.png')]);
+    assert.equal(await d.locator('#captureInputWrap #captureImageList li').count(),2);
+    await d.getByRole('button',{name:'Remover b.png'}).click();
+    assert.equal(await d.locator('#captureImageList li').count(),1);
+    await d.locator('#captureImages').setInputFiles(image('b.png'));
     failImage=true;
     await d.locator('[data-capture="demo"]').click();
     await d.waitForFunction(()=>document.querySelector('#captureImageStatus').textContent.includes('HTTP 503')).catch(async e=>{console.log(await d.locator('#captureImageStatus').textContent(),errors);throw e});
@@ -104,8 +109,9 @@ function cardsOn(p) { return p.evaluate(()=>window.quadro.read().projects.flatMa
     await p.locator('#ideasToggle').click();
     await p.locator('#tabs [data-view="demo"]').click();
     await p.getByText('Cartão fictício com três imagens',{exact:true}).click();
-    await p.getByRole('button',{name:'Anexos (2)'}).click();
-    await p.getByRole('button',{name:'a.png',exact:true}).click();
+    assert.equal(await p.locator('#detailImageList button').count(),2);
+    assert.equal(await p.locator('#detailImageList button').first().innerText(),'a');
+    await p.getByRole('button',{name:'Abrir a.png',exact:true}).click();
     await waitFor(p,'#attachmentViewport:not([hidden])');
     assert.equal(await p.locator('#attachmentImage').evaluate(img=>img.naturalWidth),1);
     await p.locator('#attachmentZoom').click();
@@ -113,6 +119,15 @@ function cardsOn(p) { return p.evaluate(()=>window.quadro.read().projects.flatMa
     await p.screenshot({path:path.join(output,'quadro-anexos-mobile.png')});
     await p.locator('#attachmentClose').click();
     await p.locator('#editDescription').click();
+    await p.locator('#detailImages').setInputFiles(image('c.png'));
+    await p.waitForFunction(()=>window.quadro.read().projects[0].cards.some(c=>c.attachments?.length===3));
+    await p.waitForFunction(()=>document.querySelectorAll('#detailEditList li').length===3);
+    p.once('dialog',dialog=>dialog.dismiss());
+    await p.getByRole('button',{name:'Remover c.png'}).click();
+    assert((await cardsOn(p)).some(c=>c.attachments?.length===3));
+    p.once('dialog',dialog=>dialog.accept());
+    await p.getByRole('button',{name:'Remover c.png'}).click();
+    await p.waitForFunction(()=>window.quadro.read().projects[0].cards.some(c=>c.attachments?.length===2));
     await p.locator('#detailImages').setInputFiles(image('c.png'));
     await p.waitForFunction(()=>window.quadro.read().projects[0].cards.some(c=>c.attachments?.length===3));
     await p.locator('#closeDescription').click();

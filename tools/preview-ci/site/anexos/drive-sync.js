@@ -18,7 +18,6 @@
     $('driveIndicator').classList.toggle('is-synced', ok);
     $('driveIndicator').setAttribute('aria-label', label);
     $('driveIndicator').title = label;
-    $('driveConnectedLabel').hidden = !$('driveConnect').hidden;
   }
   function status(text) {
     $('driveStatus').textContent = text;
