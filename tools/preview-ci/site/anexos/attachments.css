@@ -198,3 +198,61 @@ body #drivePanel .drive-actions #driveConnect{padding:6px 0}
 @media(max-width:849px){body #manageProjectDialog #captureButtons .priority-star{display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;gap:2px}body #manageProjectDialog #captureButtons .priority-star .priority-role{font-size:9px;font-weight:500}#cardDetail #detailSaveStatus{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
 
 @media(prefers-reduced-motion:reduce){body #manageProjectDialog #captureButtons .project-choice{transition:none}}
+
+@media(max-width:849px){
+ body #captureButtons .project-choice.priority-current{background:#e5e5e5;border-color:#9a9a9a;color:#004980}
+ body #manageProjectDialog #captureButtons .project-choice.priority-current{background:#1c405a;border-color:#51718a;color:#fff}
+ body #manageProjectDialog #captureButtons .project-choice.priority-current>button.project-name,body #manageProjectDialog #captureButtons .project-choice.priority-current .project-hint{color:#fff}
+ body #manageProjectDialog #captureButtons .priority-current .priority-star{color:#feff9d}
+ body #manageProjectDialog #captureButtons .priority-current .priority-grip{color:#b5c9d7}
+ body #manageProjectDialog #captureButtons .priority-current .project-edit{color:#fff}
+}
+
+/* The text scrolls in its own area; the attachment toolbar is separate. */
+#captureInputWrap,#detailEditorWrap{box-sizing:border-box;border:1px solid #55758d;border-radius:8px;background:#001c31;padding-bottom:44px}
+#captureBody #captureInputWrap #idea,#cardDetail #detailEditorWrap #cardEditor{display:block;box-sizing:border-box;width:100%;border:0;border-radius:8px 8px 0 0;background:transparent;padding-bottom:14px;resize:vertical}
+#captureBody #captureInputWrap #idea{min-height:90px}
+@media(max-width:849px){#captureBody #captureInputWrap #idea{min-height:104px}}
+#cardDetail #detailEditorWrap #cardEditor{min-height:105px}
+#captureInputWrap:focus-within,#detailEditorWrap:focus-within{outline:1.5px solid #feff9d;outline-offset:3px}
+#captureInputWrap textarea:focus-visible,#detailEditorWrap textarea:focus-visible{outline:none}
+#captureInputWrap #captureAddImages,#cardDetail #detailEditorWrap #detailAddImages{bottom:0;right:2px}
+.attachment-badge{position:absolute;right:2px;top:2px;display:grid;place-items:center;width:18px;height:18px;border-radius:50%;background:#ab423f;color:#fff;font:600 11px system-ui}
+.attachment-badge[hidden]{display:none}
+#captureInputWrap .attachment-panel,#detailEditorWrap .attachment-panel{position:absolute;z-index:10;right:4px;bottom:46px;box-sizing:border-box;width:min(290px,calc(100% - 8px));padding:12px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;border:1px solid #51718a;border-radius:10px;background:#123b58;color:#fff;box-shadow:0 5px 18px #0008}
+#captureInputWrap .attachment-panel[hidden],#detailEditorWrap .attachment-panel[hidden]{display:none}
+.attachment-panel>strong{grid-column:1/-1;font-size:14px;font-weight:600}
+#captureInputWrap #captureImageList,#detailEditorWrap #detailEditList{position:static;display:contents;list-style:none;padding:0;margin:0}
+#captureInputWrap #captureImageList[hidden],#detailEditorWrap #detailEditList[hidden]{display:none}
+#captureInputWrap .attachment-preview,#detailEditorWrap .attachment-preview{position:relative;display:flex;flex-direction:column;min-width:0;overflow:hidden;border:1px solid #51718a;border-radius:7px;background:#1c405a}
+.attachment-preview img{display:block;width:100%;aspect-ratio:1;object-fit:cover;background:#001c31}
+.attachment-preview span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:4px;font-size:11px;color:#fff}
+#captureInputWrap .attachment-preview button,#detailEditorWrap .attachment-preview button{position:absolute;right:2px;top:2px;display:grid;place-items:center;width:28px;min-width:28px;height:28px;min-height:28px;margin:0;padding:0;border:0;border-radius:50%;background:#002947e8;color:#fff;font-size:18px}
+#captureInputWrap #captureChooseImage,#detailEditorWrap #detailChooseImage{box-sizing:border-box;display:grid;place-items:center;align-content:center;min-width:0;min-height:76px;margin:0;padding:6px;border:1px dashed #7a9aaf;border-radius:7px;background:#002947;color:#c2d4e0;font-size:11px;overflow-wrap:anywhere}
+#captureInputWrap #captureChooseImage::before,#detailEditorWrap #detailChooseImage::before{content:'+';font-size:26px;line-height:1}
+#detailEditorWrap #detailRetryImages{grid-column:1/-1;min-height:36px;margin:0}
+#detailEditorWrap #detailRetryImages[hidden]{display:none}
+
+@media(max-width:849px){body #manageProjectDialog #captureButtons .priority-star[aria-pressed="false"]{color:#89a8bb}}
+
+@media(max-width:849px){body #manageProjectDialog #captureButtons .priority-grip-spacer{flex:none;width:32px;min-width:32px}body #manageProjectDialog #captureButtons .project-choice>button.project-name{padding-left:0}}
+@media(min-width:850px){#captureButtons .priority-grip-spacer{display:none}}
+
+@media(max-width:849px){
+ body #manageProjectDialog #captureButtons [data-project-row="demo"] > .priority-grip,
+ body #manageProjectDialog #captureButtons [data-project-row="demo-outro"] > .priority-grip{width:21px;min-width:21px;text-align:left;padding-inline-start:4px}
+}
+
+@media(max-width:849px){
+ body #manageProjectDialog #captureButtons .priority-grip,
+ body #manageProjectDialog #captureButtons .priority-grip-spacer{width:21px;min-width:21px}
+ body #manageProjectDialog #captureButtons .priority-grip{text-align:left;padding-inline-start:4px}
+ body #manageProjectDialog #captureButtons .project-choice>button.project-name,
+ body #manageProjectDialog #captureButtons .project-title{font-weight:400}
+ body #manageProjectDialog #captureButtons .project-choice.priority-current{background:#feff9d;border-color:#feff9d}
+ body #manageProjectDialog #captureButtons .project-choice.priority-current>button.project-name,
+ body #manageProjectDialog #captureButtons .project-choice.priority-current .project-hint,
+ body #manageProjectDialog #captureButtons .priority-current .priority-star,
+ body #manageProjectDialog #captureButtons .priority-current .priority-grip,
+ body #manageProjectDialog #captureButtons .priority-current .project-edit{color:#004980}
+}

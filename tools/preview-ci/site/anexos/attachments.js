@@ -16,6 +16,13 @@
   let imageUrl;
   let restoring;
   let pendingRemoval;
+  const previewUrls = { capture: [], detail: [] };
+  const previewGeneration = { capture: 0, detail: 0 };
+  function clearPreviews(which) {
+    previewGeneration[which]++;
+    for (const url of previewUrls[which]) URL.revokeObjectURL(url);
+    previewUrls[which] = [];
+  }
   const feedbackTimers = {};
   function setFeedback(which, state) {
     const control = $(which === 'capture' ? 'captureAddImages' : 'detailAddImages');
@@ -68,25 +75,38 @@
 
   function resizeAttachments(wrapper, list) {
     const field = wrapper.querySelector('textarea');
-    const height = list.hidden ? 0 : list.offsetHeight;
-    field.style.paddingBottom = Math.max(54, height + 18) + 'px';
-    wrapper.style.setProperty('--attachment-extra', Math.max(0, height - 32) + 'px');
+    field.style.paddingBottom = '';
+    wrapper.style.removeProperty('--attachment-extra');
   }
 
-  function makeChip(item, removeAction) {
+  function makeChip(item, removeAction, which) {
     const li = document.createElement('li');
-    li.className = 'attachment-chip';
+    li.className = 'attachment-preview';
+    const img = document.createElement('img');
+    img.alt = item.name;
+    const generation = previewGeneration[which];
+    const attach = blob => {
+      if (generation !== previewGeneration[which]) return;
+      const url = URL.createObjectURL(blob);
+      previewUrls[which].push(url);
+      img.src = url;
+    };
+    if (!$((which === 'capture' ? 'capture' : 'detail') + 'AttachmentPanel').hidden) {
+      if (item.blob) attach(item.blob);
+      else imageBlob(item).then(attach).catch(() => { li.classList.add('preview-unavailable'); });
+    }
     const label = document.createElement('span');
     label.textContent = shortName(item.name);
     label.title = item.name;
     const remove = button('×', removeAction);
     remove.setAttribute('aria-label', 'Remover ' + item.name);
-    li.append(label, remove);
+    li.append(img, label, remove);
     return li;
   }
 
   function renderDraft() {
     const list = $('captureImageList');
+    clearPreviews('capture');
     list.replaceChildren();
     draft.forEach((item, index) => {
       list.append(makeChip(item, () => {
@@ -94,11 +114,15 @@
         draft.splice(index, 1);
         renderDraft();
         report('captureImageStatus');
-      }));
+      }, 'capture'));
     });
     list.hidden = !draft.length;
     resizeAttachments($('captureInputWrap'), list);
-    $('captureAddImages').disabled = working || draft.length >= maxCount;
+    $('captureAddImages').disabled = working;
+    $('captureChooseImage').disabled = working || draft.length >= maxCount;
+    $('captureChooseImage').hidden = draft.length >= maxCount;
+    $('captureAttachmentCount').textContent = String(draft.length);
+    $('captureAttachmentCount').hidden = !draft.length;
   }
 
   function fileItems(files, available) {
@@ -131,6 +155,7 @@
     working = true;
     $('driveBackup').disabled = $('driveRestore').disabled = true;
     $('captureAddImages').disabled = $('detailAddImages').disabled = true;
+    $('captureChooseImage').disabled = $('detailChooseImage').disabled = true;
     report(statusId, message);
     try {
       return await operation();
@@ -146,7 +171,7 @@
 
   async function connectIfNeeded() {
     if (!drive.connected() && !await window.QuadroDriveSync.connect(Boolean(window.QuadroDriveSync.account()))) {
-      throw Error('Conecte o Google Drive na tela inicial e tente de novo.');
+      throw Error('A autorização do Google não foi concluída. Tente novamente.');
     }
   }
 
@@ -155,27 +180,55 @@
     if (!working) $(input).click();
   }
 
-  $('captureAddImages').onclick = () => openFilePicker('captureImages');
-  $('captureImages').onchange = async event => {
+  async function toggleAttachmentPanel(which) {
+    if (working) return;
+    const panel = $(which + 'AttachmentPanel');
+    const control = $(which === 'capture' ? 'captureAddImages' : 'detailAddImages');
+    if (!panel.hidden) {
+      panel.hidden = true;
+      control.setAttribute('aria-expanded','false');
+      clearPreviews(which);
+      return;
+    }
+    if (!drive.connected()) {
+      if (which === 'detail' && !window.QuadroDriveSync.account()) {
+        report('detailImageStatus', 'Esta nota está no quadro local. Feche a nota para conectar o Google Drive sem trocar de quadro durante a edição.');
+        return;
+      }
+      const draftText = which === 'capture' ? $('idea').value : '';
+      try {
+        const connected = await window.QuadroDriveSync.connect(which === 'detail');
+        if (!connected) {
+          report(which === 'capture' ? 'captureImageStatus' : 'detailImageStatus', 'Autorização não concluída. Tente novamente.');
+          return;
+        }
+        if (which === 'capture' && draftText && !$('idea').value) {
+          $('idea').value = draftText;
+          $('idea').dispatchEvent(new Event('input', { bubbles:true }));
+        } else if (which === 'capture' && draftText && $('idea').value !== draftText) {
+          report('captureImageStatus', 'A conta já tinha outro rascunho. O texto anterior foi preservado no quadro local.');
+        }
+      } catch (error) {
+        report(which === 'capture' ? 'captureImageStatus' : 'detailImageStatus', error.message);
+        return;
+      }
+    }
+    panel.hidden = false;
+    report(which === 'capture' ? 'captureImageStatus' : 'detailImageStatus');
+    control.setAttribute('aria-expanded','true');
+    if (which === 'capture') renderDraft();
+    else renderDetail(board.detailCard(), true);
+  }
+  $('captureAddImages').onclick = () => void toggleAttachmentPanel('capture');
+  $('captureChooseImage').onclick = () => openFilePicker('captureImages');
+  $('captureImages').onchange = event => {
     const files = Array.from(event.target.files);
     event.target.value = '';
     if (!files.length || working) return;
     try {
       draft.push(...fileItems(files, maxCount - draft.length));
       renderDraft();
-      if (!drive.connected()) {
-        const draftText = $('idea').value;
-        report('captureImageStatus', 'Aguardando autorização do Google…');
-        try {
-          const connected = await window.QuadroDriveSync.connect();
-          const otherDraft = connected && draftText && $('idea').value && $('idea').value !== draftText;
-          if (connected && draftText && !$('idea').value) {
-            $('idea').value = draftText;
-            $('idea').dispatchEvent(new Event('input', { bubbles: true }));
-          }
-          report('captureImageStatus', !connected ? 'Conecte o Google Drive para salvar a imagem.' : otherDraft ? 'A conta já tinha outro rascunho. O texto anterior foi preservado no quadro local.' : '');
-        } catch (error) { report('captureImageStatus', error.message); }
-      } else report('captureImageStatus');
+      report('captureImageStatus');
     } catch (error) { report('captureImageStatus', error.message); }
   };
 
@@ -191,9 +244,15 @@
     host.replaceChildren();
     $('detailAttachments').hidden = !card || !refs.length || edit;
     $('detailAddImages').hidden = !edit;
-    $('detailAddImages').disabled = refs.length + editQueue.length >= maxCount || working;
-    $('detailAddImages').setAttribute('aria-label', editQueue.length ? 'Tentar envio novamente' : 'Adicionar imagem');
+    $('detailAddImages').disabled = working;
+    $('detailChooseImage').disabled = working || refs.length + editQueue.length >= maxCount;
+    $('detailChooseImage').hidden = refs.length + editQueue.length >= maxCount;
+    $('detailRetryImages').hidden = !editQueue.length;
+    $('detailRetryImages').disabled = working;
+    $('detailAttachmentCount').textContent = String(refs.length + editQueue.length);
+    $('detailAttachmentCount').hidden = !(refs.length + editQueue.length);
     const editList = $('detailEditList');
+    clearPreviews('detail');
     editList.replaceChildren();
     editList.hidden = !edit || !(refs.length || editQueue.length);
     if (edit) {
@@ -205,13 +264,13 @@
           report('detailImageStatus', 'Anexo removido do cartão. A imagem continua no Drive.');
         } catch (error) { report('detailImageStatus', error.message); }
         });
-      })));
+      }, 'detail')));
       editQueue.forEach((item, index) => editList.append(makeChip(item, () => {
         confirmRemoval(item, () => {
         editQueue.splice(index, 1);
         renderDetail(board.detailCard(), true);
         });
-      })));
+      }, 'detail')));
       requestAnimationFrame(() => resizeAttachments($('detailEditorWrap'), editList));
       return;
     }
@@ -244,10 +303,21 @@
     renderDetail(board.detailCard(), editing);
   }
 
-  $('detailAddImages').onclick = () => {
-    if (editQueue.length) void uploadEdit();
-    else openFilePicker('detailImages');
-  };
+  $('detailAddImages').onclick = () => void toggleAttachmentPanel('detail');
+  $('detailChooseImage').onclick = () => openFilePicker('detailImages');
+  $('detailRetryImages').onclick = () => void uploadEdit();
+  document.addEventListener('pointerdown', event => {
+    if ($('attachmentRemoveConfirm').contains(event.target)) return;
+    for (const which of ['capture','detail']) {
+      const panel = $(which + 'AttachmentPanel');
+      const control = $(which === 'capture' ? 'captureAddImages' : 'detailAddImages');
+      if (!panel.hidden && !panel.contains(event.target) && !control.contains(event.target)) {
+        panel.hidden = true;
+        control.setAttribute('aria-expanded','false');
+        clearPreviews(which);
+      }
+    }
+  });
   $('detailImages').onchange = event => {
     const files = Array.from(event.target.files);
     event.target.value = '';
@@ -438,7 +508,7 @@
     uploadDraft: () => operate('captureImageStatus', 'Preparando o envio…', async () => {
       if (!drive.connected()) {
         if (!window.QuadroDriveSync.account()) {
-          throw Error('Conecte o Google Drive no topo e toque no projeto novamente para salvar.');
+          throw Error('A autorização do Google não foi concluída. Toque no clipe para tentar novamente.');
         }
         report('captureImageStatus', 'Autorize o Google Drive para continuar salvando…');
         await connectIfNeeded();
@@ -453,7 +523,13 @@
         throw error;
       }
     }),
-    clearDraft: () => { draft.length = 0; renderDraft(); report('captureImageStatus'); }
+    clearDraft: () => {
+      draft.length = 0;
+      $('captureAttachmentPanel').hidden = true;
+      $('captureAddImages').setAttribute('aria-expanded','false');
+      renderDraft();
+      report('captureImageStatus');
+    }
   };
   window.addEventListener('quadro-session-change', () => {
     // Selected files stay in the draft, but a Drive file ID belongs to its account.
@@ -466,6 +542,9 @@
   });
   $('cardDetail').addEventListener('close', () => {
     if ($('attachmentRemoveConfirm').open) $('attachmentRemoveConfirm').close();
+    $('detailAttachmentPanel').hidden = true;
+    $('detailAddImages').setAttribute('aria-expanded','false');
+    clearPreviews('detail');
     renderDetail(null, false);
   });
 })();

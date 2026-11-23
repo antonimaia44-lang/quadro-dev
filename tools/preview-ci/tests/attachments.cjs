@@ -79,9 +79,7 @@ function cardsOn(p) { return p.evaluate(()=>window.quadro.read().projects.flatMa
     await p.locator('#ideasToggle').click();
     await p.locator('#manageProjectsFromIdeas').click();
     await p.locator('[data-priority-select="demo"]').click();
-    await p.locator('[data-priority-slot="1"]').click();
     await p.locator('[data-priority-select="demo-outro"]').click();
-    await p.locator('[data-priority-slot="2"]').click();
     await p.locator('#manageDialogActions #manageProjects').click();
     if(await p.locator('#ideasDialog').evaluate(e=>e.open)) await p.locator('#closeIdeasDialog').click();
     await p.waitForTimeout(1600);
@@ -95,6 +93,7 @@ function cardsOn(p) { return p.evaluate(()=>window.quadro.read().projects.flatMa
     await d.locator('#driveSync').click();
     await d.waitForFunction(()=>window.quadro.read().projects[0].cards.some(c=>c.text==='Ideia digitada no celular'));
     await d.locator('#idea').fill('Cartão fictício com três imagens');
+    await d.locator('#captureAddImages').click();
     await d.locator('#captureImages').setInputFiles([image('a.png'),image('b.png'),image('c.png'),image('d.png')]);
     await d.waitForFunction(()=>document.querySelector('#captureImageStatus').textContent.includes('até três'));
     await d.locator('#captureImages').setInputFiles([image('a.png'),image('b.png')]);
@@ -136,6 +135,7 @@ function cardsOn(p) { return p.evaluate(()=>window.quadro.read().projects.flatMa
     await p.screenshot({path:path.join(output,'quadro-anexos-mobile.png')});
     await p.locator('#attachmentClose').click();
     await p.locator('#editDescription').click();
+    await p.locator('#detailAddImages').click();
     await p.locator('#detailImages').setInputFiles(image('c.png'));
     await p.waitForFunction(()=>window.quadro.read().projects[0].cards.some(c=>c.attachments?.length===3));
     await p.waitForFunction(()=>document.querySelectorAll('#detailEditList li').length===3);
