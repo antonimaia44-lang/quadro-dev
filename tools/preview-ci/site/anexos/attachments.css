@@ -256,3 +256,9 @@ body #drivePanel .drive-actions #driveConnect{padding:6px 0}
  body #manageProjectDialog #captureButtons .priority-current .priority-grip,
  body #manageProjectDialog #captureButtons .priority-current .project-edit{color:#004980}
 }
+
+/* A área de texto ocupa o bloco inteiro, com espaço lateral para o clipe. */
+#captureInputWrap,#detailEditorWrap{padding-bottom:0}
+#captureBody #captureInputWrap #idea,#cardDetail #detailEditorWrap #cardEditor{padding-right:74px;padding-bottom:14px}
+#captureInputWrap #captureAddImages,#cardDetail #detailEditorWrap #detailAddImages{right:20px;bottom:2px}
+@media(max-width:849px){#captureBody #captureInputWrap #idea{min-height:132px}}
