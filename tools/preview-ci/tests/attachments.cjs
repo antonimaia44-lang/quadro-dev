@@ -76,6 +76,18 @@ function cardsOn(p) { return p.evaluate(()=>window.quadro.read().projects.flatMa
     const errors = []; d.setDefaultTimeout(10000); p.setDefaultTimeout(10000);
     for(const page of [d,p])page.on('pageerror',error=>errors.push(error.message));
     await Promise.all([connect(d),connect(p)]);
+    await p.locator('#ideasToggle').click();
+    await p.locator('#manageProjectsFromIdeas').click();
+    await p.locator('[data-priority-select="demo"]').click();
+    await p.locator('[data-priority-slot="1"]').click();
+    await p.locator('[data-priority-select="demo-outro"]').click();
+    await p.locator('[data-priority-slot="2"]').click();
+    await p.locator('#manageDialogActions #manageProjects').click();
+    if(await p.locator('#ideasDialog').evaluate(e=>e.open)) await p.locator('#closeIdeasDialog').click();
+    await p.waitForTimeout(1600);
+    await d.locator('#driveSync').click();
+    await d.waitForFunction(()=>window.quadro.read().projects.some(x=>x.id==='demo'&&x.priorityRank===1));
+
     await p.locator('#idea').fill('Ideia digitada no celular');
     await p.locator('[data-capture="demo"]').tap();
     await p.waitForFunction(()=>window.quadro.read().projects[0].cards.some(c=>c.text==='Ideia digitada no celular'));
@@ -94,6 +106,7 @@ function cardsOn(p) { return p.evaluate(()=>window.quadro.read().projects.flatMa
     await d.locator('[data-capture="demo"]').click();
     await d.waitForFunction(()=>document.querySelector('#captureImageStatus').textContent.includes('HTTP 503')).catch(async e=>{console.log(await d.locator('#captureImageStatus').textContent(),errors);throw e});
     assert.equal((await cardsOn(d)).filter(c=>c.text.startsWith('Cartão fictício')).length,0);
+    assert(await d.locator('#captureAddImages').evaluate(e=>e.classList.contains('is-error')));
     failImage=false;
     expire=true;
     await d.locator('#driveSync').click();
@@ -101,7 +114,7 @@ function cardsOn(p) { return p.evaluate(()=>window.quadro.read().projects.flatMa
     assert.equal(await d.locator('#idea').inputValue(),'Cartão fictício com três imagens');
     assert.equal(await d.locator('#captureImageList li').count(),2);
     await d.locator('[data-capture="demo"]').click();
-    await d.waitForFunction(()=>document.querySelector('#captureImageStatus').textContent.includes('salva em'));
+    await d.waitForFunction(()=>document.querySelector('#captureAddImages').classList.contains('is-success'));
     await d.waitForFunction(()=>window.quadro.read().projects[0].cards.some(c=>c.attachments?.length===2));
     await d.waitForTimeout(1600);
     await p.locator('#driveSync').click();
@@ -110,6 +123,10 @@ function cardsOn(p) { return p.evaluate(()=>window.quadro.read().projects.flatMa
     await p.locator('#tabs [data-view="demo"]').click();
     await p.getByText('Cartão fictício com três imagens',{exact:true}).click();
     assert.equal(await p.locator('#detailImageList button').count(),2);
+    await p.evaluate(()=>Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async value=>{window.copiedForTest=value}}}));
+    await p.locator('#copyDetail').click();
+    await p.waitForFunction(()=>window.copiedForTest?.includes('a.png')&&window.copiedForTest?.includes('b.png'));
+
     assert.equal(await p.locator('#detailImageList button').first().innerText(),'a');
     await p.getByRole('button',{name:'Abrir a.png',exact:true}).click();
     await waitFor(p,'#attachmentViewport:not([hidden])');
@@ -122,6 +139,7 @@ function cardsOn(p) { return p.evaluate(()=>window.quadro.read().projects.flatMa
     await p.locator('#detailImages').setInputFiles(image('c.png'));
     await p.waitForFunction(()=>window.quadro.read().projects[0].cards.some(c=>c.attachments?.length===3));
     await p.waitForFunction(()=>document.querySelectorAll('#detailEditList li').length===3);
+    await p.waitForFunction(()=>document.querySelector('#detailAddImages').classList.contains('is-success'));
     const positions=await p.locator('#detailEditList li').evaluateAll(es=>es.map(e=>e.getBoundingClientRect().top));
     assert(positions.every(y=>Math.abs(y-positions[0])<1));
     await p.getByRole('button',{name:'Remover c.png'}).click();
@@ -141,11 +159,13 @@ function cardsOn(p) { return p.evaluate(()=>window.quadro.read().projects.flatMa
     const saved = await (await download).path();
     const backup = JSON.parse(fs.readFileSync(saved,'utf8'));
     assert.equal(backup.images.length,3);
+    assert(backup.board.projects.some(x=>x.id==='demo'&&x.priorityRank===1));
     assert(backup.images.every(img=>Buffer.from(img.data,'base64').equals(png)));
     d.once('dialog',dialog=>dialog.accept());
     await d.locator('#driveBackupFile').setInputFiles({name:'backup.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(backup))});
     await d.waitForFunction(ids=>window.quadro.read().projects[0].cards.some(c=>c.attachments?.length===3 &&
       c.attachments.every(ref=>!ids.includes(ref.id))),backup.images.map(i=>i.id));
+    assert((await d.evaluate(()=>window.quadro.read())).projects.some(x=>x.id==='demo'&&x.priorityRank===1));
     await d.screenshot({path:path.join(output,'quadro-anexos-desktop.png')});
     assert.deepEqual(errors,[]);
     console.log('OK: toque no celular, autorização expirada, renovação ao salvar, anexos nos dois navegadores, backup e restauração.');

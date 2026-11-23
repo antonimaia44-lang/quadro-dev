@@ -16,6 +16,17 @@
   let imageUrl;
   let restoring;
   let pendingRemoval;
+  const feedbackTimers = {};
+  function setFeedback(which, state) {
+    const control = $(which === 'capture' ? 'captureAddImages' : 'detailAddImages');
+    clearTimeout(feedbackTimers[which]);
+    control.classList.remove('is-uploading','is-success','is-error');
+    if (!state) return;
+    control.classList.add('is-' + state);
+    if (state !== 'uploading') feedbackTimers[which] = setTimeout(() => {
+      control.classList.remove('is-success','is-error');
+    }, 2500);
+  }
 
   function confirmRemoval(item, action) {
     if (working || $('attachmentRemoveConfirm').open) return;
@@ -220,13 +231,16 @@
   async function uploadEdit() {
     const card = editTarget;
     if (!card || working) return;
-    await operate('detailImageStatus', 'Enviando imagens…', async () => {
+    setFeedback('detail', 'uploading');
+    const uploaded = await operate('detailImageStatus', 'Enviando imagens…', async () => {
       await connectIfNeeded();
       const refs = await uploadItems(editQueue);
       board.saveAttachments(card, [...(card.attachments ?? []), ...refs]);
       editQueue = [];
-      report('detailImageStatus', 'Anexos salvos no cartão.');
+      report('detailImageStatus');
+      return true;
     });
+    setFeedback('detail', uploaded ? 'success' : 'error');
     renderDetail(board.detailCard(), editing);
   }
 
@@ -418,7 +432,7 @@
   }
 
   window.QuadroAttachments = {
-    renderReadOnly, validateBoard, renderDetail, backup, busy: () => working,
+    renderReadOnly, validateBoard, renderDetail, backup, setFeedback, busy: () => working,
     hasDraftImages: () => draft.length > 0,
     captureStatus: message => report('captureImageStatus', message),
     uploadDraft: () => operate('captureImageStatus', 'Preparando o envio…', async () => {

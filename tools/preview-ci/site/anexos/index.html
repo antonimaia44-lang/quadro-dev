@@ -303,7 +303,7 @@ body{background:#fff;color:#111827}.board{background:#fff;border-radius:8px;padd
 </div><div class="stages" id="stages"></div><section class="archive" id="archive" hidden></section><div class="tabs desktop-only" id="desktopTools"><button id="renameProject">Renomear projeto</button><button id="exportBackup">↓ Exportar backup</button><button id="importBackup">↑ Importar backup</button><input id="importFile" type="file" accept=".json,application/json" hidden></div><details id="syncPanel" hidden><summary>Sincronização Google</summary><p id="syncStatus" role="status" aria-live="polite">Modo local. Nenhuma conexão Firebase ativa.</p><p id="syncAccount" hidden></p><div class="tabs"><button id="syncPrepare">Preparar conexão</button><button id="syncLogin" disabled>Entrar com Google</button><button id="syncLogout" disabled>Sair</button><button id="syncRecovery">Exportar recuperação</button></div><section id="syncConflict" hidden><p>Existem duas versões. Exporte a recuperação e verifique o arquivo salvo antes de escolher.</p><button id="syncVerify">Verificar arquivo salvo</button><input id="syncRecoveryFile" type="file" accept=".json,application/json" hidden><div class="tabs"><button id="syncUseLocal" disabled>Manter versão deste dispositivo</button><button id="syncUseRemote" disabled>Usar versão da conta Google</button></div></section></details><div class="sync-reference-row"><details class="sync-reference"><summary>Sincronização Google<span class="sync-dot" role="img" aria-label="Sincronização Google indisponível nesta versão" title="Sincronização Google indisponível nesta versão"></span></summary><p>Sincronização Google indisponível nesta versão de teste.</p></details><details id="drivePanel" class="drive-panel" aria-label="Google Drive"><summary>Google Drive <span id="driveIndicator" class="sync-dot" role="img" aria-label="Google Drive não sincronizado" title="Google Drive não sincronizado"></span></summary>
 <div class="drive-actions"><button type="button" id="driveConnect">Conectar Google Drive</button><button type="button" id="driveSync" hidden>Sincronizar agora</button><button type="button" id="driveDisconnect" hidden>Desconectar</button></div>
 <p id="driveStatus" role="status"></p><div class="drive-actions"><button type="button" id="driveBackup" hidden>Exportar backup com imagens</button><button type="button" id="driveRestore" hidden>Restaurar backup</button></div><input type="file" id="driveBackupFile" accept=".json,application/json" hidden>
-</details></div><footer id="storageNote">Homologação de anexos</footer></section></main><div class="toast" id="toast" role="status" hidden></div><dialog id="ideasDialog" aria-labelledby="ideasDialogTitle"><div class="ideas-dialog-header"><h2 id="ideasDialogTitle">Projetos</h2><button id="closeIdeasDialog" type="button" aria-label="Fechar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div><div id="ideasDialogContent"><p id="ideasEmptyProjects" class="empty" hidden>Nenhum projeto disponível.</p><button id="manageProjectsFromIdeas" type="button">Gerenciar projetos</button></div></dialog><dialog id="projectConfirm" aria-labelledby="projectConfirmTitle"><h2 id="projectConfirmTitle"></h2><p id="projectConfirmText"></p><p id="projectConfirmStatus" role="status"></p><div class="tabs"><button id="cancelProjectAction" autofocus>Cancelar</button><button id="confirmProject"></button></div></dialog><dialog id="projectRead" aria-labelledby="projectReadTitle"><h2 id="projectReadTitle"></h2><div id="projectReadCards"></div><button id="closeProjectRead">Fechar</button></dialog><dialog id="copyDialog"><h2>Texto completo para copiar</h2><p>A cópia automática não ficou disponível. Selecione e copie o texto abaixo.</p><textarea id="copyText" readonly aria-label="Texto completo do cartão"></textarea><button id="closeCopy">Fechar</button></dialog>
+</details></div><footer id="storageNote">Homologação de anexos</footer></section></main><div class="toast" id="toast" role="status" hidden></div><dialog id="ideasDialog" aria-labelledby="ideasDialogTitle"><div class="ideas-dialog-header"><h2 id="ideasDialogTitle">Projetos</h2><button id="closeIdeasDialog" type="button" aria-label="Fechar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div><div id="ideasDialogContent"><p id="ideasEmptyProjects" class="empty" hidden>Nenhum projeto disponível.</p><button id="manageProjectsFromIdeas" type="button">Gerenciar projetos</button></div></dialog><dialog id="projectConfirm" aria-labelledby="projectConfirmTitle"><h2 id="projectConfirmTitle"></h2><p id="projectConfirmText"></p><p id="projectConfirmStatus" role="status"></p><div class="tabs"><button id="cancelProjectAction" autofocus>Cancelar</button><button id="confirmProject"></button></div></dialog><dialog id="priorityDialog" aria-labelledby="priorityDialogTitle"><h2 id="priorityDialogTitle">Escolher posição</h2><p id="priorityDialogName"></p><div class="priority-options"><button type="button" data-priority-slot="1">Atual</button><button type="button" data-priority-slot="2">Próximo</button><button type="button" data-priority-slot="0">Remover prioridade</button><button type="button" id="cancelPriority">Cancelar</button></div></dialog><dialog id="projectRead" aria-labelledby="projectReadTitle"><h2 id="projectReadTitle"></h2><div id="projectReadCards"></div><button id="closeProjectRead">Fechar</button></dialog><dialog id="copyDialog"><h2>Texto completo para copiar</h2><p>A cópia automática não ficou disponível. Selecione e copie o texto abaixo.</p><textarea id="copyText" readonly aria-label="Texto completo do cartão"></textarea><button id="closeCopy">Fechar</button></dialog>
 <dialog id="cardDetail" aria-labelledby="cardDetailTitle"><h2 id="cardDetailTitle"></h2>
 <p id="cardIdeaTitle" hidden></p>
 <div id="cardTitleEditor" hidden>
@@ -320,7 +320,7 @@ body{background:#fff;color:#111827}.board{background:#fff;border-radius:8px;padd
 <div id="cardDescription"></div><div id="detailEditorWrap" class="capture-input-wrap"><textarea id="cardEditor" aria-label="Descrição integral do cartão" hidden></textarea><ul id="detailEditList" class="attachment-chip-list" hidden></ul><button type="button" id="detailAddImages" aria-label="Adicionar imagem" title="Adicionar imagem" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5 12.3 20.2a5.5 5.5 0 0 1-7.8-7.8l9.2-9.2a3.7 3.7 0 0 1 5.2 5.2l-9.2 9.2a1.9 1.9 0 0 1-2.7-2.7l8.5-8.5"/></svg></button></div><section id="detailAttachments" class="attachment-controls" aria-label="Anexos" hidden><div id="detailImageList"></div></section><input type="file" id="detailImages" accept="image/png,image/jpeg,image/webp" multiple hidden><p id="detailImageStatus" role="status" hidden></p><p id="detailSaveStatus" role="status" aria-live="polite" hidden></p><p id="detailStatus" role="status" aria-live="polite"></p><div class="detail-buttons"><button id="copyDetail" class="mobile-only" type="button" aria-label="Copiar ideia"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="3" width="12" height="13" rx="2"></rect><path d="M5 8H4v13h12v-2"></path></svg></button><button id="editDescription"><span class="desktop-only">Editar descrição</span><span class="mobile-only">Editar</span></button><button id="archiveDetail" class="mobile-only" type="button">Arquivar</button><div id="detailArchiveConfirm" class="mobile-only" hidden><p id="detailArchiveQuestion"></p><div class="archive-confirm-actions"><button id="cancelDetailArchive" type="button">Não</button><button id="confirmDetailArchive" type="button">Sim</button></div></div><button id="closeDescription" aria-label="Fechar">Fechar</button></div></dialog>
 <dialog id="attachmentRemoveConfirm" aria-labelledby="attachmentRemoveTitle" aria-describedby="attachmentRemoveQuestion"><h2 id="attachmentRemoveTitle">Remover imagem?</h2><p id="attachmentRemoveQuestion">Remover <strong id="attachmentRemoveName"></strong> desta nota?</p><div class="attachment-confirm-actions"><button type="button" id="cancelAttachmentRemove" autofocus>Não</button><button type="button" id="confirmAttachmentRemove">Sim</button></div></dialog>
 <dialog id="attachmentViewer" aria-labelledby="attachmentTitle">
-<div class="attachment-view-header"><h2 id="attachmentTitle">Anexo</h2><button type="button" id="attachmentClose">Fechar</button></div>
+<div class="attachment-view-header"><h2 id="attachmentTitle">Anexo</h2><button type="button" id="attachmentClose" aria-label="Fechar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
 <p id="attachmentStatus" role="status"></p><button type="button" id="attachmentConnect" hidden>Conectar Google Drive</button>
 <div id="attachmentViewport" hidden tabindex="0" aria-label="Imagem de referência"><img id="attachmentImage" alt=""></div>
 <button type="button" id="attachmentZoom" aria-pressed="false" hidden>Ampliar imagem</button>
@@ -582,10 +582,26 @@ window.addEventListener('storage',e=>{if(e.key===window.QuadroPersistence.key){b
 function notify(t){$('toast').textContent=t;$('toast').hidden=false;clearTimeout(timer);timer=setTimeout(()=>$('toast').hidden=true,3000)}
 const copyIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="3" width="12" height="13" rx="2"/><path d="M5 8H4v13h12v-2"/></svg>',archiveIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v12h14V8M10 12h4"/></svg>';
 let managingProjects=false;
+function orderedProjects(){
+ const items=liveProjects();
+ if(!mobileQuery.matches)return items;
+ const priority=items.filter(p=>p.priorityRank===1||p.priorityRank===2).sort((a,b)=>a.priorityRank-b.priorityRank);
+ const recent=items.filter(p=>!priority.includes(p)).sort((a,b)=>(b.lastActivity||0)-(a.lastActivity||0));
+ return [...priority,...recent];
+}
+function projectPlacement(p, projects){
+ if(managingProjects||!mobileQuery.matches)return '';
+ if(p.priorityRank===1||p.priorityRank===2)return ` style="grid-column:1;grid-row:${p.priorityRank}"`;
+ const others=projects.filter(x=>x.priorityRank!==1&&x.priorityRank!==2),i=others.indexOf(p);
+ return ` style="grid-column:${2+Math.floor(i/2)};grid-row:${1+i%2}"`;
+}
 function projectLabel(p){return p.id==='demo'&&p.name==='Quadro Dev ? demonstra??o'?'Teste 1':p.id==='demo-outro'&&p.name==='Outro projeto fict?cio'?'Teste 2':p.name}
 function fitProjectNames(){const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');document.querySelectorAll('#captureButtons .project-choice').forEach(item=>{const target=item.querySelector('[data-capture],.project-title');if(!target)return;const parent=target.closest('button'),style=getComputedStyle(parent);target.style.fontSize='16px';ctx.font=`${style.fontWeight} 16px ${style.fontFamily}`;const padding=parseFloat(style.paddingLeft)+parseFloat(style.paddingRight);const available=parent.clientWidth-padding;const measured=ctx.measureText(target.textContent).width;if(measured>available&&available>0)target.style.fontSize=(16*available/measured).toFixed(2)+'px'})}
 function adjustProjectHints(){document.querySelectorAll('#captureButtons .project-hint').forEach(h=>{const title=h.previousElementSibling;h.style.fontSize='10px';const w=title.getBoundingClientRect().width, hw=h.scrollWidth;if(w>0&&hw>w)h.style.fontSize=Math.max(7,10*w/hw).toFixed(1)+'px'})}
-function render(){const toggle=$('manageProjects');toggle.textContent=managingProjects?'Concluir':'Gerenciar projetos';$('captureButtons').classList.toggle('managing',managingProjects);$('archiveToggle').hidden=!managingProjects;$('newProject').disabled=!editingEnabled;toggle.setAttribute('aria-pressed',String(managingProjects));toggle.disabled=!editingEnabled;$('manageProjectsFromIdeas').disabled=!editingEnabled;$('captureButtons').innerHTML=liveProjects().map(p=>managingProjects?`<span class="project-choice"><button type="button" class="project-name" data-project-edit="${esc(p.id)}" aria-label="Renomear ${esc(projectLabel(p))}"><span class="project-title">${esc(projectLabel(p))}</span><span class="project-hint">renomear</span></button><button type="button" class="project-archive" data-project-archive="${esc(p.id)}" aria-label="Arquivar ${esc(projectLabel(p))}" title="Arquivar">${archiveIcon}</button></span>`:`<span class="project-choice"><button data-capture="${esc(p.id)}">${esc(projectLabel(p))}</button></span>`).join('');fitProjectNames();adjustProjectHints();const mobileProject=projectById(mobileIdeasProjectId);
+function render(){const toggle=$('manageProjects');toggle.textContent=managingProjects?'Concluir':'Gerenciar projetos';$('captureButtons').classList.toggle('managing',managingProjects);$('archiveToggle').hidden=!managingProjects;$('newProject').disabled=!editingEnabled;toggle.setAttribute('aria-pressed',String(managingProjects));toggle.disabled=!editingEnabled;$('manageProjectsFromIdeas').disabled=!editingEnabled;
+const displayed=orderedProjects();
+const placeholders=!managingProjects&&mobileQuery.matches?[1,2].filter(rank=>!displayed.some(p=>p.priorityRank===rank)).map(rank=>`<span class="project-choice priority-placeholder" style="grid-column:1;grid-row:${rank}"><button type="button" data-priority-manage>${rank===1?'Definir atual':'Definir próximo'}</button></span>`).join(''):'';
+$('captureButtons').innerHTML=placeholders+displayed.map(p=>managingProjects?`<span class="project-choice ${p.priorityRank===1?'priority-current':''}" data-project-row="${esc(p.id)}">${p.priorityRank?`<button type="button" class="priority-grip" data-priority-grip="${esc(p.id)}" aria-label="Trocar ordem de ${esc(p.name)}" title="Segure e arraste para trocar">⠇</button>`:''}<button type="button" class="project-name" data-project-edit="${esc(p.id)}" aria-label="Renomear ${esc(projectLabel(p))}"><span class="project-title">${esc(projectLabel(p))}</span><span class="project-hint">renomear</span></button><button type="button" class="priority-star" data-priority-select="${esc(p.id)}" aria-label="Prioridade de ${esc(p.name)}" aria-pressed="${Boolean(p.priorityRank)}" title="Definir prioridade"><span aria-hidden="true">${p.priorityRank?'★':'☆'}</span>${p.priorityRank?`<span class="priority-role">${p.priorityRank===1?'Atual':'Próximo'}</span>`:''}</button><button type="button" class="project-archive" data-project-archive="${esc(p.id)}" aria-label="Arquivar ${esc(projectLabel(p))}" title="Arquivar">${archiveIcon}</button></span>`:`<span class="project-choice ${p.priorityRank===1?'priority-current':''}"${projectPlacement(p,displayed)}><button data-capture="${esc(p.id)}">${esc(projectLabel(p))}</button></span>`).join('');fitProjectNames();adjustProjectHints();const mobileProject=projectById(mobileIdeasProjectId);
 const reopenPicker=document.body.classList.contains('ideas-screen')&&!mobileProject;
 if(!mobileProject)mobileIdeasProjectId=null;
 if(reopenPicker)document.body.classList.remove('ideas-screen');
@@ -632,6 +648,52 @@ function outsideManageDialog(e){const r=$('manageProjectDialog').getBoundingClie
 $('manageProjectDialog').addEventListener('pointerdown',e=>{manageBackdropPointer=e.target===$('manageProjectDialog')&&outsideManageDialog(e)});
 $('manageProjectDialog').addEventListener('click',e=>{if(manageBackdropPointer&&e.target===$('manageProjectDialog')&&outsideManageDialog(e)){finishManaging();$('manageProjects').focus({preventScroll:true})}manageBackdropPointer=false});
 window.matchMedia('(max-width: 849px)').addEventListener('change',()=>{if($('manageProjectDialog').open)finishManaging()});
+let priorityTarget=null,priorityDrag=null;
+$('captureButtons').addEventListener('click',e=>{
+ const opener=e.target.closest('[data-priority-manage]');
+ if(opener){$('manageProjects').click();return}
+ const star=e.target.closest('[data-priority-select]');
+ if(!star||!projectWritable())return;
+ priorityTarget=star.dataset.prioritySelect;
+ const project=projectById(priorityTarget);if(!project)return;
+ $('priorityDialogName').textContent=project.name;
+ $('priorityDialog').showModal();
+});
+$('cancelPriority').onclick=()=>$('priorityDialog').close();
+$('priorityDialog').addEventListener('close',()=>{priorityTarget=null});
+$('priorityDialog').addEventListener('click',e=>{
+ const control=e.target.closest('[data-priority-slot]');if(!control||!priorityTarget||!projectWritable())return;
+ const p=projectById(priorityTarget),slot=Number(control.dataset.prioritySlot);if(!p)return;
+ const previous=p.priorityRank;
+ if(slot){for(const other of liveProjects())if(other.id!==p.id&&other.priorityRank===slot){if(previous&&previous!==slot)other.priorityRank=previous;else delete other.priorityRank}p.priorityRank=slot}
+ else delete p.priorityRank;
+ if(!slot&&previous===1){const next=liveProjects().find(x=>x.priorityRank===2);if(next)next.priorityRank=1}
+ if(!save()){render();return}$('priorityDialog').close();render();
+});
+$('captureButtons').addEventListener('pointerdown',e=>{
+ const handle=e.target.closest('[data-priority-grip]');if(!handle||!projectWritable())return;
+ const row=handle.closest('.project-choice');priorityDrag={id:handle.dataset.priorityGrip,start:e.clientY,row};
+ handle.setPointerCapture(e.pointerId);row.classList.add('priority-dragging');
+});
+$('captureButtons').addEventListener('pointermove',e=>{
+ if(!priorityDrag)return;priorityDrag.row.style.transform=`translateY(${Math.max(-80,Math.min(80,e.clientY-priorityDrag.start))}px)`;
+});
+$('captureButtons').addEventListener('pointerup',e=>{
+ if(!priorityDrag)return;const {id,start,row}=priorityDrag;
+ const previousPositions=new Map([...$('captureButtons').querySelectorAll('[data-project-row]')].map(item=>[item.dataset.projectRow,item.getBoundingClientRect().top]));
+ row.style.transform='';row.classList.remove('priority-dragging');priorityDrag=null;
+ const p=projectById(id),other=liveProjects().find(x=>x.priorityRank&&(x.priorityRank!==p?.priorityRank));
+ if(p&&other&&Math.abs(e.clientY-start)>25&&((p.priorityRank===1&&e.clientY>start)||(p.priorityRank===2&&e.clientY<start))){
+   const rank=p.priorityRank;p.priorityRank=other.priorityRank;other.priorityRank=rank;
+   if(save()){
+     render();
+     const rows=[...$('captureButtons').querySelectorAll('[data-project-row]')];
+     for(const item of rows){const before=previousPositions.get(item.dataset.projectRow);if(before===undefined)continue;item.style.transition='none';item.style.transform=`translateY(${before-item.getBoundingClientRect().top}px)`}
+     requestAnimationFrame(()=>{for(const item of rows){item.style.transition='';item.style.transform=''}});
+   }
+ }
+});
+$('captureButtons').addEventListener('pointercancel',()=>{if(priorityDrag){priorityDrag.row.style.transform='';priorityDrag.row.classList.remove('priority-dragging');priorityDrag=null}});
 $('captureButtons').addEventListener('click',e=>{
  const button=e.target.closest('[data-project-edit]');if(!button||!projectWritable())return;
  const p=liveProjects().find(x=>x.id===button.dataset.projectEdit);if(!p)return;
@@ -651,7 +713,13 @@ $('confirmProject').onclick=()=>{
  $('projectConfirmStatus').textContent='Nada foi alterado: projeto ou sessão mudou, ou a edição está bloqueada. Feche e abra novamente.';return}
  // Save atomically through the existing journal, with its revision/conflict protection.
  if(r.restore){delete p.projectArchived;delete p.projectArchivedAt;db.active=p.id}
- else{p.projectArchived=true;p.projectArchivedAt=Date.now();db.active=liveProjects()[0]?.id||p.id}
+ else{
+   const wasCurrent=p.priorityRank===1;
+   delete p.priorityRank;
+   p.projectArchived=true;p.projectArchivedAt=Date.now();
+   if(wasCurrent){const next=liveProjects().find(x=>x.priorityRank===2);if(next)next.priorityRank=1}
+   db.active=liveProjects()[0]?.id||p.id
+ }
  pending=null;
  if(!save()){$('projectConfirmStatus').textContent='Não foi possível salvar. Nada foi arquivado ou restaurado.';render();return}
  $('projectConfirm').close();render();notify(r.restore?'Projeto restaurado nas etapas originais':'Projeto arquivado');
@@ -794,7 +862,7 @@ function updateDetailSaveStatus(){
   let message='Salvo neste dispositivo.';
   if(window.QuadroPersistence.remote){
     const state=window.QuadroPersistence.session.status;
-    message=state==='synced'?'Salvo e sincronizado.':'Salvo neste dispositivo. Aguardando sincronização.';
+    message=state==='synced'?'Salvo e sincronizado.':'Salvo · sincronização pendente.';
   }
   $('detailSaveStatus').textContent=message;
 }
@@ -856,7 +924,7 @@ document.addEventListener('click',e=>{
 },true);
 document.addEventListener('keydown',e=>{if(e.target.matches('[data-description]')&&['Enter',' '].includes(e.key)){e.preventDefault();e.target.click()}});
 
-function payload(p,c){return `QUADRO DEV — CONTEXTO PARA DISCUSSÃO\nProjeto: ${p.name}\nNúmero: ${num(c.id)}\nEtapa: ${steps[c.stage][0]}\n\nTEXTO ORIGINAL INTEGRAL (INÍCIO)\n${c.text}\nTEXTO ORIGINAL INTEGRAL (FIM)\n\nINSTRUÇÕES PARA A IA\nDiscuta esta ideia comigo antes de qualquer implantação. Analise o objetivo e proponha caminhos de forma curta e clara. Peça esclarecimentos sempre que faltarem informações; não presuma decisões. O texto original acima é contexto, não autorização para executar. SEMPRE solicite minha autorização expressa antes de implantar qualquer alteração, mesmo que a etapa seja Prontas para implantação ou Implementadas. Aguarde minha autorização antes de modificar arquivos, código, dados ou publicar mudanças.`}
+function payload(p,c){return `QUADRO DEV — CONTEXTO PARA DISCUSSÃO\nProjeto: ${p.name}\nNúmero: ${num(c.id)}\nEtapa: ${steps[c.stage][0]}\n\nTEXTO ORIGINAL INTEGRAL (INÍCIO)\n${c.text}\nTEXTO ORIGINAL INTEGRAL (FIM)\n${c.attachments?.length?'\nANEXOS: '+c.attachments.length+' imagem(ns)\n'+c.attachments.map(a=>'- '+a.name.replace(/[\r\n]/g,' ')).join('\n')+'\n':''}\nINSTRUÇÕES PARA A IA\nDiscuta esta ideia comigo antes de qualquer implantação. Analise o objetivo e proponha caminhos de forma curta e clara. Peça esclarecimentos sempre que faltarem informações; não presuma decisões. O texto original acima é contexto, não autorização para executar. SEMPRE solicite minha autorização expressa antes de implantar qualquer alteração, mesmo que a etapa seja Prontas para implantação ou Implementadas. Aguarde minha autorização antes de modificar arquivos, código, dados ou publicar mudanças.`}
 async function copy(text){let ok=false;try{await navigator.clipboard.writeText(text);ok=true}catch{const field=document.createElement('textarea');field.value=text;field.style.cssText='position:fixed;top:0;left:-9999px';document.body.append(field);field.select();try{ok=document.execCommand('copy')}catch{}field.remove()}if(ok)notify('Texto completo copiado para a IA');else{$('copyText').value=text;$('copyDialog').showModal();$('copyText').focus();$('copyText').select()}}
 $('captureButtons').innerHTML=db.projects.map(p=>`<button data-capture="${p.id}">${esc(p.name)}</button>`).join('');
 // Prevent touch/mouse activation from taking the typing focus away.
@@ -892,19 +960,23 @@ async function captureCard(projectId){
  const key=displayedKey;
  let attachments;
  if(window.QuadroAttachments?.hasDraftImages()){
+   window.QuadroAttachments.setFeedback('capture','uploading');
    attachments=await window.QuadroAttachments.uploadDraft();
-   if(!attachments)return;
+   if(!attachments){window.QuadroAttachments.setFeedback('capture','error');return}
  }
  const project=projectById(projectId);
  if(!project||key!==displayedKey||!projectWritable()||$('idea').value!==text){
+   if(attachments)window.QuadroAttachments.setFeedback('capture','error');
    window.QuadroAttachments.captureStatus('O quadro ou o rascunho mudou durante o envio. Confira e toque no projeto novamente.');
    return;
  }
  const id=project.next++;
  project.cards.push({id,text,stage:0,...(attachments?.length?{attachments}:{})});
+ project.lastActivity=Date.now();
  db.active=project.id;
  pending=null;
  if(!save()){
+   if(attachments)window.QuadroAttachments.setFeedback('capture','error');
    render();
    window.QuadroAttachments.captureStatus('A ideia não foi salva. O texto e os anexos continuam no rascunho.');
    return;
@@ -913,7 +985,8 @@ async function captureCard(projectId){
  render();
  $('idea').value='';
  $('idea').focus({preventScroll:true});
- window.QuadroAttachments.captureStatus(`Ideia Nº ${num(id)} salva em ${project.name}.`);
+ if(attachments?.length){window.QuadroAttachments.setFeedback('capture','success');window.QuadroAttachments.captureStatus('')}
+ else window.QuadroAttachments.captureStatus(`Ideia Nº ${num(id)} salva em ${project.name}.`);
 }
 
 $('renameProject').onclick=()=>{const p=active();if(!p)return;const name=prompt('Renomear projeto',p.name);if(name===null||!name.trim())return;if(db.projects.some(x=>x.id!==p.id&&x.name.toLocaleLowerCase()===name.trim().toLocaleLowerCase())){notify('Já existe um projeto com esse nome');return}p.name=name.trim().slice(0,60);save();render()};
@@ -992,7 +1065,7 @@ function closeNewProject(){const dialog=$('newProjectDialog'),form=$('newProject
 $('newProjectDialog').addEventListener('cancel',e=>{e.preventDefault();closeNewProject();$('newProject').focus({preventScroll:true})});
 $('cancelProject').onclick=()=>{closeNewProject();$('newProject').focus({preventScroll:true})};
 window.matchMedia('(max-width: 849px)').addEventListener('change',()=>{if($('newProjectDialog').open)closeNewProject()});
-$('createProject').onclick=()=>{const name=$('projectName').value.trim();if(!name){$('projectName').focus();return}if(db.projects.some(p=>p.name.toLocaleLowerCase()===name.toLocaleLowerCase())){notify('Já existe um projeto com esse nome');return}const id='projeto-'+Date.now()+'-'+Math.random().toString(36).slice(2);db.projects.push({id,name,next:1,cards:[]});db.active=id;pending=null;if(!save()){render();return}render();closeNewProject();$('idea').focus();notify('Projeto criado')};
+$('createProject').onclick=()=>{const name=$('projectName').value.trim();if(!name){$('projectName').focus();return}if(db.projects.some(p=>p.name.toLocaleLowerCase()===name.toLocaleLowerCase())){notify('Já existe um projeto com esse nome');return}const id='projeto-'+Date.now()+'-'+Math.random().toString(36).slice(2);db.projects.push({id,name,next:1,cards:[],lastActivity:Date.now()});db.active=id;pending=null;if(!save()){render();return}render();closeNewProject();$('idea').focus();notify('Projeto criado')};
 function captureExpanded(expanded){$('captureBody').hidden=!expanded;$('captureToggle').setAttribute('aria-expanded',String(expanded));$('captureToggle').textContent=expanded?'⌃':'⌄';$('captureToggle').title=expanded?'Recolher captura rápida':'Expandir captura rápida'}
 $('captureToggle').onclick=()=>captureExpanded($('captureBody').hidden);
 function closeIdeasPicker(){

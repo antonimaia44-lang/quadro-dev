@@ -81,7 +81,7 @@
 
 @media(max-width:849px){.capture .capture-heading label[for="idea"]{margin-bottom:5px}}
 
-@media(max-width:849px){#captureBody #manageProjects{display:none}}
+@media(max-width:849px){#captureBody > .project-menu-heading #manageProjects{display:none}}
 
 @media(max-width:849px){#captureBody .project-menu-heading #newProject{flex:1 1 100%;width:100%}}
 
@@ -147,3 +147,54 @@ body #drivePanel .drive-actions #driveConnect{padding:6px 0}
 #attachmentRemoveConfirm .attachment-confirm-actions{display:flex;gap:8px}
 #attachmentRemoveConfirm button{flex:1;min-height:44px;margin:0;border:1px solid #d98282;border-radius:8px;background:transparent;color:#fff}
 #attachmentRemoveConfirm #confirmAttachmentRemove{background:#ffb7b7;border-color:#ffb7b7;color:#651717}
+
+#cardDetail #detailImageList button{background:#285777}
+#attachmentViewer .attachment-view-header{display:flex;flex-wrap:nowrap;gap:8px}
+#attachmentViewer #attachmentTitle{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#attachmentViewer #attachmentClose{flex:none;display:grid;place-items:center;width:44px;height:44px;min-width:44px;min-height:44px;padding:10px;margin:0}
+#attachmentViewer #attachmentClose svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+#captureInputWrap .attachment-chip,#detailEditorWrap .attachment-chip{flex:1 1 0;width:auto;min-width:0;max-width:calc((100% - 8px)/3)}
+#captureInputWrap .attachment-chip span,#detailEditorWrap .attachment-chip span{flex:0 1 auto}
+@media(max-width:849px){body.ideas-screen .stage[data-stage-index="0"] h2{font-size:14px}body.ideas-screen .stage[data-stage-index="0"] .count{font-size:20px;background:transparent;color:#feff9d;padding:0;min-width:0}#captureButtons .project-edit{color:#fff}#mobileArchivedCards .archive-read{background:transparent;color:#fff;-webkit-tap-highlight-color:transparent}#mobileArchivedCards .archive-read:hover,#mobileArchivedCards .archive-read:active{background:#713641;color:#fff}}
+
+/* Priority controls and current project. */
+@media(max-width:849px){
+ #captureBody #captureButtons .priority-placeholder{background:transparent;border:1px dashed #51718a}
+ #captureBody #captureButtons .priority-placeholder button{width:100%;border:0;background:transparent;color:#b5c9d7;font-size:12px}
+ body #captureButtons .project-choice.priority-current{background:#feff9d;border-color:#feff9d;color:#004980}
+ body #captureButtons .project-choice.priority-current>button.project-name,body #captureButtons .project-choice.priority-current>button[data-capture],body #captureButtons .project-choice.priority-current .project-hint{background:transparent;color:#004980}
+ body #captureButtons .project-choice:not(.priority-current)>button[data-capture]{background:transparent;color:#004980}
+ body #manageProjectDialog #captureButtons .project-choice.priority-current{background:#feff9d;border-color:#feff9d}
+ body #manageProjectDialog #captureButtons .project-choice.priority-current>button.project-name,body #manageProjectDialog #captureButtons .project-choice.priority-current .project-hint{color:#004980}
+ body #manageProjectDialog #captureButtons .priority-star,body #manageProjectDialog #captureButtons .priority-grip{flex:none;width:38px;min-width:38px;height:44px;min-height:44px;margin:0;padding:0;border:0;border-radius:6px;background:transparent;color:#feff9d;font-size:23px;box-shadow:none}
+ body #manageProjectDialog #captureButtons .priority-grip{width:32px;min-width:32px;color:#b5c9d7;touch-action:none;cursor:grab}
+ body #manageProjectDialog #captureButtons .priority-current .priority-star,body #manageProjectDialog #captureButtons .priority-current .priority-grip{color:#004980}
+ body #manageProjectDialog #captureButtons .priority-dragging{z-index:2;opacity:.85;box-shadow:0 5px 12px #0007}
+ body #manageProjectDialog #captureButtons .project-choice{transition:transform .16s ease}
+ body #manageProjectDialog #captureButtons .priority-dragging{transition:none}
+}
+@media(min-width:850px){#captureButtons .priority-star,#captureButtons .priority-grip{display:none}}
+#priorityDialog{box-sizing:border-box;width:min(92vw,440px);padding:20px 16px;border:1px solid #51718a;border-radius:16px;background:#123b58;color:#fff;box-shadow:none}
+#priorityDialog::backdrop{background:#000a}
+#priorityDialog h2{font-size:20px;margin:0 0 10px}
+#priorityDialog p{overflow-wrap:anywhere}
+#priorityDialog .priority-options{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#priorityDialog .priority-options button{min-height:44px;margin:0;background:#1c405a;color:#fff;border:1px solid #7a9aaf;border-radius:8px}
+/* The ring indicates activity, not a fabricated percentage. */
+@property --attachment-angle{syntax:"<angle>";initial-value:0deg;inherits:false}
+@keyframes attachment-ring{from{--attachment-angle:0deg}to{--attachment-angle:360deg}}
+.capture-input-wrap button.is-uploading::before{content:'';position:absolute;width:30px;height:30px;border-radius:50%;background:conic-gradient(#89a8bb var(--attachment-angle),transparent 0);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 2px),#000 calc(100% - 1px));mask:radial-gradient(farthest-side,transparent calc(100% - 2px),#000 calc(100% - 1px));animation:attachment-ring 1.5s linear infinite}
+.capture-input-wrap button.is-success::after,.capture-input-wrap button.is-error::after{position:absolute;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;color:#fff;font:600 18px system-ui}
+.capture-input-wrap button.is-success::after{content:'\2713';background:#3caa6a}
+.capture-input-wrap button.is-error::after{content:'\00d7';background:#713641}
+.capture-input-wrap button.is-success svg,.capture-input-wrap button.is-error svg{visibility:hidden}
+#captureBody:has(#captureAddImages.is-uploading) #captureImageStatus,#cardDetail:has(#detailAddImages.is-uploading) #detailImageStatus{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+@media(prefers-reduced-motion:reduce){.capture-input-wrap button.is-uploading::before{animation:none;--attachment-angle:270deg}.priority-dragging{transition:none}}
+
+@media(max-width:849px){body #manageProjectDialog #captureButtons .project-edit{color:#fff}body #manageProjectDialog #captureButtons .priority-current .project-edit{color:#004980}}
+
+@media(max-width:849px){body #manageProjectDialog #captureButtons .project-title{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
+
+@media(max-width:849px){body #manageProjectDialog #captureButtons .priority-star{display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;gap:2px}body #manageProjectDialog #captureButtons .priority-star .priority-role{font-size:9px;font-weight:500}#cardDetail #detailSaveStatus{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
+
+@media(prefers-reduced-motion:reduce){body #manageProjectDialog #captureButtons .project-choice{transition:none}}
