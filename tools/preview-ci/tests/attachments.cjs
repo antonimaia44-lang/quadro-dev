@@ -122,11 +122,13 @@ function cardsOn(p) { return p.evaluate(()=>window.quadro.read().projects.flatMa
     await p.locator('#detailImages').setInputFiles(image('c.png'));
     await p.waitForFunction(()=>window.quadro.read().projects[0].cards.some(c=>c.attachments?.length===3));
     await p.waitForFunction(()=>document.querySelectorAll('#detailEditList li').length===3);
-    p.once('dialog',dialog=>dialog.dismiss());
+    const positions=await p.locator('#detailEditList li').evaluateAll(es=>es.map(e=>e.getBoundingClientRect().top));
+    assert(positions.every(y=>Math.abs(y-positions[0])<1));
     await p.getByRole('button',{name:'Remover c.png'}).click();
+    await p.locator('#cancelAttachmentRemove').click();
     assert((await cardsOn(p)).some(c=>c.attachments?.length===3));
-    p.once('dialog',dialog=>dialog.accept());
     await p.getByRole('button',{name:'Remover c.png'}).click();
+    await p.locator('#confirmAttachmentRemove').click();
     await p.waitForFunction(()=>window.quadro.read().projects[0].cards.some(c=>c.attachments?.length===2));
     await p.locator('#detailImages').setInputFiles(image('c.png'));
     await p.waitForFunction(()=>window.quadro.read().projects[0].cards.some(c=>c.attachments?.length===3));

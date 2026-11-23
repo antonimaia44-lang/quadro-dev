@@ -15,6 +15,22 @@
   let viewer;
   let imageUrl;
   let restoring;
+  let pendingRemoval;
+
+  function confirmRemoval(item, action) {
+    if (working || $('attachmentRemoveConfirm').open) return;
+    pendingRemoval = { action, target: editTarget };
+    $('attachmentRemoveName').textContent = item.name;
+    $('attachmentRemoveConfirm').showModal();
+  }
+
+  $('cancelAttachmentRemove').onclick = () => $('attachmentRemoveConfirm').close();
+  $('confirmAttachmentRemove').onclick = () => {
+    const pending = pendingRemoval;
+    $('attachmentRemoveConfirm').close();
+    if (pending && editing && pending.target === editTarget && !working) pending.action();
+  };
+  $('attachmentRemoveConfirm').addEventListener('close', () => { pendingRemoval = null; });
 
   function report(id, message = '') {
     $(id).textContent = message;
@@ -171,17 +187,19 @@
     editList.hidden = !edit || !(refs.length || editQueue.length);
     if (edit) {
       refs.forEach((ref, index) => editList.append(makeChip(ref, () => {
-        if (working || !confirm('Remover a imagem "' + ref.name + '" desta nota?')) return;
+        confirmRemoval(ref, () => {
         try {
           board.saveAttachments(card, refs.filter((_, i) => i !== index));
           renderDetail(board.detailCard(), true);
           report('detailImageStatus', 'Anexo removido do cartão. A imagem continua no Drive.');
         } catch (error) { report('detailImageStatus', error.message); }
+        });
       })));
       editQueue.forEach((item, index) => editList.append(makeChip(item, () => {
-        if (working || !confirm('Remover a imagem "' + item.name + '" desta nota?')) return;
+        confirmRemoval(item, () => {
         editQueue.splice(index, 1);
         renderDetail(board.detailCard(), true);
+        });
       })));
       requestAnimationFrame(() => resizeAttachments($('detailEditorWrap'), editList));
       return;
@@ -189,8 +207,7 @@
     if (!refs.length) return;
     const count = document.createElement('span');
     count.className = 'attachment-count';
-    count.textContent = '📎 ' + refs.length;
-    count.setAttribute('aria-label', refs.length + (refs.length === 1 ? ' anexo' : ' anexos'));
+    count.textContent = 'Anexos';
     host.append(count);
     for (const ref of refs) {
       const open = button(shortName(ref.name), () => showImage(ref));
@@ -433,5 +450,8 @@
     resizeAttachments($('captureInputWrap'), $('captureImageList'));
     if (editing) resizeAttachments($('detailEditorWrap'), $('detailEditList'));
   });
-  $('cardDetail').addEventListener('close', () => renderDetail(null, false));
+  $('cardDetail').addEventListener('close', () => {
+    if ($('attachmentRemoveConfirm').open) $('attachmentRemoveConfirm').close();
+    renderDetail(null, false);
+  });
 })();
