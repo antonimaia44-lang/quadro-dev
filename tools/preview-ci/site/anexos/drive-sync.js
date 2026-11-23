@@ -11,12 +11,26 @@
   let timer;
   let busy = false;
 
-  function status(text) { $('driveStatus').textContent = text; }
+  let synced = false;
+  function updateIndicator() {
+    const ok = synced && drive.connected();
+    const label = ok ? 'Google Drive sincronizado' : 'Google Drive n\u00e3o sincronizado';
+    $('driveIndicator').classList.toggle('is-synced', ok);
+    $('driveIndicator').setAttribute('aria-label', label);
+    $('driveIndicator').title = label;
+    $('driveConnectedLabel').hidden = !$('driveConnect').hidden;
+  }
+  function status(text) {
+    $('driveStatus').textContent = text;
+    synced = text.startsWith('Quadro sincronizado');
+    updateIndicator();
+  }
 
   function refreshControls() {
     $('driveConnect').hidden = Boolean(account && drive.connected());
     $('driveConnect').textContent = account ? 'Reconectar Google Drive' : 'Conectar Google Drive';
     $('driveConnect').disabled = busy || Boolean(running);
+    updateIndicator();
     $('driveDisconnect').hidden = !account;
     $('driveSync').hidden = !account;
     $('driveBackup').hidden = !account;
@@ -186,6 +200,8 @@
   }
 
   function schedule(delay = 900) {
+    synced = false;
+    updateIndicator();
     clearTimeout(timer);
     if (account) timer = setTimeout(() => syncNow(), delay);
   }

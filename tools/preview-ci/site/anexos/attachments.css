@@ -5,7 +5,7 @@
 .drive-actions button,.attachment-controls button,#attachmentViewer button{
  min-height:44px;padding:8px 12px;border:1px solid #7a9aaf;border-radius:8px;background:#1c405a;color:#fff
 }
-.drive-panel #driveConnect,#attachmentViewer #attachmentZoom[aria-pressed=true]{
+#attachmentViewer #attachmentZoom[aria-pressed=true]{
  background:#feff9d;border-color:#feff9d;color:#004980
 }
 .drive-panel button:disabled,.attachment-controls button:disabled{opacity:.6;cursor:default}
@@ -35,7 +35,76 @@
 .drive-actions button:not(:disabled):hover,.attachment-controls button:not(:disabled):hover,#attachmentViewer button:not(:disabled):hover{
  background:#315b76;border-color:#a5c2d3;color:#fff
 }
-.drive-panel #driveConnect:not(:disabled):hover,#attachmentViewer #attachmentZoom[aria-pressed=true]:hover{
+#attachmentViewer #attachmentZoom[aria-pressed=true]:hover{
  background:#f0f18b;border-color:#f0f18b;color:#004980
 }
 #historyAttachments li{justify-content:flex-start}
+
+.sync-reference{margin-top:24px;color:#c2d4e0}
+.sync-reference summary{cursor:pointer;min-height:44px;padding:8px 0;box-sizing:border-box}
+.sync-reference p{font-size:14px}
+.drive-panel{margin-top:0}
+.drive-actions #driveConnect,.drive-actions #driveConnect:not(:disabled):hover{min-height:44px;padding:8px 0;border:0;border-radius:0;background:transparent;color:#c2d4e0;text-align:left;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:849px){body.ideas-screen .sync-reference{display:none}}
+
+.sync-reference-row{display:flex;align-items:baseline;flex-wrap:wrap;column-gap:20px;margin-top:24px}
+.sync-reference-row .sync-reference,.sync-reference-row .drive-panel{margin:0}
+@media(max-width:849px){body.ideas-screen .sync-reference-row{display:none}}
+@media(max-width:849px){.sync-reference-row{column-gap:12px}.sync-reference-row summary,.sync-reference-row #driveConnect{font-size:14px}}
+
+.sync-reference-row{display:block}
+.sync-reference summary{display:flex;align-items:center;gap:8px}
+.sync-reference summary::before{content:"\25B6";font-size:10px}
+.sync-reference[open] summary::before{content:"\25BC"}
+.sync-dot{display:inline-block;flex:none;width:9px;height:9px;border-radius:50%;background:#ed5555}
+.sync-dot.is-synced{background:#42d879}
+
+.capture-input-wrap{position:relative}
+.capture .capture-input-wrap #idea{display:block;width:100%;box-sizing:border-box;padding-bottom:54px}
+.capture-input-wrap #captureAddImages,.capture-input-wrap #captureAddImages:not(:disabled):hover{position:absolute;right:4px;bottom:4px;display:grid;place-items:center;width:44px;min-width:44px;height:44px;min-height:44px;padding:10px;border:0;background:transparent;box-shadow:none;color:#64899f;cursor:pointer}
+.capture-input-wrap #captureAddImages svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.capture-input-wrap #captureAddImages:disabled{opacity:.5;cursor:default}
+.capture-input-wrap #captureAddImages:focus-visible{outline:3px solid #0092ff;outline-offset:-4px}
+@media(max-width:849px){#captureBody .capture-input-wrap{order:0}}
+
+.capture-input-wrap #captureAddImages svg{transform:rotate(-45deg)}
+
+#captureBody > .attachment-controls:has(#captureImageList[hidden]):has(#captureImageStatus[hidden]){display:none}
+
+.capture .capture-input-wrap #idea::placeholder{color:#42677F;font-size:14px}
+
+@media(max-width:849px){.board>header h1{font-size:22px}}
+
+.board>header .version-label{font-size:14px;font-weight:400;color:#c2d4e0;white-space:nowrap}
+
+@media(max-width:849px){.board>.capture{padding-top:5px}}
+
+@media(max-width:849px){.capture .capture-heading label[for="idea"]{margin-bottom:5px}}
+
+@media(max-width:849px){#captureBody #manageProjects{display:none}}
+
+@media(max-width:849px){#captureBody .project-menu-heading #newProject{flex:1 1 100%;width:100%}}
+
+body #ideasDialog #tabs .project-ideas-count{background:#ab423f;color:#fff}
+
+body #captureButtons .project-choice>button.project-archive{background:#ab423f;border-color:#ab423f;color:#fff}
+
+@media(max-width:849px){
+ body #manageProjectDialog #captureButtons.managing{grid-template-columns:1fr;grid-auto-rows:61.2px}
+ body #manageProjectDialog #captureButtons .project-choice{height:61.2px;background:#1c405a;border:1px solid #51718a;border-radius:8px;overflow:hidden}
+ body #manageProjectDialog #captureButtons .project-choice>button.project-name{height:100%;background:transparent;border:0;box-shadow:none;color:#fff;padding-left:11px}
+ body #manageProjectDialog #captureButtons .project-hint{color:#b5c9d7;font-size:12px;margin-top:4px}
+ body #manageProjectDialog #captureButtons .project-choice>button.project-archive{width:36px;height:36px;min-height:36px;margin:0 8px;border-radius:7px;background:#ab423f;border-color:#ab423f;color:#fff}
+}
+
+.archive-control-icon{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:849px){
+ body #manageDialogHeader #archiveToggle{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:36px;padding:5px 8px;background:#512b32;border:1px solid #a45e65;border-radius:8px;color:#fff;text-decoration:none}
+ body #manageDialogHeader #archiveToggle[hidden]{display:none}
+ body.ideas-screen #mobileArchivedCardsButton{gap:6px}
+}
+
+@media(max-width:849px){body #manageDialogHeader #archiveToggle,body.ideas-screen #mobileArchivedCardsButton{background:#ab423f;border-color:#ab423f;color:#fff}}
+
+body #captureButtons .project-choice>button.project-archive,body #manageProjectDialog #captureButtons .project-choice>button.project-archive{background:#512b32;border-color:#a45e65;color:#fff}
+@media(max-width:849px){body #manageDialogHeader #archiveToggle,body.ideas-screen #mobileArchivedCardsButton{background:#512b32;border-color:#a45e65;color:#fff}}

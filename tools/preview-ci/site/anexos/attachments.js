@@ -109,14 +109,26 @@
   }
 
   $('captureAddImages').onclick = () => openFilePicker('captureImages');
-  $('captureImages').onchange = event => {
+  $('captureImages').onchange = async event => {
     const files = Array.from(event.target.files);
     event.target.value = '';
     if (!files.length || working) return;
     try {
       draft.push(...fileItems(files, maxCount - draft.length));
-      report('captureImageStatus', drive.connected() ? '' : 'Conecte o Drive antes de salvar este cartão.');
       renderDraft();
+      if (!drive.connected()) {
+        const draftText = $('idea').value;
+        report('captureImageStatus', 'Aguardando autorização do Google…');
+        try {
+          const connected = await window.QuadroDriveSync.connect();
+          const otherDraft = connected && draftText && $('idea').value && $('idea').value !== draftText;
+          if (connected && draftText && !$('idea').value) {
+            $('idea').value = draftText;
+            $('idea').dispatchEvent(new Event('input', { bubbles: true }));
+          }
+          report('captureImageStatus', !connected ? 'Conecte o Google Drive para salvar a imagem.' : otherDraft ? 'A conta já tinha outro rascunho. O texto anterior foi preservado no quadro local.' : '');
+        } catch (error) { report('captureImageStatus', error.message); }
+      } else report('captureImageStatus');
     } catch (error) { report('captureImageStatus', error.message); }
   };
 
