@@ -14,10 +14,12 @@
 
   let synced = false;
   function updateIndicator() {
-    const ok = synced && drive.connected();
-    const label = ok ? 'Google Drive sincronizado' : drive.connected()
+    const connected = drive.connected();
+    const ok = synced && connected;
+    const label = ok ? 'Google Drive sincronizado' : connected
       ? 'Google Drive conectado, sincronização pendente' : 'Google Drive não conectado';
     $('driveIndicator').classList.toggle('is-synced', ok);
+    $('driveIndicator').classList.toggle('is-pending', connected && !ok);
     $('driveIndicator').setAttribute('aria-label', label);
     $('driveIndicator').title = label;
   }

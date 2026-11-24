@@ -58,6 +58,7 @@
 .sync-reference[open] summary::before{content:"\25BC"}
 .sync-dot{display:inline-block;flex:none;width:9px;height:9px;border-radius:50%;background:#ed5555}
 .sync-dot.is-synced{background:#42d879}
+.sync-dot.is-pending{background:#f1c94b}
 
 .capture-input-wrap{position:relative}
 .capture .capture-input-wrap #idea{display:block;width:100%;box-sizing:border-box;padding-bottom:54px}
