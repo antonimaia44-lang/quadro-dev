@@ -15,7 +15,8 @@
   let synced = false;
   function updateIndicator() {
     const ok = synced && drive.connected();
-    const label = ok ? 'Google Drive sincronizado' : 'Google Drive n\u00e3o sincronizado';
+    const label = ok ? 'Google Drive sincronizado' : drive.connected()
+      ? 'Google Drive conectado, sincronização pendente' : 'Google Drive não conectado';
     $('driveIndicator').classList.toggle('is-synced', ok);
     $('driveIndicator').setAttribute('aria-label', label);
     $('driveIndicator').title = label;
@@ -168,7 +169,7 @@
       }
       if (remoteHash !== currentHash) {
         if (currentHash !== checkpoint.hash) {
-          throw Error('Há alterações neste aparelho e no Drive. Exporte um backup antes de resolver o conflito.');
+          throw Error('Google Drive conectado, mas há alterações diferentes neste aparelho e no Drive. Exporte um backup antes de resolver o conflito.');
         }
         if (!board.canApply() || window.QuadroAttachments.busy()) {
           status('Há atualizações no Drive. Feche o cartão ou conclua a operação para recebê-las.');
