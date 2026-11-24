@@ -13,5 +13,34 @@ export async function prepare(options){
  if(!allowedUids.includes(uid))throw Error('Conta sem autorização');
  return createTransport({F,store:db,auth,uid,validate:QuadroAutoSync.validate,origin:crypto.randomUUID(),allowed:true});
  }});
- return {login:()=>connection.login(),idle:()=>connection.idle(),logout:()=>connection.logout(),async dispose(){await connection.dispose();await F.disableNetwork(db)}};
+ const authorizeDrive = async () => {
+  const user = auth.currentUser;
+  if (!user || !allowedUids.includes(user.uid)) throw Error('Entre com Google para usar os anexos.');
+  const provider = new A.GoogleAuthProvider();
+  provider.addScope('https://www.googleapis.com/auth/drive.file');
+  provider.setCustomParameters({ login_hint: user.email || '' });
+  let result;
+  try {
+   result = await A.reauthenticateWithPopup(user, provider);
+  } catch (error) {
+   if (error.code === 'auth/popup-closed-by-user') throw Error('Autorização do Drive cancelada.');
+   if (error.code === 'auth/user-mismatch') throw Error('Escolha a mesma conta Google do quadro.');
+   if (error.code === 'auth/popup-blocked') throw Error('Permita a janela de autorização do Drive neste site.');
+   throw Error('Não foi possível autorizar o Google Drive. Tente novamente.');
+  }
+  const accessToken = A.GoogleAuthProvider.credentialFromResult(result)?.accessToken;
+  if (!accessToken || auth.currentUser?.uid !== user.uid) throw Error('A autorização do Drive não foi concluída.');
+  return accessToken;
+ };
+ window.QuadroDrive?.setAuthorizer(authorizeDrive);
+ return {
+  login:()=>connection.login(),
+  idle:()=>connection.idle(),
+  logout:()=>connection.logout(),
+  async dispose(){
+   window.QuadroDrive?.setAuthorizer(null);
+   await connection.dispose();
+   await F.disableNetwork(db);
+  }
+ };
 }

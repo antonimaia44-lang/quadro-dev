@@ -1,0 +1,351 @@
+.drive-panel{margin:18px 0;color:#c2d4e0}
+.drive-panel p,.attachment-controls p,#attachmentStatus{margin:8px 0;font-size:14px;overflow-wrap:anywhere}
+.drive-panel p:empty,#attachmentStatus:empty{display:none}
+.drive-actions,.attachment-view-header{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.drive-actions button,.attachment-controls button,#attachmentViewer button{
+ min-height:44px;padding:8px 12px;border:1px solid #7a9aaf;border-radius:8px;background:#1c405a;color:#fff
+}
+#attachmentViewer #attachmentZoom[aria-pressed=true]{
+ background:#feff9d;border-color:#feff9d;color:#004980
+}
+.drive-panel button:disabled,.attachment-controls button:disabled{opacity:.6;cursor:default}
+.drive-panel button:focus-visible,.attachment-controls button:focus-visible,#attachmentViewer button:focus-visible{
+ outline:3px solid #0092ff;outline-offset:3px
+}
+.attachment-controls{margin:12px 0}
+#captureImageList,#detailImageList ul{list-style:none;padding:0;margin:8px 0}
+.attachment-controls li{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px}
+.attachment-controls li span,.attachment-controls li button{overflow-wrap:anywhere;min-width:0}
+.attachment-controls li button:first-child{flex:1;text-align:left}
+.attachment-controls #detailImageList button{margin:0}
+#attachmentViewer{box-sizing:border-box;width:min(94vw,780px);max-height:92dvh;padding:16px;background:#123b58;color:#fff;border:1px solid #7a9aaf}
+.attachment-view-header{justify-content:space-between}
+.attachment-view-header h2{margin:0;min-width:0;overflow-wrap:anywhere;font-size:18px}
+.attachment-view-header button{margin:0}
+#attachmentViewport{margin-top:12px;overflow:auto;max-height:64dvh;overscroll-behavior:contain;background:#001c31}
+#attachmentImage{display:block;width:100%;height:auto}
+#attachmentViewport.is-zoomed img{width:max(200%,var(--image-width));max-width:none}
+@media(max-width:849px){
+ body.ideas-screen #drivePanel{display:none}
+ #captureBody .attachment-controls{order:1}
+ #detailAttachments button[aria-expanded]{width:100%}
+}
+
+
+.drive-actions button:not(:disabled):hover,.attachment-controls button:not(:disabled):hover,#attachmentViewer button:not(:disabled):hover{
+ background:#315b76;border-color:#a5c2d3;color:#fff
+}
+#attachmentViewer #attachmentZoom[aria-pressed=true]:hover{
+ background:#f0f18b;border-color:#f0f18b;color:#004980
+}
+#historyAttachments li{justify-content:flex-start}
+
+.sync-reference{margin-top:24px;color:#c2d4e0}
+.sync-reference summary{cursor:pointer;min-height:44px;padding:8px 0;box-sizing:border-box}
+.sync-reference p{font-size:14px}
+.drive-panel{margin-top:0}
+.drive-actions #driveConnect,.drive-actions #driveConnect:not(:disabled):hover{min-height:44px;padding:8px 0;border:0;border-radius:0;background:transparent;color:#c2d4e0;text-align:left;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:849px){body.ideas-screen .sync-reference{display:none}}
+
+.sync-reference-row{display:flex;align-items:baseline;flex-wrap:wrap;column-gap:20px;margin-top:24px}
+.sync-reference-row .sync-reference,.sync-reference-row .drive-panel{margin:0}
+@media(max-width:849px){body.ideas-screen .sync-reference-row{display:none}}
+@media(max-width:849px){.sync-reference-row{column-gap:12px}.sync-reference-row summary,.sync-reference-row #driveConnect{font-size:14px}}
+
+.sync-reference-row{display:block}
+.sync-reference summary{display:flex;align-items:center;gap:8px}
+.sync-reference summary::before{content:"\25B6";font-size:10px}
+.sync-reference[open] summary::before{content:"\25BC"}
+.sync-dot{display:inline-block;flex:none;width:9px;height:9px;border-radius:50%;background:#ed5555}
+.sync-dot.is-synced{background:#42d879}
+.sync-dot.is-pending{background:#f1c94b}
+
+.capture-input-wrap{position:relative}
+.capture .capture-input-wrap #idea{display:block;width:100%;box-sizing:border-box;padding-bottom:54px}
+.capture-input-wrap #captureAddImages,.capture-input-wrap #captureAddImages:not(:disabled):hover{position:absolute;right:4px;bottom:4px;display:grid;place-items:center;width:44px;min-width:44px;height:44px;min-height:44px;padding:10px;border:0;background:transparent;box-shadow:none;color:#64899f;cursor:pointer}
+.capture-input-wrap #captureAddImages svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.capture-input-wrap #captureAddImages:disabled{opacity:.5;cursor:default}
+.capture-input-wrap #captureAddImages:focus-visible{outline:3px solid #0092ff;outline-offset:-4px}
+@media(max-width:849px){#captureBody .capture-input-wrap{order:0}}
+
+.capture-input-wrap #captureAddImages svg{transform:rotate(-45deg)}
+
+#captureBody > .attachment-controls:has(#captureImageList[hidden]):has(#captureImageStatus[hidden]){display:none}
+
+.capture .capture-input-wrap #idea::placeholder{color:#42677F;font-size:14px}
+
+@media(max-width:849px){.board>header h1{font-size:22px}}
+
+.board>header .version-label{font-size:14px;font-weight:400;color:#c2d4e0;white-space:nowrap}
+
+@media(max-width:849px){.board>.capture{padding-top:5px}}
+
+@media(max-width:849px){.capture .capture-heading label[for="idea"]{margin-bottom:5px}}
+
+@media(max-width:849px){#captureBody > .project-menu-heading #manageProjects{display:none}}
+
+@media(max-width:849px){#captureBody .project-menu-heading #newProject{flex:1 1 100%;width:100%}}
+
+body #ideasDialog #tabs .project-ideas-count{background:#ab423f;color:#fff}
+
+body #captureButtons .project-choice>button.project-archive{background:#ab423f;border-color:#ab423f;color:#fff}
+
+@media(max-width:849px){
+ body #manageProjectDialog #captureButtons.managing{grid-template-columns:1fr;grid-auto-rows:61.2px}
+ body #manageProjectDialog #captureButtons .project-choice{height:61.2px;background:#1c405a;border:1px solid #51718a;border-radius:8px;overflow:hidden}
+ body #manageProjectDialog #captureButtons .project-choice>button.project-name{height:100%;background:transparent;border:0;box-shadow:none;color:#fff;padding-left:11px}
+ body #manageProjectDialog #captureButtons .project-hint{color:#b5c9d7;font-size:12px;margin-top:4px}
+ body #manageProjectDialog #captureButtons .project-choice>button.project-archive{width:36px;height:36px;min-height:36px;margin:0 8px;border-radius:7px;background:#ab423f;border-color:#ab423f;color:#fff}
+}
+
+.archive-control-icon{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:849px){
+ body #manageDialogHeader #archiveToggle{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:36px;padding:5px 8px;background:#512b32;border:1px solid #a45e65;border-radius:8px;color:#fff;text-decoration:none}
+ body #manageDialogHeader #archiveToggle[hidden]{display:none}
+ body.ideas-screen #mobileArchivedCardsButton{gap:6px}
+}
+
+@media(max-width:849px){body #manageDialogHeader #archiveToggle,body.ideas-screen #mobileArchivedCardsButton{background:#ab423f;border-color:#ab423f;color:#fff}}
+
+body #captureButtons .project-choice>button.project-archive,body #manageProjectDialog #captureButtons .project-choice>button.project-archive{background:#512b32;border-color:#a45e65;color:#fff}
+@media(max-width:849px){body #manageDialogHeader #archiveToggle,body.ideas-screen #mobileArchivedCardsButton{background:#512b32;border-color:#a45e65;color:#fff}}
+
+/* Compact attachment controls in the capture and detail editors. */
+#captureBody > .attachment-controls:has(#captureImageStatus[hidden]){display:none}
+#captureInputWrap #captureImageList,#detailEditorWrap #detailEditList{position:absolute;left:10px;right:52px;bottom:8px;display:flex;flex-wrap:wrap;gap:4px;list-style:none;padding:0;margin:0}
+#captureInputWrap #captureImageList[hidden],#detailEditorWrap #detailEditList[hidden]{display:none}
+#captureInputWrap .attachment-chip,#detailEditorWrap .attachment-chip{display:flex;align-items:center;max-width:min(100%,150px);height:30px;padding-left:8px;border:1px solid #51718a;border-radius:6px;background:#123b58;color:#c2d4e0;font-size:12px}
+#captureInputWrap .attachment-chip span,#detailEditorWrap .attachment-chip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+#captureInputWrap .attachment-chip button,#detailEditorWrap .attachment-chip button{flex:none;min-width:30px;width:30px;min-height:30px;height:30px;margin:0;padding:0;border:0;background:transparent;color:#fff;font-size:18px}
+#captureBody #captureInputWrap #idea{min-height:calc(90px + var(--attachment-extra, 0px))}
+@media(max-width:849px){#captureBody #captureInputWrap #idea{min-height:calc(132px + var(--attachment-extra, 0px))}}
+#detailEditorWrap:has(#cardEditor[hidden]){display:none}
+#cardDetail #detailEditorWrap #cardEditor{display:block;box-sizing:border-box;min-height:calc(105px + var(--attachment-extra, 0px))}
+#cardDetail #detailEditorWrap #detailAddImages{position:absolute;right:4px;bottom:4px;display:grid;place-items:center;width:44px;min-width:44px;height:44px;min-height:44px;margin:0;padding:10px;border:0;background:transparent;box-shadow:none;color:#64899f}
+#cardDetail #detailEditorWrap #detailAddImages[hidden]{display:none}
+#detailEditorWrap #detailAddImages svg{width:20px;height:20px;transform:rotate(-45deg);fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+#cardDetail #detailImageList{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+#cardDetail #detailImageList .attachment-count{flex:none;font-size:13px;color:#c2d4e0}
+#cardDetail #detailImageList button{flex:0 1 auto;min-width:0;max-width:calc((100% - 50px)/2);min-height:36px;margin:0;padding:6px 9px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:1px solid #51718a;background:#1c405a;color:#fff;font-size:13px}
+.card-attachment-count{margin-top:8px;color:inherit;font-size:13px}
+#drivePanel>summary{display:flex;align-items:center;gap:8px;min-height:44px;padding:8px 0;cursor:pointer}
+#drivePanel>summary::before{content:"\25B6";font-size:10px}
+#drivePanel[open]>summary::before{content:"\25BC"}
+body #drivePanel .drive-actions button{min-height:36px;padding:6px 10px;font-size:13px}
+body #drivePanel .drive-actions #driveConnect{padding:6px 0}
+
+/* Compact references and removal confirmation. */
+#captureInputWrap #captureImageList,#detailEditorWrap #detailEditList{flex-wrap:nowrap}
+#captureInputWrap .attachment-chip,#detailEditorWrap .attachment-chip{flex:1 1 0;min-width:0;max-width:150px}
+#cardDetail #detailImageList .attachment-count{flex:0 0 100%;font-size:13px}
+#cardDetail #detailImageList button{max-width:calc((100% - 12px)/3)}
+.card-attachment-count{display:flex;align-items:center;gap:5px}
+.card-attachment-count svg{width:14px;height:14px;transform:rotate(-45deg);fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+#attachmentRemoveConfirm{box-sizing:border-box;width:min(92vw,440px);padding:20px 16px;border:1px solid #d98282;border-radius:16px;background:#4a1f28;color:#fff;box-shadow:none}
+#attachmentRemoveConfirm::backdrop{background:rgba(0,0,0,.65);backdrop-filter:none}
+#attachmentRemoveConfirm h2{font-size:20px;margin:0 0 12px;color:#fff}
+#attachmentRemoveConfirm p{margin:0 0 14px;line-height:1.5;overflow-wrap:anywhere}
+#attachmentRemoveConfirm .attachment-confirm-actions{display:flex;gap:8px}
+#attachmentRemoveConfirm button{flex:1;min-height:44px;margin:0;border:1px solid #d98282;border-radius:8px;background:transparent;color:#fff}
+#attachmentRemoveConfirm #confirmAttachmentRemove{background:#ffb7b7;border-color:#ffb7b7;color:#651717}
+
+#cardDetail #detailImageList button{background:#285777}
+#attachmentViewer .attachment-view-header{display:flex;flex-wrap:nowrap;gap:8px}
+#attachmentViewer #attachmentTitle{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#attachmentViewer #attachmentClose{flex:none;display:grid;place-items:center;width:44px;height:44px;min-width:44px;min-height:44px;padding:10px;margin:0}
+#attachmentViewer #attachmentClose svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+#captureInputWrap .attachment-chip,#detailEditorWrap .attachment-chip{flex:1 1 0;width:auto;min-width:0;max-width:calc((100% - 8px)/3)}
+#captureInputWrap .attachment-chip span,#detailEditorWrap .attachment-chip span{flex:0 1 auto}
+@media(max-width:849px){body.ideas-screen .stage[data-stage-index="0"] h2{font-size:14px}body.ideas-screen .stage[data-stage-index="0"] .count{font-size:20px;background:transparent;color:#feff9d;padding:0;min-width:0}#captureButtons .project-edit{color:#fff}#mobileArchivedCards .archive-read{background:transparent;color:#fff;-webkit-tap-highlight-color:transparent}#mobileArchivedCards .archive-read:hover,#mobileArchivedCards .archive-read:active{background:#713641;color:#fff}}
+
+/* Priority controls and current project. */
+@media(max-width:849px){
+ #captureBody #captureButtons .priority-placeholder{background:transparent;border:1px dashed #51718a}
+ #captureBody #captureButtons .priority-placeholder button{width:100%;border:0;background:transparent;color:#b5c9d7;font-size:12px}
+ body #captureButtons .project-choice.priority-current{background:#feff9d;border-color:#feff9d;color:#004980}
+ body #captureButtons .project-choice.priority-current>button.project-name,body #captureButtons .project-choice.priority-current>button[data-capture],body #captureButtons .project-choice.priority-current .project-hint{background:transparent;color:#004980}
+ body #captureButtons .project-choice:not(.priority-current)>button[data-capture]{background:transparent;color:#004980}
+ body #manageProjectDialog #captureButtons .project-choice.priority-current{background:#feff9d;border-color:#feff9d}
+ body #manageProjectDialog #captureButtons .project-choice.priority-current>button.project-name,body #manageProjectDialog #captureButtons .project-choice.priority-current .project-hint{color:#004980}
+ body #manageProjectDialog #captureButtons .priority-star,body #manageProjectDialog #captureButtons .priority-grip{flex:none;width:38px;min-width:38px;height:44px;min-height:44px;margin:0;padding:0;border:0;border-radius:6px;background:transparent;color:#feff9d;font-size:23px;box-shadow:none}
+ body #manageProjectDialog #captureButtons .priority-grip{width:32px;min-width:32px;color:#b5c9d7;touch-action:none;cursor:grab}
+ body #manageProjectDialog #captureButtons .priority-current .priority-star,body #manageProjectDialog #captureButtons .priority-current .priority-grip{color:#004980}
+ body #manageProjectDialog #captureButtons .priority-dragging{z-index:2;opacity:.85;box-shadow:0 5px 12px #0007}
+ body #manageProjectDialog #captureButtons .project-choice{transition:transform .16s ease}
+ body #manageProjectDialog #captureButtons .priority-dragging{transition:none}
+}
+@media(min-width:850px){#captureButtons .priority-star,#captureButtons .priority-grip{display:none}}
+#priorityDialog{box-sizing:border-box;width:min(92vw,440px);padding:20px 16px;border:1px solid #51718a;border-radius:16px;background:#123b58;color:#fff;box-shadow:none}
+#priorityDialog::backdrop{background:#000a}
+#priorityDialog h2{font-size:20px;margin:0 0 10px}
+#priorityDialog p{overflow-wrap:anywhere}
+#priorityDialog .priority-options{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#priorityDialog .priority-options button{min-height:44px;margin:0;background:#1c405a;color:#fff;border:1px solid #7a9aaf;border-radius:8px}
+/* The ring indicates activity, not a fabricated percentage. */
+@property --attachment-angle{syntax:"<angle>";initial-value:0deg;inherits:false}
+@keyframes attachment-ring{from{--attachment-angle:0deg}to{--attachment-angle:360deg}}
+.capture-input-wrap button.is-uploading::before{content:'';position:absolute;width:30px;height:30px;border-radius:50%;background:conic-gradient(#89a8bb var(--attachment-angle),transparent 0);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 2px),#000 calc(100% - 1px));mask:radial-gradient(farthest-side,transparent calc(100% - 2px),#000 calc(100% - 1px));animation:attachment-ring 1.5s linear infinite}
+.capture-input-wrap button.is-success::after,.capture-input-wrap button.is-error::after{position:absolute;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;color:#fff;font:600 18px system-ui}
+.capture-input-wrap button.is-success::after{content:'\2713';background:#3caa6a}
+.capture-input-wrap button.is-error::after{content:'\00d7';background:#713641}
+.capture-input-wrap button.is-success svg,.capture-input-wrap button.is-error svg{visibility:hidden}
+#captureBody:has(#captureAddImages.is-uploading) #captureImageStatus,#cardDetail:has(#detailAddImages.is-uploading) #detailImageStatus{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+@media(prefers-reduced-motion:reduce){.capture-input-wrap button.is-uploading::before{animation:none;--attachment-angle:270deg}.priority-dragging{transition:none}}
+
+@media(max-width:849px){body #manageProjectDialog #captureButtons .project-edit{color:#fff}body #manageProjectDialog #captureButtons .priority-current .project-edit{color:#004980}}
+
+@media(max-width:849px){body #manageProjectDialog #captureButtons .project-title{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
+
+@media(max-width:849px){body #manageProjectDialog #captureButtons .priority-star{display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;gap:2px}body #manageProjectDialog #captureButtons .priority-star .priority-role{font-size:9px;font-weight:500}#cardDetail #detailSaveStatus{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
+
+@media(prefers-reduced-motion:reduce){body #manageProjectDialog #captureButtons .project-choice{transition:none}}
+
+@media(max-width:849px){
+ body #captureButtons .project-choice.priority-current{background:#e5e5e5;border-color:#9a9a9a;color:#004980}
+ body #manageProjectDialog #captureButtons .project-choice.priority-current{background:#1c405a;border-color:#51718a;color:#fff}
+ body #manageProjectDialog #captureButtons .project-choice.priority-current>button.project-name,body #manageProjectDialog #captureButtons .project-choice.priority-current .project-hint{color:#fff}
+ body #manageProjectDialog #captureButtons .priority-current .priority-star{color:#feff9d}
+ body #manageProjectDialog #captureButtons .priority-current .priority-grip{color:#b5c9d7}
+ body #manageProjectDialog #captureButtons .priority-current .project-edit{color:#fff}
+}
+
+/* The text scrolls in its own area; the attachment toolbar is separate. */
+#captureInputWrap,#detailEditorWrap{box-sizing:border-box;border:1px solid #55758d;border-radius:8px;background:#001c31;padding-bottom:44px}
+#captureBody #captureInputWrap #idea,#cardDetail #detailEditorWrap #cardEditor{display:block;box-sizing:border-box;width:100%;border:0;border-radius:8px 8px 0 0;background:transparent;padding-bottom:14px;resize:vertical}
+#captureBody #captureInputWrap #idea{min-height:90px}
+@media(max-width:849px){#captureBody #captureInputWrap #idea{min-height:104px}}
+#cardDetail #detailEditorWrap #cardEditor{min-height:105px}
+#captureInputWrap:focus-within,#detailEditorWrap:focus-within{outline:1.5px solid #feff9d;outline-offset:3px}
+#captureInputWrap textarea:focus-visible,#detailEditorWrap textarea:focus-visible{outline:none}
+#captureInputWrap #captureAddImages,#cardDetail #detailEditorWrap #detailAddImages{bottom:0;right:2px}
+.attachment-badge{position:absolute;right:2px;top:2px;display:grid;place-items:center;width:18px;height:18px;border-radius:50%;background:#ab423f;color:#fff;font:600 11px system-ui}
+.attachment-badge[hidden]{display:none}
+#captureInputWrap .attachment-panel,#detailEditorWrap .attachment-panel{position:absolute;z-index:10;right:4px;bottom:46px;box-sizing:border-box;width:min(290px,calc(100% - 8px));padding:12px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;border:1px solid #51718a;border-radius:10px;background:#123b58;color:#fff;box-shadow:0 5px 18px #0008}
+#captureInputWrap .attachment-panel[hidden],#detailEditorWrap .attachment-panel[hidden]{display:none}
+.attachment-panel>strong{grid-column:1/-1;font-size:14px;font-weight:600}
+#captureInputWrap #captureImageList,#detailEditorWrap #detailEditList{position:static;display:contents;list-style:none;padding:0;margin:0}
+#captureInputWrap #captureImageList[hidden],#detailEditorWrap #detailEditList[hidden]{display:none}
+#captureInputWrap .attachment-preview,#detailEditorWrap .attachment-preview{position:relative;display:flex;flex-direction:column;min-width:0;overflow:hidden;border:1px solid #51718a;border-radius:7px;background:#1c405a}
+.attachment-preview img{display:block;width:100%;aspect-ratio:1;object-fit:cover;background:#001c31}
+.attachment-preview span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:4px;font-size:11px;color:#fff}
+#captureInputWrap .attachment-preview button,#detailEditorWrap .attachment-preview button{position:absolute;right:2px;top:2px;display:grid;place-items:center;width:28px;min-width:28px;height:28px;min-height:28px;margin:0;padding:0;border:0;border-radius:50%;background:#002947e8;color:#fff;font-size:18px}
+#captureInputWrap #captureChooseImage,#detailEditorWrap #detailChooseImage{box-sizing:border-box;display:grid;place-items:center;align-content:center;min-width:0;min-height:76px;margin:0;padding:6px;border:1px dashed #7a9aaf;border-radius:7px;background:#002947;color:#c2d4e0;font-size:11px;overflow-wrap:anywhere}
+#captureInputWrap #captureChooseImage::before,#detailEditorWrap #detailChooseImage::before{content:'+';font-size:26px;line-height:1}
+#detailEditorWrap #detailRetryImages{grid-column:1/-1;min-height:36px;margin:0}
+#detailEditorWrap #detailRetryImages[hidden]{display:none}
+
+@media(max-width:849px){body #manageProjectDialog #captureButtons .priority-star[aria-pressed="false"]{color:#89a8bb}}
+
+@media(max-width:849px){body #manageProjectDialog #captureButtons .priority-grip-spacer{flex:none;width:32px;min-width:32px}body #manageProjectDialog #captureButtons .project-choice>button.project-name{padding-left:0}}
+@media(min-width:850px){#captureButtons .priority-grip-spacer{display:none}}
+
+@media(max-width:849px){
+ body #manageProjectDialog #captureButtons [data-project-row="demo"] > .priority-grip,
+ body #manageProjectDialog #captureButtons [data-project-row="demo-outro"] > .priority-grip{width:21px;min-width:21px;text-align:left;padding-inline-start:4px}
+}
+
+@media(max-width:849px){
+ body #manageProjectDialog #captureButtons .priority-grip,
+ body #manageProjectDialog #captureButtons .priority-grip-spacer{width:21px;min-width:21px}
+ body #manageProjectDialog #captureButtons .priority-grip{text-align:left;padding-inline-start:4px}
+ body #manageProjectDialog #captureButtons .project-choice>button.project-name,
+ body #manageProjectDialog #captureButtons .project-title{font-weight:400}
+ body #manageProjectDialog #captureButtons .project-choice.priority-current{background:#feff9d;border-color:#feff9d}
+ body #manageProjectDialog #captureButtons .project-choice.priority-current>button.project-name,
+ body #manageProjectDialog #captureButtons .project-choice.priority-current .project-hint,
+ body #manageProjectDialog #captureButtons .priority-current .priority-star,
+ body #manageProjectDialog #captureButtons .priority-current .priority-grip,
+ body #manageProjectDialog #captureButtons .priority-current .project-edit{color:#004980}
+}
+
+/* A área de texto ocupa o bloco inteiro, com espaço lateral para o clipe. */
+#captureInputWrap,#detailEditorWrap{padding-bottom:0}
+#captureBody #captureInputWrap #idea,#cardDetail #detailEditorWrap #cardEditor{padding-right:74px;padding-bottom:14px}
+#captureInputWrap #captureAddImages,#cardDetail #detailEditorWrap #detailAddImages{right:20px;bottom:2px}
+@media(max-width:849px){#captureBody #captureInputWrap #idea{min-height:132px}}
+
+/* Painel cresce por espa?o ocupado; o clipe permanece junto ao canto. */
+#captureInputWrap #captureAddImages,#cardDetail #detailEditorWrap #detailAddImages{right:3px;bottom:2px}
+#captureInputWrap .attachment-panel,#detailEditorWrap .attachment-panel{width:min(calc(24px + var(--slots, 1) * 82px + (var(--slots, 1) - 1) * 8px),calc(100% - 8px));grid-template-columns:repeat(var(--slots, 1),minmax(0,1fr))}
+.attachment-panel[data-slots="2"]{--slots:2}
+.attachment-panel[data-slots="3"]{--slots:3}
+.attachment-preview img[role="button"]{cursor:pointer}
+.attachment-preview img[role="button"]:focus-visible{outline:2px solid #feff9d;outline-offset:-3px}
+.attachment-navigation{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:8px}
+.attachment-navigation button{min-width:44px;font-size:22px;line-height:1}
+.attachment-navigation span{font-size:13px;color:#c2d4e0}
+
+/* Miniaturas dos anexos exibidos na nota. */
+#cardDetail #detailImageList button.attachment-note-thumbnail{display:flex;flex-direction:column;align-items:stretch;flex:0 1 57.4px;max-width:calc((100% - 12px)/3);padding:0;line-height:1.3;text-align:left}
+.attachment-note-thumbnail img{display:block;width:100%;aspect-ratio:1;object-fit:cover;background:#001c31}
+.attachment-note-thumbnail img[hidden]{display:none}
+
+/* Comparação local dos destaques dos dois primeiros projetos. */
+#captureButtons:not(.managing) .project-choice:is(.priority-current,.priority-next) > [data-capture]{position:relative;padding-right:25px;padding-left:25px}
+#captureButtons:not(.managing) .project-choice:is(.priority-current,.priority-next) > [data-capture]::after{content:'\2605';position:absolute;right:5px;top:50%;transform:translateY(-50%);line-height:1}
+#captureButtons:not(.managing) .project-choice.priority-current > [data-capture]::after{color:#d5a900}
+#captureButtons:not(.managing) .project-choice.priority-next > [data-capture]::after{color:#2678b5}
+
+/* Aparência clara dos projetos nas três telas. */
+body #ideasDialog #tabs button[aria-pressed="true"],
+body #ideasDialog #tabs button[aria-pressed="false"]{background:#e5e5e5;border-color:#bfc5ca;color:#004980}
+body #ideasDialog #tabs button[aria-pressed="true"]:hover,
+body #ideasDialog #tabs button[aria-pressed="false"]:hover{background:#d6d6d6;border-color:#aab5bd;color:#004980}
+#captureButtons.managing .project-choice,
+body #manageProjectDialog #captureButtons .project-choice,
+body #manageProjectDialog #captureButtons .project-choice.priority-current{background:#e5e5e5;border-color:#bfc5ca;color:#004980}
+#captureButtons.managing .project-choice > button.project-name,
+#captureButtons.managing .project-choice .project-hint,
+body #manageProjectDialog #captureButtons .project-choice > button.project-name,
+body #manageProjectDialog #captureButtons .project-choice .project-hint,
+body #manageProjectDialog #captureButtons .project-choice.priority-current > button.project-name,
+body #manageProjectDialog #captureButtons .project-choice.priority-current .project-hint,
+body #manageProjectDialog #captureButtons .priority-current .priority-grip,
+body #manageProjectDialog #captureButtons .priority-grip{background:transparent;color:#004980}
+body #manageProjectDialog #captureButtons .priority-star{color:#2678b5}
+body #manageProjectDialog #captureButtons .priority-current .priority-star{color:#d5a900}
+body #manageProjectDialog #captureButtons .priority-star .priority-role{color:#004980}
+
+/* Projetos prioritários e recentes no seletor móvel. */
+body #ideasDialog .ideas-dialog-header{margin-bottom:2px}
+#ideasDialog #tabs .picker-project-group{flex:0 0 100%;min-width:0}
+#ideasDialog #tabs .picker-project-group h3{margin:0 0 5px;color:#c2d4e0;font-size:13px;font-weight:600}
+#ideasDialog #tabs .picker-project-list > button{margin-top:0}
+#ideasDialog #tabs .picker-project-list{display:flex;flex-wrap:wrap;gap:14px 12px}
+#ideasDialog #tabs button:has(.picker-priority-star){padding-left:25px;padding-right:25px}
+#ideasDialog #tabs .picker-priority-star{position:absolute;right:5px;top:50%;transform:translateY(-50%);font-size:14px;line-height:1}
+#ideasDialog #tabs .picker-priority-star.is-current{color:#d5a900}
+#ideasDialog #tabs .picker-priority-star.is-next{color:#2678b5}
+
+/* Texto dos projetos legível sobre os botões claros. */
+body #captureButtons .project-choice > button[data-capture],
+body #captureButtons .project-choice.priority-current > button[data-capture],
+body #captureButtons .project-choice:not(.priority-current) > button[data-capture],
+body #captureButtons .project-choice > button[data-capture]:hover,
+body #manageProjectDialog #captureButtons .project-choice > button.project-name,
+body #manageProjectDialog #captureButtons .project-choice.priority-current > button.project-name,
+body #ideasDialog #tabs button[aria-pressed="true"],
+body #ideasDialog #tabs button[aria-pressed="false"],
+body #ideasDialog #tabs button[aria-pressed="true"]:hover,
+body #ideasDialog #tabs button[aria-pressed="false"]:hover{color:#003568}
+body #captureButtons .project-choice > button[data-capture]{text-align:center}
+body .capture .project-menu-heading #newProject,
+body .capture .project-menu-heading #newProject:not(:disabled):hover,
+body #ideasDialog #manageProjectsFromIdeas,
+body #manageProjectDialog #manageProjects,
+body #newProjectDialog #createProject,
+body #cardDetail #editDescription{color:#003568}
+body #captureButtons .project-edit,
+body #manageProjectDialog #captureButtons .project-edit,
+body #manageProjectDialog #captureButtons .priority-current .project-edit{color:#003568;caret-color:#003568}
+body #captureButtons .project-edit::selection{background:#a9c9df;color:#002947}
+#ideasDialog #tabs .picker-project-name{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center}
+
+#syncPanel summary{cursor:pointer}
+body #ideasDialog #manageProjectsFromIdeas{width:100%;min-height:48px;margin-top:16px;background:#feff9d;border:1px solid #feff9d}
+body #ideasDialog #manageProjectsFromIdeas:not(:disabled):hover{background:#f0f18b;border-color:#f0f18b}
+#ideasDialog button{-webkit-tap-highlight-color:transparent}
+@media(min-width:850px){
+ body .capture .project-menu-heading #newProject,
+ body .capture .project-menu-heading #newProject:not(:disabled):hover{color:#fff}
+}
