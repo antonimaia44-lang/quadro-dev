@@ -12,12 +12,13 @@
   let editTarget;
   let editing = false;
   let working = false;
+  let connectingPanel = false;
   let viewer;
   let imageUrl;
   let restoring;
   let pendingRemoval;
-  const previewUrls = { capture: [], detail: [] };
-  const previewGeneration = { capture: 0, detail: 0 };
+  const previewUrls = { capture: [], detail: [], view: [] };
+  const previewGeneration = { capture: 0, detail: 0, view: 0 };
   function clearPreviews(which) {
     previewGeneration[which]++;
     for (const url of previewUrls[which]) URL.revokeObjectURL(url);
@@ -180,8 +181,17 @@
     }
   }
 
-  async function connectIfNeeded() {
-    if (!drive.connected() && !await window.QuadroDriveSync.connect(Boolean(window.QuadroDriveSync.account()))) {
+  function localAttachmentOwner() {
+    if (window.QuadroDriveSync.account()) return undefined;
+    return [...refsIn(board.read()).values()].find(ref => ref.owner)?.owner;
+  }
+
+  function attachmentsConnected(owner) {
+    return drive.connected() && (!owner || window.QuadroDriveSync.attachmentAccountId() === owner);
+  }
+
+  async function connectIfNeeded(owner = localAttachmentOwner()) {
+    if (!attachmentsConnected(owner) && !await window.QuadroDriveSync.connectAttachments(owner)) {
       throw Error('A autorização do Google não foi concluída. Tente novamente.');
     }
   }
@@ -192,25 +202,31 @@
   }
 
   async function toggleAttachmentPanel(which) {
-    if (working) return;
+    if (working || connectingPanel) return;
     const panel = $(which + 'AttachmentPanel');
     const control = $(which === 'capture' ? 'captureAddImages' : 'detailAddImages');
+    const card = which === 'detail' ? editTarget : null;
+    const statusId = which === 'capture' ? 'captureImageStatus' : 'detailImageStatus';
     if (!panel.hidden) {
       panel.hidden = true;
       control.setAttribute('aria-expanded','false');
       clearPreviews(which);
       return;
     }
-    if (!drive.connected()) {
-      if (which === 'detail' && !window.QuadroDriveSync.account()) {
-        report('detailImageStatus', 'Esta nota está no quadro local. Feche a nota para conectar o Google Drive sem trocar de quadro durante a edição.');
-        return;
-      }
+    if (which === 'detail' && !board.canEditDetail(card)) {
+      report(statusId, 'O cartão mudou. Feche e abra a nota novamente.');
+      return;
+    }
+    const sync = window.QuadroDriveSync;
+    const owner = which === 'detail' ? localAttachmentOwner() : undefined;
+    const ready = which === 'detail' ? attachmentsConnected(owner) : Boolean(sync.account() && drive.connected());
+    if (!ready) {
       const draftText = which === 'capture' ? $('idea').value : '';
+      connectingPanel = true;
       try {
-        const connected = await window.QuadroDriveSync.connect(which === 'detail');
-        if (!connected) {
-          report(which === 'capture' ? 'captureImageStatus' : 'detailImageStatus', 'Autorização não concluída. Tente novamente.');
+        if (which === 'detail') await connectIfNeeded(owner);
+        else if (!await sync.connect()) {
+          report(statusId, 'Autorização não concluída. Tente novamente.');
           return;
         }
         if (which === 'capture' && draftText && !$('idea').value) {
@@ -220,12 +236,17 @@
           report('captureImageStatus', 'A conta já tinha outro rascunho. O texto anterior foi preservado no quadro local.');
         }
       } catch (error) {
-        report(which === 'capture' ? 'captureImageStatus' : 'detailImageStatus', error.message);
+        if (which === 'capture' || (editing && editTarget === card && $('cardDetail').open)) {
+          report(statusId, error.message);
+        }
         return;
+      } finally {
+        connectingPanel = false;
       }
     }
+    if (which === 'detail' && (!editing || editTarget !== card || !board.canEditDetail(card))) return;
     panel.hidden = false;
-    report(which === 'capture' ? 'captureImageStatus' : 'detailImageStatus');
+    report(statusId);
     control.setAttribute('aria-expanded','true');
     if (which === 'capture') renderDraft();
     else renderDetail(board.detailCard(), true);
@@ -252,6 +273,7 @@
     editing = edit;
     const refs = card?.attachments ?? [];
     const host = $('detailImageList');
+    clearPreviews('view');
     host.replaceChildren();
     $('detailAttachments').hidden = !card || !refs.length || edit;
     $('detailAddImages').hidden = !edit;
@@ -295,6 +317,19 @@
       const open = button(shortName(ref.name), () => showImage(ref, refs, index));
       open.title = ref.name;
       open.setAttribute('aria-label', 'Abrir ' + ref.name);
+      open.classList.add('attachment-note-thumbnail');
+      const image = document.createElement('img');
+      image.alt = '';
+      image.hidden = true;
+      const generation = previewGeneration.view;
+      if (attachmentsConnected(ref.owner)) imageBlob(ref).then(blob => {
+        if (generation !== previewGeneration.view) return;
+        const url = URL.createObjectURL(blob);
+        previewUrls.view.push(url);
+        image.src = url;
+        image.hidden = false;
+      }).catch(() => {});
+      open.prepend(image);
       host.append(open);
     }
   }
@@ -305,7 +340,12 @@
     setFeedback('detail', 'uploading');
     const uploaded = await operate('detailImageStatus', 'Enviando imagens…', async () => {
       await connectIfNeeded();
+      if (!board.canEditDetail(card)) throw Error('O cartão mudou. Feche e abra a nota novamente.');
       const refs = await uploadItems(editQueue);
+      if (!window.QuadroDriveSync.account()) {
+        const owner = window.QuadroDriveSync.attachmentAccountId();
+        for (const ref of refs) ref.owner = owner;
+      }
       board.saveAttachments(card, [...(card.attachments ?? []), ...refs]);
       editQueue = [];
       report('detailImageStatus');
@@ -353,6 +393,7 @@
   }
 
   async function imageBlob(ref) {
+    if (!attachmentsConnected(ref.owner)) throw Error('Conecte o Google Drive para visualizar a imagem.');
     const blob = await drive.download(ref.id);
     if (blob.size !== ref.size || (blob.type !== ref.type && blob.type !== 'application/octet-stream')) {
       throw Error('A imagem no Drive foi alterada desde que foi anexada.');
@@ -381,7 +422,7 @@
     } catch (error) {
       if (viewer !== current || !dialog.open) return;
       report('attachmentStatus', error instanceof TypeError ? 'Verifique a conexão e abra o anexo novamente.' : error.message);
-      $('attachmentConnect').hidden = drive.connected();
+      $('attachmentConnect').hidden = attachmentsConnected(current.ref.owner);
     }
   }
 
@@ -408,8 +449,10 @@
     const current = viewer;
     if (!current) return;
     try {
-      await connectIfNeeded();
-      if (viewer === current) await loadViewerImage(current);
+      await connectIfNeeded(current.ref.owner);
+      if (viewer !== current || !$('attachmentViewer').open) return;
+      if (!editing && $('cardDetail').open) renderDetail(board.detailCard(), false);
+      await loadViewerImage(current);
     } catch (error) { if (viewer === current) report('attachmentStatus', error.message); }
   };
 
@@ -428,7 +471,8 @@
       if (refs === undefined) continue;
       if (!Array.isArray(refs) || refs.length > maxCount || refs.some(ref =>
         !ref || !drive.isId(ref.id) || typeof ref.name !== 'string' || !ref.name || ref.name.length > 180 ||
-        !types.has(ref.type) || !Number.isSafeInteger(ref.size) || ref.size < 1 || ref.size > maxImage
+        !types.has(ref.type) || !Number.isSafeInteger(ref.size) || ref.size < 1 || ref.size > maxImage ||
+        (ref.owner !== undefined && !drive.isId(ref.owner))
       ) || new Set(refs.map(ref => ref.id)).size !== refs.length) throw Error('Há referências de anexos inválidas no quadro.');
     }
   }
@@ -488,7 +532,7 @@
     event.target.value = '';
     if (!file || working) return;
     await operate('driveStatus', 'Verificando o backup…', async () => {
-      if (!drive.connected()) throw Error('Conecte o Drive antes de restaurar o backup.');
+      if (!window.QuadroDriveSync.account() || !drive.connected()) throw Error('Conecte o quadro da conta Google antes de restaurar o backup.');
       if (!board.canApply()) throw Error('Feche a edição antes de restaurar o backup.');
       if (!restoring || restoring.name !== file.name || restoring.size !== file.size || restoring.modified !== file.lastModified) {
         restoring = await parseBackup(file);
@@ -529,10 +573,10 @@
     hasDraftImages: () => draft.length > 0,
     captureStatus: message => report('captureImageStatus', message),
     uploadDraft: () => operate('captureImageStatus', 'Preparando o envio…', async () => {
+      if (!window.QuadroDriveSync.account()) {
+        throw Error('A autorização do Google não foi concluída. Toque no clipe para tentar novamente.');
+      }
       if (!drive.connected()) {
-        if (!window.QuadroDriveSync.account()) {
-          throw Error('A autorização do Google não foi concluída. Toque no clipe para tentar novamente.');
-        }
         report('captureImageStatus', 'Autorize o Google Drive para continuar salvando…');
         await connectIfNeeded();
       }

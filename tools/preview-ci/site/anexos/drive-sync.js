@@ -4,6 +4,7 @@
   const board = window.QuadroAttachmentBoard;
   const $ = id => document.getElementById(id);
   let account;
+  let attachmentAccount;
   let unlock;
   let checkpoint;
   let pendingUpload;
@@ -30,9 +31,9 @@
     $('driveConnect').textContent = account ? 'Reconectar Google Drive' : 'Conectar Google Drive';
     $('driveConnect').disabled = busy || Boolean(running);
     updateIndicator();
-    $('driveDisconnect').hidden = !account;
+    $('driveDisconnect').hidden = !(account || attachmentAccount);
     $('driveSync').hidden = !account;
-    $('driveBackup').hidden = !account;
+    $('driveBackup').hidden = !(account || attachmentAccount);
     $('driveRestore').hidden = !account;
     for (const id of ['driveSync','driveDisconnect','driveBackup','driveRestore']) {
       $(id).disabled = busy || Boolean(running);
@@ -73,7 +74,7 @@
     return release;
   }
 
-  async function connect(fromAttachment = false) {
+  async function connect(fromAttachment = false, { attachmentsOnly = false, owner } = {}) {
     if (busy || running || (window.QuadroAttachments.busy() && !fromAttachment)) return false;
     const reconnecting = Boolean(account);
     busy = true;
@@ -85,6 +86,15 @@
       if (account && user.permissionId !== account.permissionId) {
         throw Error('Escolha a mesma conta Google conectada ou desconecte a conta atual primeiro.');
       }
+      if (attachmentsOnly) {
+        if (owner && user.permissionId !== owner) {
+          throw Error('Escolha a conta Google usada para salvar os anexos deste quadro.');
+        }
+        drive.use(credential);
+        attachmentAccount = user;
+        status('Drive conectado para os anexos deste quadro local.');
+        return true;
+      }
       if (!account) {
         if (!board.canApply()) throw Error('Feche o cartão e conecte o Drive na tela inicial.');
         unlock = await reserveAccount(user.permissionId);
@@ -95,6 +105,7 @@
         remember(checkpoint);
       }
       drive.use(credential);
+      attachmentAccount = null;
       status('Drive conectado' + (account.emailAddress ? ' · ' + account.emailAddress : '') + '.');
       return true;
     } catch (error) {
@@ -111,7 +122,7 @@
     } finally {
       busy = false;
       refreshControls();
-      if (drive.connected()) schedule(0);
+      if (account && drive.connected()) schedule(0);
     }
   }
 
@@ -209,16 +220,20 @@
   $('driveSync').onclick = () => syncNow(true);
   $('driveDisconnect').onclick = () => {
     if (running || busy || window.QuadroAttachments.busy()) return;
-    board.closeAccount();
+    const wasSyncing = Boolean(account);
+    if (wasSyncing) board.closeAccount();
     drive.disconnect();
     account = null;
+    attachmentAccount = null;
     checkpoint = null;
     pendingUpload = null;
     unlock?.();
     unlock = null;
     clearTimeout(timer);
     refreshControls();
-    status('Drive desconectado. Conecte sua conta para voltar aos cartões de teste sincronizados.');
+    status(wasSyncing
+      ? 'Drive desconectado. Conecte sua conta para voltar aos cartões de teste sincronizados.'
+      : 'Drive desconectado. Toque no clipe da nota para acessar os anexos novamente.');
   };
   window.addEventListener('quadro-local-change', () => schedule());
   window.addEventListener('online', () => schedule(0));
@@ -227,5 +242,10 @@
   });
   setInterval(() => { if (!document.hidden) syncNow(); }, 15000);
 
-  window.QuadroDriveSync = { connect, schedule, refreshControls, status, account: () => account };
+  window.QuadroDriveSync = {
+    connect, schedule, refreshControls, status, account: () => account,
+    connectAttachments: owner => account ? connect(true) : connect(true, { attachmentsOnly: true, owner }),
+    attachmentAccountId: () => (account ?? attachmentAccount)?.permissionId
+  };
 })();
+
