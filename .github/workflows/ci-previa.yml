@@ -76,10 +76,12 @@ jobs:
           assert.match(process.env.MANIFEST_SHA256,/^[a-f0-9]{64}$/);
           assert.equal(sha(manifest),process.env.MANIFEST_SHA256);
           const m=JSON.parse(manifest);
-          const files=['_headers','anexos/attachments.css','anexos/attachments.js','anexos/drive-sync.js','anexos/drive.js','anexos/index.html','index.html'];
-          assert.deepEqual(fs.readdirSync('preview').sort(),['_headers','anexos','index.html','manifest.json']);
+          const files=['_headers','anexos/attachments.css','anexos/attachments.js','anexos/drive-sync.js','anexos/drive.js','anexos/index.html','index.html','teste-backup/index.html'];
+          assert.deepEqual(fs.readdirSync('preview').sort(),['_headers','anexos','index.html','manifest.json','teste-backup']);
           assert(fs.lstatSync('preview/anexos').isDirectory());
           assert.deepEqual(fs.readdirSync('preview/anexos').sort(),files.filter(f=>f.startsWith('anexos/')).map(f=>f.slice(7)));
+          assert(fs.lstatSync('preview/teste-backup').isDirectory());
+          assert.deepEqual(fs.readdirSync('preview/teste-backup'),['index.html']);
           assert.deepEqual(Object.keys(m.files).sort(),files);
           assert.equal(m.schema,2);
           assert.equal(m.environment,'offline-synthetic');
@@ -89,9 +91,11 @@ jobs:
             assert(fs.lstatSync('preview/'+name).isFile());
             if(name!=='manifest.json') assert.equal(sha(fs.readFileSync('preview/'+name)),m.files[name],name);
           }
-          const s=fs.readFileSync('preview/index.html','utf8');
-          assert(s.includes("connect-src 'none'"));
-          assert(!/https?:\/\/|firebaseio|googleapis|AIza|<iframe|<script[^>]+src\s*=/i.test(s));
+          for (const name of ['index.html','teste-backup/index.html']) {
+            const s=fs.readFileSync('preview/'+name,'utf8');
+            assert(s.includes("connect-src 'none'"));
+            assert(!/https?:\/\/|production-v2|firebaseio|googleapis|AIza|<iframe|<script[^>]+src\s*=/i.test(s));
+          }
           NODE
       - name: Instalar publicador com versão fixa
         run: npm install --prefix "$RUNNER_TEMP/publisher" --ignore-scripts --no-audit --no-fund wrangler@4.156.0
@@ -105,4 +109,6 @@ jobs:
           test -n "$CLOUDFLARE_ACCOUNT_ID"
           "$RUNNER_TEMP/publisher/node_modules/.bin/wrangler" pages deploy preview --project-name=quadro-dev-previas --branch=main
       - name: Mostrar link
-        run: echo 'https://quadro-dev-previas.pages.dev/anexos/' >> "$GITHUB_STEP_SUMMARY"
+        run: |
+          echo 'https://quadro-dev-previas.pages.dev/anexos/' >> "$GITHUB_STEP_SUMMARY"
+          echo 'https://quadro-dev-previas.pages.dev/teste-backup/' >> "$GITHUB_STEP_SUMMARY"

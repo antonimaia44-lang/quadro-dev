@@ -13,5 +13,9 @@
       "anexos/drive.js": "676a7dbb9bce0951f3903ee38ba70da4d774d13dc8036d05f742f67970e22e95",
       "anexos/index.html": "c41bd786ba0107fbc2a1ceeb36542f5be41101c3ddf3be4e137d611204dcc4e6"
     }
+  },
+  "backupPreview": {
+    "file": "teste-backup/index.html",
+    "sha256": "04a5db3e4c24e3a5b4a61eda032f438c912ec16f09e2d7c4d8da81e8de1f0b6c"
   }
 }

@@ -57,6 +57,18 @@ function build() {
   );
   assert.match(payload.get('anexos/drive.js').toString(), /113837472975-[a-z0-9]+\.apps\.googleusercontent\.com/);
   assert(payload.get('anexos/drive.js').includes('quadro-dev-anexos-hml-v3'));
+  const backupRoute = 'teste-backup/index.html';
+  assert.equal(spec.backupPreview?.file, backupRoute);
+  const backupSource = path.join(root, 'site', backupRoute);
+  assert(fs.lstatSync(backupSource).isFile());
+  const backup = fs.readFileSync(backupSource);
+  const backupHtml = backup.toString('utf8');
+  assert.equal(sha(backup), spec.backupPreview.sha256, 'Fonte da prévia de backup mudou');
+  assert(backupHtml.includes("connect-src 'none'"));
+  assert(backupHtml.includes('quadro-dev-local:previa-backup-textual-v1'));
+  assert(!/https?:\/\/|production-v2|firebaseio|googleapis|AIza|BEGIN PRIVATE KEY|<iframe|<script[^>]+src\s*=/i.test(backupHtml));
+  files[backupRoute] = sha(backup);
+  payload.set(backupRoute, backup);
   const out = path.join(root, 'preview');
   const outputFiles = [...payload.keys(), 'manifest.json'].sort();
   if (fs.existsSync(out)) {
@@ -65,6 +77,7 @@ function build() {
     assert(existing.every(name => outputFiles.includes(name)), 'A saída contém arquivos não autorizados');
   } else fs.mkdirSync(out);
   fs.mkdirSync(path.join(out, 'anexos'), {recursive: true});
+  fs.mkdirSync(path.join(out, 'teste-backup'), {recursive: true});
   for (const [name, data] of payload) fs.writeFileSync(path.join(out, name), data);
   const manifest = {schema: 2, environment: spec.environment, source: spec.source, sourceSha256: spec.sourceSha256,
     canonicalProductionCommit: null, attachmentsEnvironment: spec.attachments.environment, files};

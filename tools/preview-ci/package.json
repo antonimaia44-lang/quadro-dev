@@ -7,7 +7,7 @@
   },
   "scripts": {
     "ci": "node automation/ci.cjs",
-    "test:browser": "node tests/browser.cjs && node tests/attachments.cjs && node tests/priorities.cjs"
+    "test:browser": "node tests/browser.cjs && node tests/attachments.cjs && node tests/priorities.cjs && node tests/backup-preview.cjs"
   },
   "devDependencies": {
     "playwright": "1.64.1"
